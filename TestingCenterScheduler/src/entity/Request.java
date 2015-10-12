@@ -15,89 +15,105 @@ import javax.persistence.Id;
 @Entity
 public class Request implements Serializable {
 
-	@Id
-	private String requestID;
-	private String classID;
-	private String instructorNetID;
-	private Date timeStart;
-	private Date timeEnd;
-	private int testDuration;
-	private int numSeats;
-	private Date requestDate;
-	@Enumerated(EnumType.STRING)
-	private RequestStatus status;
-	private static final long serialVersionUID = 1L;
+    @Id
+    private String requestID;
 
-	public Request() {
-		super();
-	}
-	public String getRequestID() {
-		return this.requestID;
-	}
+    private String classID;
 
-	public void setRequestID(String requestID) {
-		this.requestID = requestID;
-	}
-	public String getClassID() {
-		return this.classID;
-	}
+    private String instructorNetID;
 
-	public void setClassID(String classID) {
-		this.classID = classID;
-	}
-	public String getInstructorNetID() {
-		return this.instructorNetID;
-	}
+    private Date timeStart;
 
-	public void setInstructorNetID(String instructorNetID) {
-		this.instructorNetID = instructorNetID;
-	}
-	public Date getTimeStart() {
-		return this.timeStart;
-	}
+    private Date timeEnd;
 
-	public void setTimeStart(Date timeStart) {
-		this.timeStart = timeStart;
-	}
-	public Date getTimeEnd() {
-		return this.timeEnd;
-	}
+    private int testDuration;
 
-	public void setTimeEnd(Date timeEnd) {
-		this.timeEnd = timeEnd;
-	}
-	public int getTestDuration() {
-		return this.testDuration;
-	}
+    private int numSeats;
 
-	public void setTestDuration(int testDuration) {
-		this.testDuration = testDuration;
-	}
-	public int getNumSeats() {
-		return this.numSeats;
-	}
+    private Date requestDate;
 
-	public void setNumSeats(int numSeats) {
-		this.numSeats = numSeats;
-	}
-	public Date getRequestDate() {
-		return this.requestDate;
-	}
+    @Enumerated(EnumType.STRING)
+    private RequestStatus status;
 
-	public void setRequestDate(Date requestDate) {
-		this.requestDate = requestDate;
-	}
-	public RequestStatus getStatus() {
-		return status;
-	}
-	public void setStatus(RequestStatus status) {
-		this.status = status;
-	}
+    private static final long serialVersionUID = 1L;
 
-	enum RequestStatus {
+    public Request() {
+	super();
+    }
 
-		PENDING, APPROVED, DENIED
+    public String getRequestID() {
+	return this.requestID;
+    }
 
-	}
+    public void setRequestID(String requestID) {
+	this.requestID = requestID;
+    }
 
+    public String getClassID() {
+	return this.classID;
+    }
+
+    public void setClassID(String classID) {
+	this.classID = classID;
+    }
+
+    public String getInstructorNetID() {
+	return this.instructorNetID;
+    }
+
+    public void setInstructorNetID(String instructorNetID) {
+	this.instructorNetID = instructorNetID;
+    }
+
+    public Date getTimeStart() {
+	return this.timeStart;
+    }
+
+    public void setTimeStart(Date timeStart) {
+	this.timeStart = timeStart;
+    }
+
+    public Date getTimeEnd() {
+	return this.timeEnd;
+    }
+
+    public void setTimeEnd(Date timeEnd) {
+	this.timeEnd = timeEnd;
+    }
+
+    public int getTestDuration() {
+	return this.testDuration;
+    }
+
+    public void setTestDuration(int testDuration) {
+	this.testDuration = testDuration;
+    }
+
+    public int getNumSeats() {
+	return this.numSeats;
+    }
+
+    public void setNumSeats(int numSeats) {
+	this.numSeats = numSeats;
+    }
+
+    public Date getRequestDate() {
+	return this.requestDate;
+    }
+
+    public void setRequestDate(Date requestDate) {
+	this.requestDate = requestDate;
+    }
+
+    public RequestStatus getStatus() {
+	return status;
+    }
+
+    public void setStatus(RequestStatus status) {
+	this.status = status;
+    }
+
+    enum RequestStatus {
+	PENDING, APPROVED, DENIED
+    }
 }
