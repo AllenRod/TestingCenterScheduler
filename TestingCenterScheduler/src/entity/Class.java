@@ -10,14 +10,14 @@ import javax.persistence.Id;
  *
  */
 @Entity
-public class Roster implements Serializable {
+public class Class implements Serializable {
 
 	@Id
 	private String studentNetID;
 	private String classID;
 	private static final long serialVersionUID = 1L;
 
-	public Roster() {
+	public Class() {
 		super();
 	}
 	public String getStudentNetID() {

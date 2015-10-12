@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 /**
  * Entity implementation class for Entity: Appointment
@@ -19,6 +21,8 @@ public class Appointment implements Serializable {
 	private String examID;
 	private String netID;
 	private Date timeStart;
+	@ManyToOne
+	@JoinColumn(name = "requestID")
 	private int requestID;
 	private int seatNum;
 	@Enumerated(EnumType.STRING)
