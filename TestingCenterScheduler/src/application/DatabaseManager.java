@@ -20,16 +20,19 @@ public class DatabaseManager {
     }
 
     public String getRole(String userName, String pw) {
-	createTransactionalEntityManager();
+	createEntityManager();
 	Query q = em.createQuery("SELECT u FROM UserAccount u WHERE "
 		+ "u.netID = :uid AND u.hashedPassword = :upw");
 	q.setParameter("uid", userName);
 	q.setParameter("upw", pw);
+	UserAccount result = null;
 	try {
-	    UserAccount result = (UserAccount) q.getSingleResult();
-	    return result.getRoles();
+	    result = (UserAccount) q.getSingleResult();
 	} catch (Exception NoResultException) {
-	    return "";
+	    result = null;
+	} finally {
+	    closeEntityManager();
+	    return result.toString();
 	}
     }
 
