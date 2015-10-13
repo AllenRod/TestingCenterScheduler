@@ -28,11 +28,11 @@ public class DatabaseManager {
 	UserAccount result = null;
 	try {
 	    result = (UserAccount) q.getSingleResult();
+	    return result.getRoles();
 	} catch (Exception NoResultException) {
-	    result = null;
+	    return "";
 	} finally {
 	    closeEntityManager();
-	    return result.toString();
 	}
     }
 

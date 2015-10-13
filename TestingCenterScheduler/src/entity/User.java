@@ -11,8 +11,6 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-import org.eclipse.persistence.jpa.config.Cascade;
-
 /**
  * Entity implementation class for Entity: User
  *

@@ -8,8 +8,6 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
 
-import entity.Appointment.AppointmentStatus;
-
 /**
  * Entity implementation class for Entity: UserAccount
  *

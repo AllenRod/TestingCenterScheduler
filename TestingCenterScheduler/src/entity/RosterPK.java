@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.lang.String;
 
 import javax.persistence.Column;
-import javax.persistence.JoinColumn;
 
 /**
  * ID class for entity: Roster

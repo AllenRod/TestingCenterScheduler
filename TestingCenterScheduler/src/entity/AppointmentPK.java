@@ -5,6 +5,11 @@ import java.io.Serializable;
 import javax.persistence.Column;
 
 public class AppointmentPK implements Serializable {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 3368854275057451457L;
+
     @Column(name = "EXAM_ID")
     private int request;
 
