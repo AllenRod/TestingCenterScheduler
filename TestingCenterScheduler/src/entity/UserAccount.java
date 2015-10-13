@@ -2,8 +2,13 @@ package entity;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
+
+import entity.Appointment.AppointmentStatus;
 
 /**
  * Entity implementation class for Entity: UserAccount
@@ -22,6 +27,10 @@ public class UserAccount implements Serializable {
     private String email;
 
     private String hashedPassword;
+    
+    @Enumerated(EnumType.STRING)
+    @Column(columnDefinition="ENUM('ADMIN', 'INSTRUCTOR', 'STUDENT')")
+    private UserRoles role;
 
     private static final long serialVersionUID = 1L;
 
@@ -68,5 +77,8 @@ public class UserAccount implements Serializable {
     public void setHashedPassword(String hashedPassword) {
 	this.hashedPassword = hashedPassword;
     }
-
+    
+    public enum UserRoles {
+	ADMIN, INSTRUCTOR, STUDENT
+    }
 }
