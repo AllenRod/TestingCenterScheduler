@@ -28,8 +28,8 @@ import javax.persistence.TemporalType;
  *
  */
 @Entity
-@Inheritance(strategy=InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name="REQUEAT_TYPE")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "REQUEAT_TYPE")
 public class Request implements Serializable {
 
     @Id
@@ -56,8 +56,8 @@ public class Request implements Serializable {
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "ENUM('PENDING', 'APPROVED', 'DENIED', 'COMPLETED')")
     private RequestStatus status;
-    
-    @OneToMany(mappedBy = "request", cascade=CascadeType.ALL, fetch=FetchType.LAZY)
+
+    @OneToMany(mappedBy = "request", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Appointment> appointment = new ArrayList<>();
 
     private static final long serialVersionUID = 1L;
@@ -106,18 +106,28 @@ public class Request implements Serializable {
 	this.requestDate = requestDate;
     }
 
-    public RequestStatus getStatus() {
-	return status;
+    public String getStatus() {
+	switch (status) {
+	    case PENDING:
+		return "pending";
+	    case APPROVED:
+		return "approved";
+	    case DENIED:
+		return "denied";
+	    case COMPLETED:
+		return "completed";
+	}
+	return "";
     }
 
     public void setStatus(RequestStatus status) {
 	this.status = status;
     }
-    
+
     public List<Appointment> getAppointment() {
 	return this.appointment;
     }
-    
+
     public void setAppointment(List<Appointment> appointment) {
 	this.appointment = appointment;
     }

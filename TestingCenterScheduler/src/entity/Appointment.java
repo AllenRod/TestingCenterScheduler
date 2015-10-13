@@ -24,22 +24,22 @@ public class Appointment implements Serializable {
 
     @Id
     @ManyToOne
-    @JoinColumn(name="EXAM_ID")
+    @JoinColumn(name = "EXAM_ID")
     private Request request;
 
     @Id
     @ManyToOne
-    @JoinColumn(name="NET_ID")
+    @JoinColumn(name = "NET_ID")
     private User user;
 
-    @Column(name = "START_TIME", columnDefinition="DATETIME")
+    @Column(name = "START_TIME", columnDefinition = "DATETIME")
     @Temporal(TemporalType.TIMESTAMP)
     private Date timeStart;
 
     private int seatNum;
 
     @Enumerated(EnumType.STRING)
-    @Column(columnDefinition="ENUM('PENDING', 'TAKEN', 'MISSED')")
+    @Column(columnDefinition = "ENUM('PENDING', 'TAKEN', 'MISSED')")
     private AppointmentStatus status;
 
     private static final long serialVersionUID = 1L;
@@ -80,8 +80,16 @@ public class Appointment implements Serializable {
 	this.seatNum = seatNum;
     }
 
-    public AppointmentStatus getStatus() {
-	return status;
+    public String getStatus() {
+	switch (status) {
+	    case PENDING:
+		return "pending";
+	    case TAKEN:
+		return "taken";
+	    case MISSED:
+		return "missed";
+	}
+	return "";
     }
 
     public void setStatus(AppointmentStatus status) {

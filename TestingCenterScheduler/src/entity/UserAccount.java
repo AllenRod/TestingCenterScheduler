@@ -78,7 +78,19 @@ public class UserAccount implements Serializable {
 	this.hashedPassword = hashedPassword;
     }
     
+    public String getRoles() {
+	switch (role) {
+	    case ADMIN:
+		return "admin";
+	    case INSTRUCTOR:
+		return "instr";
+	    case STUDENT:
+		return "student";
+	}
+	return "";
+    }
+    
     public enum UserRoles {
-	ADMIN, INSTRUCTOR, STUDENT
+	ADMIN, INSTRUCTOR, STUDENT;
     }
 }
