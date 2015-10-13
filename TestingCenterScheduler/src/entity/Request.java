@@ -29,7 +29,7 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "REQUEAT_TYPE")
+@DiscriminatorColumn(name = "REQUEST_TYPE")
 public class Request implements Serializable {
 
     @Id
