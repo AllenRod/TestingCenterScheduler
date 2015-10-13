@@ -3,6 +3,7 @@ package entity;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -10,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  * Entity implementation class for Entity: Appointment
@@ -20,20 +23,23 @@ import javax.persistence.ManyToOne;
 public class Appointment implements Serializable {
 
     @Id
-    private String examID;
+    @ManyToOne
+    @JoinColumn(name="EXAM_ID")
+    private Request request;
 
     @Id
-    private String netID;
+    @ManyToOne
+    @JoinColumn(name="NET_ID")
+    private User user;
 
+    @Column(name = "START_TIME", columnDefinition="DATETIME")
+    @Temporal(TemporalType.TIMESTAMP)
     private Date timeStart;
-
-    //@ManyToOne
-    //@JoinColumn(name = "requestID")
-    private int requestID;
 
     private int seatNum;
 
     @Enumerated(EnumType.STRING)
+    @Column(columnDefinition="ENUM('PENDING', 'TAKEN', 'MISSED')")
     private AppointmentStatus status;
 
     private static final long serialVersionUID = 1L;
@@ -42,20 +48,20 @@ public class Appointment implements Serializable {
 	super();
     }
 
-    public String getExamID() {
-	return examID;
+    public Request getRequest() {
+	return request;
     }
 
-    public void setExamID(String examID) {
-	this.examID = examID;
+    public void setRequest(Request request) {
+	this.request = request;
     }
 
-    public String getNetID() {
-	return this.netID;
+    public User getUser() {
+	return this.user;
     }
 
-    public void setNetID(String netID) {
-	this.netID = netID;
+    public void setUser(User user) {
+	this.user = user;
     }
 
     public Date getTimeStart() {
@@ -64,14 +70,6 @@ public class Appointment implements Serializable {
 
     public void setTimeStart(Date timeStart) {
 	this.timeStart = timeStart;
-    }
-
-    public int getRequestID() {
-	return this.requestID;
-    }
-
-    public void setRequestID(int requestID) {
-	this.requestID = requestID;
     }
 
     public int getSeatNum() {

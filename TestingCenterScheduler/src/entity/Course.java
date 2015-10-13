@@ -1,9 +1,15 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 /**
  * Entity implementation class for Entity: Course
@@ -12,51 +18,83 @@ import javax.persistence.Id;
 @Entity
 public class Course implements Serializable {
 
-	@Id
-	private String classID;
-	private String subject;
-	private int catalogNum;
-	private int section;
-	private String instructorNetID;
-	private static final long serialVersionUID = 1L;
+    @Id
+    @Column(name="CLASS_ID")
+    private String classID;
 
-	public Course() {
-		super();
-	}
-	public String getClassID() {
-		return this.classID;
-	}
+    private String subject;
 
-	public void setClassID(String classID) {
-		this.classID = classID;
-	}
-	public String getSubject() {
-		return this.subject;
-	}
+    private int catalogNum;
 
-	public void setSubject(String subject) {
-		this.subject = subject;
-	}
-	public int getCatalogNum() {
-		return this.catalogNum;
-	}
+    private String section;
 
-	public void setCatalogNum(int catalogNum) {
-		this.catalogNum = catalogNum;
-	}
-	public int getSection() {
-		return this.section;
-	}
+    private String instructorNetID;
+    
+    @OneToMany(mappedBy = "course", cascade=CascadeType.ALL, fetch=FetchType.LAZY)
+    private List<Roster> roster = new ArrayList<>();
+    
+    @OneToMany(mappedBy = "course", cascade=CascadeType.ALL, fetch=FetchType.LAZY)
+    private List<ClassExamRequest> request = new ArrayList<>();
 
-	public void setSection(int section) {
-		this.section = section;
-	}
-	public String getInstructorNetID() {
-		return this.instructorNetID;
-	}
+    private static final long serialVersionUID = 1L;
 
-	public void setInstructorNetID(String instructorNetID) {
-		this.instructorNetID = instructorNetID;
-	}
+    public Course() {
+	super();
+    }
 
+    public String getClassID() {
+	return this.classID;
+    }
+
+    public void setClassID(String classID) {
+	this.classID = classID;
+    }
+
+    public String getSubject() {
+	return this.subject;
+    }
+
+    public void setSubject(String subject) {
+	this.subject = subject;
+    }
+
+    public int getCatalogNum() {
+	return this.catalogNum;
+    }
+
+    public void setCatalogNum(int catalogNum) {
+	this.catalogNum = catalogNum;
+    }
+
+    public String getSection() {
+	return this.section;
+    }
+
+    public void setSection(String section) {
+	this.section = section;
+    }
+
+    public String getInstructorNetID() {
+	return this.instructorNetID;
+    }
+
+    public void setInstructorNetID(String instructorNetID) {
+	this.instructorNetID = instructorNetID;
+    }
+    
+    public List<ClassExamRequest> getRequest() {
+	return this.request;
+    }
+    
+    public void setRequest(List<ClassExamRequest> request) {
+	this.request = request;
+    }
+    
+    public List<Roster> getRoster() {
+	return this.roster;
+    }
+    
+    public void setRoster(List<Roster> roster) {
+	this.roster = roster;
+    }
 }

@@ -5,9 +5,11 @@
 		<class>entity.UserAccount</class>
 		<class>entity.Appointment</class>
 		<class>entity.Course</class>
-		<class>entity.Class</class>
 		<class>entity.User</class>
 		<class>entity.Roster</class>
+		<class>entity.ClassExamRequest</class>
+		<class>entity.NonClassRequest</class>
+		<class>entity.TestCenterInfo</class>
 		<properties>
 			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://mysql2.cs.stonybrook.edu:3306/cse308jesseteam"/>
 			<property name="javax.persistence.jdbc.user" value="cse308jesseteam"/>

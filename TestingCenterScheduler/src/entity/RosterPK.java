@@ -3,35 +3,40 @@ package entity;
 import java.io.Serializable;
 import java.lang.String;
 
+import javax.persistence.Column;
+import javax.persistence.JoinColumn;
+
 /**
  * ID class for entity: Roster
  *
  */
 public class RosterPK implements Serializable {
 
-    private String netID;
+    @Column(name="USER_ID")
+    private String user;
 
-    private String classID;
+    @Column(name="CLASS_ID")
+    private String course;
 
     private static final long serialVersionUID = 1L;
 
     public RosterPK() {
     }
 
-    public String getNetID() {
-	return this.netID;
+    public String getUser() {
+	return this.user;
     }
 
-    public void setNetID(String netID) {
-	this.netID = netID;
+    public void setUser(String user) {
+	this.user = user;
     }
 
-    public String getClassID() {
-	return this.classID;
+    public String getCourse() {
+	return this.course;
     }
 
-    public void setClassID(String classID) {
-	this.classID = classID;
+    public void setCourse(String course) {
+	this.course = course;
     }
 
     /*
@@ -46,10 +51,10 @@ public class RosterPK implements Serializable {
 	}
 	RosterPK other = (RosterPK) o;
 	return true
-		&& (getNetID() == null ? other.getNetID() == null : getNetID()
-			.equals(other.getNetID()))
-		&& (getClassID() == null ? other.getClassID() == null
-			: getClassID().equals(other.getClassID()));
+		&& (getUser() == null ? other.getUser() == null : getUser()
+			.equals(other.getUser()))
+		&& (getCourse() == null ? other.getCourse() == null
+			: getCourse().equals(other.getCourse()));
     }
 
     /*
@@ -59,9 +64,9 @@ public class RosterPK implements Serializable {
 	final int prime = 17;
 	int result = 1;
 	result = prime * result
-		+ (getNetID() == null ? 0 : getNetID().hashCode());
+		+ (getUser() == null ? 0 : getUser().hashCode());
 	result = prime * result
-		+ (getClassID() == null ? 0 : getClassID().hashCode());
+		+ (getCourse() == null ? 0 : getCourse().hashCode());
 	return result;
     }
 

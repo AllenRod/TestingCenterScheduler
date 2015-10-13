@@ -2,29 +2,33 @@ package entity;
 
 import java.io.Serializable;
 
-public class AppointmentPK implements Serializable {
-    private String examID;
+import javax.persistence.Column;
 
-    private String netID;
+public class AppointmentPK implements Serializable {
+    @Column(name = "EXAM_ID")
+    private int request;
+
+    @Column(name = "NET_ID")
+    private String user;
 
     public AppointmentPK() {
-	
+
     }
 
-    public String getExamID() {
-	return examID;
+    public int getRequest() {
+	return request;
     }
 
-    public void setExamID(String examID) {
-	this.examID = examID;
+    public void setRequest(int request) {
+	this.request = request;
     }
 
-    public String getNetID() {
-	return netID;
+    public String getUser() {
+	return user;
     }
 
-    public void setNetID(String netID) {
-	this.netID = netID;
+    public void setUser(String user) {
+	this.user = user;
     }
 
     /*
@@ -38,7 +42,8 @@ public class AppointmentPK implements Serializable {
 	    return false;
 	}
 	AppointmentPK other = (AppointmentPK) o;
-	return true && getExamID() == other.getExamID() && getNetID() == other.getNetID();
+	return true && getRequest() == other.getRequest()
+		&& getUser() == other.getUser();
     }
 
     /*
@@ -48,9 +53,8 @@ public class AppointmentPK implements Serializable {
 	final int prime = 17;
 	int result = 1;
 	result = prime * result
-		+ (getNetID() == null ? 0 : getNetID().hashCode());
-	result = prime * result
-		+ (getExamID() == null ? 0 : getExamID().hashCode());
+		+ (getUser() == null ? 0 : getUser().hashCode());
+	result = prime * result + getRequest();
 	return result;
     }
 }
