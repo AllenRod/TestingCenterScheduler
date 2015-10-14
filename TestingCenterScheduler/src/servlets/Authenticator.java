@@ -1,14 +1,15 @@
 package servlets;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import entity.UserAccount;
 import application.DatabaseManager;
 
 /**
@@ -47,17 +48,21 @@ public class Authenticator extends HttpServlet {
 	try {
 	    String userName = request.getParameter("user");
 	    String password = request.getParameter("password");
-	    String role = dataMgn.getRole(userName, password);
-	    response.setContentType("text/html");
-	    PrintWriter out = response.getWriter();
-
-	    if (role.equals("")) {
-		out.println("Error Page PLZ");
+	    UserAccount user = dataMgn.getUser(userName, password);
+	    if (user != null) {
+		request.getSession().setAttribute("user", user);
+		String role = user.getRoles();
+		if (role.equals("admin")) {
+		    response.sendRedirect("Admin.jsp");
+		} else if (role.equals("instr")) {
+		    response.sendRedirect("Instructor.jsp");
+		} if (role.equals("student")) {
+		    response.sendRedirect("Student.jsp");
+		}
 	    } else {
-		out.println(role);
+		RequestDispatcher rd = request.getRequestDispatcher("index.html");
+		rd.forward(request, response);
 	    }
-	    out.close();
-
 	} catch (Throwable Exception) {
 	    System.out.println(Exception);
 	}

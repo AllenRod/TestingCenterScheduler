@@ -19,7 +19,7 @@ public class DatabaseManager {
 	emf = Persistence.createEntityManagerFactory("TestingCenterScheduler");
     }
 
-    public String getRole(String userName, String pw) {
+    public UserAccount getUser(String userName, String pw) {
 	createEntityManager();
 	Query q = em.createQuery("SELECT u FROM UserAccount u WHERE "
 		+ "u.netID = :uid AND u.hashedPassword = :upw");
@@ -28,9 +28,9 @@ public class DatabaseManager {
 	UserAccount result = null;
 	try {
 	    result = (UserAccount) q.getSingleResult();
-	    return result.getRoles();
+	    return result;
 	} catch (Exception NoResultException) {
-	    return "";
+	    return null;
 	} finally {
 	    closeEntityManager();
 	}
