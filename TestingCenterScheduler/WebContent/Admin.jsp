@@ -23,7 +23,6 @@
 </head>
 
 <body>
-
 	<div id="wrapper">
 
 		<!-- Navigation -->
@@ -49,7 +48,7 @@
 						<li><a href="#"><i class="fa fa-fw fa-gear"></i> Settings</a>
 						</li>
 						<li class="divider"></li>
-						<li><a href="index.html"><i class="fa fa-fw fa-power-off"></i>
+						<li><a href="index.jsp">
 								Log Out</a></li>
 					</ul></li>
 			</ul>

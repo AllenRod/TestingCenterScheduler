@@ -35,7 +35,7 @@ public class DatabaseManager {
 	    closeEntityManager();
 	}
     }
-
+    
     private void createTransactionalEntityManager() {
 	// Create a new EntityManager
 	em = emf.createEntityManager();
