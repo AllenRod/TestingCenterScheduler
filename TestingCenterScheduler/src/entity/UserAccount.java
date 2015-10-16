@@ -87,7 +87,17 @@ public class UserAccount implements Serializable {
 	}
 	return "";
     }
-    
+    public String getRole() {
+    switch (role) {
+	    case ADMIN:
+		return "admin";
+	    case INSTRUCTOR:
+		return "instr";
+	    case STUDENT:
+		return "student";
+	}
+	return "";
+    }
     public enum UserRoles {
 	ADMIN, INSTRUCTOR, STUDENT;
     }

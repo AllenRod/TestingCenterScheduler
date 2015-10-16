@@ -26,7 +26,6 @@
 </head>
 
 <body>
-
 	<div id="wrapper">
 
 		<!-- Navigation -->
@@ -52,9 +51,15 @@
 						<li><a href="#"><i class="fa fa-fw fa-gear"></i> Settings</a>
 						</li>
 						<li class="divider"></li>
-						<li><a href="index.jsp"><i class="fa fa-fw fa-power-off"></i>
-								Log Out</a></li>
-					</ul></li>
+						<li>
+							<a>
+								<form action="Login" method="GET">
+									<input type="submit" value="Log Out" style="background-color: Transparent; border: none;">
+								</form>
+							</a>
+						</li>
+					</ul>
+				</li>
 			</ul>
 			<!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
 			<div class="collapse navbar-collapse navbar-ex1-collapse">

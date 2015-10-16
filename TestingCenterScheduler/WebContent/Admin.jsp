@@ -23,6 +23,7 @@
 </head>
 
 <body>
+
 	<div id="wrapper">
 
 		<!-- Navigation -->
@@ -45,26 +46,27 @@
 					data-toggle="dropdown"><i class="fa fa-user"></i>
 						${user.firstName} ${user.lastName}<b class="caret"></b></a>
 					<ul class="dropdown-menu">
-						<li><a href="#"><i class="fa fa-fw fa-gear"></i> Settings</a>
+						<li><a href="#">Settings</a>
 						</li>
 						<li class="divider"></li>
-						<li><a href="index.jsp">
-								Log Out</a></li>
-					</ul></li>
+						<li>
+							<a>
+								<form action="Login" method="GET">
+									<input type="submit" value="Log Out" style="background-color: Transparent; border: none;">
+								</form>	
+							</a>
+						</li>
+					</ul>
+				</li>
 			</ul>
 			<!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
 			<div class="collapse navbar-collapse navbar-ex1-collapse">
 				<ul class="nav navbar-nav side-nav">
-					<li><a href="#" style="color: #fff;"><i
-							class="fa fa-fw fa-calendar"></i>Testing Center Usage Report</a></li>
-					<li><a href="#" style="color: #fff;"><i
-							class="fa fa-fw fa-bar-chart-o"></i> Testing Center Information</a></li>
-					<li><a href="#" style="color: #fff;"><i
-							class="fa fa-fw fa-table"></i>Import Data</a></li>
-					<li><a href="#" style="color: #fff;"><i
-							class="fa fa-fw fa-desktop"></i>View All Requests</a></li>
-					<li><a href="#" style="color: #fff;"><i
-							class="fa fa-fw fa-user"></i>View All Appointments</a></li>
+					<li><a href="#" style="color: #fff;">Testing Center Usage Report</a></li>
+					<li><a href="#" style="color: #fff;">Testing Center Information</a></li>
+					<li><a href="#" style="color: #fff;">Import Data</a></li>
+					<li><a href="#" style="color: #fff;">View All Requests</a></li>
+					<li><a href="#" style="color: #fff;">View All Appointments</a></li>
 				</ul>
 			</div>
 			<!-- /.navbar-collapse -->
