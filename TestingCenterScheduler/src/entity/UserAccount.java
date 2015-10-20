@@ -25,9 +25,10 @@ public class UserAccount implements Serializable {
     private String email;
 
     private String hashedPassword;
-    
+
     @Enumerated(EnumType.STRING)
-    @Column(columnDefinition="ENUM('ADMIN', 'INSTRUCTOR', 'STUDENT')")
+    @Column(columnDefinition = "ENUM('ADMIN', 'INSTRUCTOR', 'STUDENT', 'ADMIN_STUDENT',"
+    	+ "'ADMIN_INSTRUCTOR','INSTRUCTOR_STUDENT','ALL')")
     private UserRoles role;
 
     private static final long serialVersionUID = 1L;
@@ -75,8 +76,8 @@ public class UserAccount implements Serializable {
     public void setHashedPassword(String hashedPassword) {
 	this.hashedPassword = hashedPassword;
     }
-    
-    public String getRoles() {
+
+    public String getRole() {
 	switch (role) {
 	    case ADMIN:
 		return "admin";
@@ -84,21 +85,20 @@ public class UserAccount implements Serializable {
 		return "instr";
 	    case STUDENT:
 		return "student";
+	    case ADMIN_INSTRUCTOR:
+		return "admin_instr";
+	    case ADMIN_STUDENT:
+		return "admin_student";
+	    case ALL:
+		return "all";
+	    case INSTRUCTOR_STUDENT:
+		return "instr_student";
+	    default:
+		return "";
 	}
-	return "";
     }
-    public String getRole() {
-    switch (role) {
-	    case ADMIN:
-		return "admin";
-	    case INSTRUCTOR:
-		return "instr";
-	    case STUDENT:
-		return "student";
-	}
-	return "";
-    }
+
     public enum UserRoles {
-	ADMIN, INSTRUCTOR, STUDENT;
+	ADMIN, INSTRUCTOR, STUDENT, ADMIN_STUDENT, ADMIN_INSTRUCTOR, INSTRUCTOR_STUDENT, ALL;
     }
 }

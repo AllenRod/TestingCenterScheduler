@@ -54,7 +54,7 @@ public class Authenticator extends HttpServlet {
 	    UserAccount user = dataMgn.getUser(userName, password);
 	    if (user != null) {
 		request.getSession().setAttribute("user", user);
-		String role = user.getRoles();
+		String role = user.getRole();
 		if (role.equals("admin")) {
 		    response.sendRedirect("Admin.jsp");
 		} else if (role.equals("instr")) {
