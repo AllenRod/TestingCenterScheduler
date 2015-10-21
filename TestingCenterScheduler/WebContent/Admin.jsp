@@ -64,7 +64,7 @@
 				<ul class="nav navbar-nav side-nav">
 					<li><a href="#" style="color: #fff;">Testing Center Usage Report</a></li>
 					<li><a href="#" style="color: #fff;">Testing Center Information</a></li>
-					<li><a href="#" style="color: #fff;">Import Data</a></li>
+					<li><a href="ImportData.jsp" style="color: #fff;">Import Data</a></li>
 					<li><a href="#" style="color: #fff;">View All Requests</a></li>
 					<li><a href="#" style="color: #fff;">View All Appointments</a></li>
 				</ul>
