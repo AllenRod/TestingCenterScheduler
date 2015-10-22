@@ -90,15 +90,13 @@
 								<tr>
 									<th>NetID:</th>
 									<td><input type="text" id="user" name="user" size="16"
-										style="width: 250px; margin-bottom: 15px; margin-left: 10px;" /></td>
-									<td id="userText"></td>
+										style="width: 250px; margin-bottom: 15px; margin-left: 10px;" required/></td>
 								</tr>
 								<tr>
 									<th>Password: <br></th>
 									<td><input type="password" id="password" name="password"
 										size="16"
-										style="width: 250px; margin-bottom: 15px; margin-left: 10px;" /></td>
-									<td id="pswText" class="tdProp"></td>
+										style="width: 250px; margin-bottom: 15px; margin-left: 10px;" required/></td>
 								</tr>
 								<tr>
 									<td><a href="index.html"
