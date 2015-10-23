@@ -2,7 +2,7 @@ package application;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.Scanner;
+import java.util.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -12,6 +12,7 @@ import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 import entity.Course;
+import entity.Request;
 import entity.Roster;
 import entity.User;
 import entity.UserAccount;
@@ -27,11 +28,13 @@ public class DatabaseManager {
 
 	public UserAccount getUser(String userName, String pw) {
 		createEntityManager();
+		
 		Query q = em.createQuery("SELECT u FROM UserAccount u WHERE "
 				+ "u.netID = :uid AND u.hashedPassword = :upw");
 		q.setParameter("uid", userName);
 		q.setParameter("upw", pw);
 		UserAccount result = null;
+		
 		try {
 			result = (UserAccount) q.getSingleResult();
 			return result;
@@ -40,6 +43,7 @@ public class DatabaseManager {
 		} finally {
 			closeEntityManager();
 		}
+		
 	}
 
 	public void loadCSV(String fileName, String table) {
@@ -166,5 +170,21 @@ public class DatabaseManager {
 	private void closeEntityManager() {
 		// Close this EntityManager
 		em.close();
+	}
+	
+	public List<Course> I_getCourses(){
+		createEntityManager();
+		Query a = em.createQuery("SELECT c FROM Course c");
+		try {
+			List<Course> rs = a.setMaxResults(10).getResultList();
+			return rs;
+		} catch (Exception NoResultException) {
+			return null;
+		} finally {
+			closeEntityManager();
+		}
+	}
+	enum RequestStatus {
+		PENDING, APPROVED, DENIED, COMPLETED
 	}
 }

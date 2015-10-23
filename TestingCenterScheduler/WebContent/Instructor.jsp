@@ -1,3 +1,5 @@
+<%@ page import="java.util.List" %>
+<%@ page import="entity.Course" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -95,16 +97,19 @@
 				<!-- /.row -->
 
 				<div class="row">
-					<div class="col-sm-4">
+					<div class="col-sm-6">
 						<ul class="list-group">
-							<a href="Courses.html" class="list-group-item">CSE 114.01</a>
-							<a href="#" class="list-group-item">CSE 114.L01</a>
-							<a href="#" class="list-group-item">CSE 114.L02</a>
-							<a href="#" class="list-group-item">CSE 114.L03</a>
-							<a href="#" class="list-group-item">CSE 114.L04</a>
-							<a href="#" class="list-group-item">CSE 114.L05</a>
-							<a href="#" class="list-group-item">CSE 219.02</a>
-							<a href="#" class="list-group-item">CSE 306.01</a>
+						<%  
+						// retrieve your list from the request, with casting 
+						List<Course> list = (List<Course>) request.getSession().getAttribute("courses");
+						if(list != null){
+						// print the information about every category of the list
+						for(Course courses : list) {%>
+						    <a href="#" class="list-group-item"><%=courses.getSubject()%>.<%=courses.getSection()%><font size="1" style="color:grey; margin-left: 10px;">ClassID: <%=courses.getClassID()%></font></a>
+						<%
+						}}
+						%>
+							
 						</ul>
 					</div>
 				</div>

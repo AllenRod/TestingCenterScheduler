@@ -1,6 +1,7 @@
 package servlets;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -9,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import entity.Course;
 import entity.UserAccount;
 import application.DatabaseManager;
 
@@ -39,7 +41,7 @@ public class Authenticator extends HttpServlet {
 	// TODO Auto-generated method stub
     	if(request.getSession(false) != null)
     		request.getSession(false).invalidate();
-    	request.getRequestDispatcher("index.jsp").forward(request,response);
+    	response.sendRedirect("index.jsp");
     }
 
     /**
@@ -58,6 +60,8 @@ public class Authenticator extends HttpServlet {
 		if (role.equals("admin")) {
 		    response.sendRedirect("Admin.jsp");
 		} else if (role.equals("instr")) {
+			List<Course> courses = dataMgn.I_getCourses();
+			request.getSession().setAttribute("courses", courses);
 		    response.sendRedirect("Instructor.jsp");
 		} if (role.equals("student")) {
 		    response.sendRedirect("Student.jsp");

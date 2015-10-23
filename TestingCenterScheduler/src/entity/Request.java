@@ -121,7 +121,21 @@ public class Request implements Serializable {
     public void setStatus(RequestStatus status) {
 	this.status = status;
     }
-
+    public void setStatus(String status) {
+    	switch (status) {
+		    case "pending":
+		    	this.status = RequestStatus.PENDING;
+		    	break;
+		    case "approved":
+		    	this.status = RequestStatus.APPROVED;
+		    	break;
+		    case "denied":
+		    	this.status = RequestStatus.DENIED;
+		    	break;
+		    case "completed":
+		    	this.status = RequestStatus.COMPLETED;
+    	}
+    }
     public List<Appointment> getAppointment() {
 	return this.appointment;
     }
