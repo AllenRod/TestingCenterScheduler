@@ -64,7 +64,7 @@ public class CSVLoader {
 		}
 	    }
 	    System.out.println("finish adding");
-	    dbManager.loadData(dataList);
+	    dbManager.loadDataList(dataList);
 	    sc.close();
 	} catch (FileNotFoundException e) {
 	    System.out.println("Cannot find the file");

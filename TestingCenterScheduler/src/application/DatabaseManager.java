@@ -48,7 +48,7 @@ public class DatabaseManager {
 
     }
 
-    public void loadData(ArrayList<Object> dataList) {
+    public void loadDataList(ArrayList<Object> dataList) {
 	System.out.println("start loading");
 	createTransactionalEntityManager();
 	Iterator<Object> it = dataList.iterator();
@@ -59,6 +59,7 @@ public class DatabaseManager {
 	    c++;
 	    if (c >= 1000) {
 		em.flush();
+		c = 0;
 	    }
 	}
 	closeTransactionalEntityManager();
