@@ -28,7 +28,7 @@ public class UserAccount implements Serializable {
 
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "ENUM('ADMIN', 'INSTRUCTOR', 'STUDENT', 'ADMIN_STUDENT',"
-    	+ "'ADMIN_INSTRUCTOR','INSTRUCTOR_STUDENT','ALL')")
+	    + "'ADMIN_INSTRUCTOR','INSTRUCTOR_STUDENT','ALL')")
     private UserRoles role;
 
     private static final long serialVersionUID = 1L;

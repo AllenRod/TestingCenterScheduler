@@ -17,9 +17,7 @@ public class Roster implements Serializable {
     private String user;
 
     @Id
-    @ManyToOne
-    @JoinColumn(name="CLASS_ID")
-    private Course course;
+    private String course;
 
     private static final long serialVersionUID = 1L;
 
@@ -35,11 +33,11 @@ public class Roster implements Serializable {
 	this.user = user;
     }
 
-    public Course getCourse() {
+    public String getCourse() {
 	return this.course;
     }
 
-    public void setCourse(Course course) {
+    public void setCourse(String course) {
 	this.course = course;
     }
 

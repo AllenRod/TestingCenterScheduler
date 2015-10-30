@@ -22,14 +22,14 @@ public class Authenticator extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
 
-    private DatabaseManager dataMgn;
+    private DatabaseManager dbManager;
 
     /**
      * @see HttpServlet#HttpServlet()
      */
     public Authenticator() {
 	super();
-	dataMgn = new DatabaseManager();
+	dbManager = DatabaseManager.getSingleton();
     }
 
     /**
@@ -53,14 +53,14 @@ public class Authenticator extends HttpServlet {
 	try {
 	    String userName = request.getParameter("user");
 	    String password = request.getParameter("password");
-	    UserAccount user = dataMgn.getUser(userName, password);
+	    UserAccount user = dbManager.getUser(userName, password);
 	    if (user != null) {
 		request.getSession().setAttribute("user", user);
 		String role = user.getRole();
 		if (role.equals("admin")) {
 		    response.sendRedirect("Admin.jsp");
 		} else if (role.equals("instr")) {
-			List<Course> courses = dataMgn.I_getCourses();
+			List<Course> courses = dbManager.I_getCourses();
 			request.getSession().setAttribute("courses", courses);
 		    response.sendRedirect("Instructor.jsp");
 		} if (role.equals("student")) {

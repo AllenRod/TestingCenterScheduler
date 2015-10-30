@@ -16,17 +16,13 @@ public class TestCenterInfo implements Serializable {
     @Id
     private String term;
 
-    @Column(name = "OPEN_HOURS", columnDefinition = "TIMESTAMP")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date openHours;
+    private String openHours;
 
     private int seats;
 
     private int setAsideSeats;
 
-    @Column(name = "RESERVE_TIME", columnDefinition = "TIMESTAMP")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date reserveTime;
+    private String reserveTime;
 
     private int gapTime;
 
@@ -46,11 +42,11 @@ public class TestCenterInfo implements Serializable {
 	this.term = term;
     }
 
-    public Date getOpenHours() {
+    public String getOpenHours() {
 	return this.openHours;
     }
 
-    public void setOpenHours(Date OpenHours) {
+    public void setOpenHours(String OpenHours) {
 	this.openHours = OpenHours;
     }
 
@@ -70,11 +66,11 @@ public class TestCenterInfo implements Serializable {
 	this.setAsideSeats = setAsideSeats;
     }
 
-    public Date getReserveTime() {
+    public String getReserveTime() {
 	return this.reserveTime;
     }
 
-    public void setReserveTime(Date reserveTime) {
+    public void setReserveTime(String reserveTime) {
 	this.reserveTime = reserveTime;
     }
 

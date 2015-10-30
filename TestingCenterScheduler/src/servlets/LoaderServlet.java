@@ -11,17 +11,20 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import application.CSVLoader;
 import application.DatabaseManager;
 
 @WebServlet("/LoadCSV")
-public class CSVLoader extends HttpServlet {
+public class LoaderServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
-	private DatabaseManager dataMgn;
+	//private DatabaseManager dataMgn;
+	private CSVLoader loader;
 
-	public CSVLoader() {
+	public LoaderServlet() {
 		super();
-		dataMgn = new DatabaseManager();
+		//dataMgn = new DatabaseManager();
+		loader = new CSVLoader();
 	}
 
 	/**
@@ -43,7 +46,8 @@ public class CSVLoader extends HttpServlet {
 		try {
 			String fileName = request.getParameter("fileName");
 			String table = request.getParameter("table");
-			dataMgn.loadCSV(fileName, table);
+			//dataMgn.loadCSV(fileName, table);
+			loader.loadCSV(fileName, table);
 		} catch (Throwable Exception) {
 			System.out.println(Exception);
 		}

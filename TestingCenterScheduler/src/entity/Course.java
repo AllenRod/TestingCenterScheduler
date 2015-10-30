@@ -31,9 +31,6 @@ public class Course implements Serializable {
     private String instructorNetID;
     
     @OneToMany(mappedBy = "course", cascade=CascadeType.ALL, fetch=FetchType.LAZY)
-    private List<Roster> roster = new ArrayList<>();
-    
-    @OneToMany(mappedBy = "course", cascade=CascadeType.ALL, fetch=FetchType.LAZY)
     private List<ClassExamRequest> request = new ArrayList<>();
 
     private static final long serialVersionUID = 1L;
@@ -88,13 +85,5 @@ public class Course implements Serializable {
     
     public void setRequest(List<ClassExamRequest> request) {
 	this.request = request;
-    }
-    
-    public List<Roster> getRoster() {
-	return this.roster;
-    }
-    
-    public void setRoster(List<Roster> roster) {
-	this.roster = roster;
     }
 }
