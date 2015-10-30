@@ -10,7 +10,8 @@ import javax.persistence.Id;
 
 /**
  * Entity implementation class for Entity: UserAccount
- *
+ * This entity is used for user login and authentication
+ * @author CSE308 Team Five
  */
 @Entity
 public class UserAccount implements Serializable {

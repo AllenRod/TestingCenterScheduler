@@ -7,7 +7,8 @@ import javax.persistence.*;
 
 /**
  * Entity implementation class for Entity: ClassExamRequest
- *
+ * Inherit entity Request
+ * @author CSE308 Team Five
  */
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)

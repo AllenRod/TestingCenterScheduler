@@ -13,7 +13,7 @@ import javax.persistence.OneToMany;
 
 /**
  * Entity implementation class for Entity: Course
- *
+ * @author CSE308 Team Five
  */
 @Entity
 public class Course implements Serializable {

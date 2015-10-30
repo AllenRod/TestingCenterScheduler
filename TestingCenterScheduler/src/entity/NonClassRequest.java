@@ -10,7 +10,8 @@ import javax.persistence.*;
 
 /**
  * Entity implementation class for Entity: NonClassRequest
- *
+ * Inherit entity Request
+ * @author CSE308 Team Five
  */
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)

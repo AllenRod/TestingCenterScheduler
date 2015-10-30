@@ -11,6 +11,8 @@ import application.DatabaseManager;
 
 /**
  * Servlet implementation class AdministratorServlet
+ * Handle Administrator request and response
+ * @author CSE308 Team Five
  */
 @WebServlet("/AdministratorHome")
 public class AdministratorServlet extends HttpServlet {

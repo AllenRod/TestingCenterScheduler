@@ -1,7 +1,5 @@
 package application;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.*;
 
 import javax.persistence.EntityManager;
@@ -9,7 +7,6 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
-import javax.persistence.TypedQuery;
 
 import entity.Course;
 import entity.Request;
@@ -17,6 +14,11 @@ import entity.Roster;
 import entity.User;
 import entity.UserAccount;
 
+/**
+ * Manage all database transaction and activity using EntityManagers.
+ * 
+ * @author CSE308 Team Five
+ */
 public class DatabaseManager {
     private EntityManagerFactory emf;
 
@@ -24,10 +26,22 @@ public class DatabaseManager {
 
     private static DatabaseManager databasemanager = null;
 
+    /**
+     * Constructor for class DatabaseManager
+     */
     public DatabaseManager() {
 	emf = Persistence.createEntityManagerFactory("TestingCenterScheduler");
     }
 
+    /**
+     * Get the user with the provided user name and password
+     * 
+     * @param userName
+     *            name of user
+     * @param pw
+     *            password of user
+     * @return UserAccount data
+     */
     public UserAccount getUser(String userName, String pw) {
 	createEntityManager();
 
@@ -48,23 +62,52 @@ public class DatabaseManager {
 
     }
 
-    public void loadDataList(ArrayList<Object> dataList) {
-	System.out.println("start loading");
+    /**
+     * Load a single entity into database
+     * 
+     * @param data
+     *            single entity to be persisted into database
+     */
+    public void loadData(Object data) {
 	createTransactionalEntityManager();
-	Iterator<Object> it = dataList.iterator();
-	int c = 0;
-	while (it.hasNext()) {
-	    Object e = it.next();
-	    em.persist(e);
-	    c++;
-	    if (c >= 1000) {
-		em.flush();
-		c = 0;
-	    }
+	try {
+	    em.persist(data);
+	} catch (Exception error) {
+
 	}
 	closeTransactionalEntityManager();
     }
 
+    /**
+     * Load a chunk of data(entities) in ArrayLit into database
+     * 
+     * @param dataList
+     *            ArrayList that contains the data
+     */
+    public void loadDataList(ArrayList<Object> dataList) {
+	System.out.println("start loading");
+	createTransactionalEntityManager();
+	try {
+	    Iterator<Object> it = dataList.iterator();
+	    int c = 0;
+	    while (it.hasNext()) {
+		Object e = it.next();
+		em.persist(e);
+		c++;
+		if (c >= 1000) {
+		    em.flush();
+		    c = 0;
+		}
+	    }
+	} catch (Exception error) {
+
+	}
+	closeTransactionalEntityManager();
+    }
+
+    /**
+     * Start entity transaction
+     */
     private void createTransactionalEntityManager() {
 	// Create a new EntityManager
 	em = emf.createEntityManager();
@@ -72,6 +115,9 @@ public class DatabaseManager {
 	em.getTransaction().begin();
     }
 
+    /**
+     * Commit transaction and close EntityManager
+     */
     private void closeTransactionalEntityManager() {
 	// Commit the transaction
 	em.getTransaction().commit();
@@ -79,16 +125,27 @@ public class DatabaseManager {
 	em.close();
     }
 
+    /**
+     * Create new EntityManager
+     */
     private void createEntityManager() {
 	// Create a new EntityManager
 	em = emf.createEntityManager();
     }
 
+    /**
+     * Close the constructed EntityManager
+     */
     private void closeEntityManager() {
 	// Close this EntityManager
 	em.close();
     }
 
+    /**
+     * Kevin do this
+     * 
+     * @return
+     */
     public List<Course> I_getCourses() {
 	createEntityManager();
 	Query a = em.createQuery("SELECT c FROM Course c");
@@ -106,6 +163,11 @@ public class DatabaseManager {
 	PENDING, APPROVED, DENIED, COMPLETED
     }
 
+    /**
+     * Return a singleton of DatabaseManager
+     * 
+     * @return a singleton of class DatabaseManager
+     */
     public static DatabaseManager getSingleton() {
 	if (databasemanager == null) {
 	    databasemanager = new DatabaseManager();

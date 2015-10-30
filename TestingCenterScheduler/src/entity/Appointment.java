@@ -16,7 +16,8 @@ import javax.persistence.TemporalType;
 
 /**
  * Entity implementation class for Entity: Appointment
- *
+ * AppointmentPK is the primary key class of this entity
+ * @author CSE308 Team Five
  */
 @Entity
 @IdClass(AppointmentPK.class)

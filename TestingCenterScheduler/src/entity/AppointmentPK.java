@@ -4,10 +4,11 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 
+/**
+ * Primary key class for entity Appointment
+ * @author CSE308 Team Five
+ */
 public class AppointmentPK implements Serializable {
-    /**
-     * 
-     */
     private static final long serialVersionUID = 3368854275057451457L;
 
     @Column(name = "EXAM_ID")

@@ -8,7 +8,7 @@ import javax.persistence.*;
 
 /**
  * Entity implementation class for Entity: TestCenterInfo
- *
+ * @author CSE308 Team Five
  */
 @Entity
 public class TestCenterInfo implements Serializable {

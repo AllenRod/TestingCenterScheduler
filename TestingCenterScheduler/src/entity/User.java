@@ -13,7 +13,7 @@ import javax.persistence.OneToMany;
 
 /**
  * Entity implementation class for Entity: User
- *
+ * @author CSE308 Team Five
  */
 @Entity
 public class User implements Serializable {

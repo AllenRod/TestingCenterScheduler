@@ -4,11 +4,21 @@ import java.io.File;
 import java.util.Date;
 
 import entity.Request;
+import entity.TestCenterInfo;
 
+/**
+ * Administrator class that handles all Administrator functionality
+ * 
+ * @author CSE308 Team Five
+ */
 public class Administrator {
-
+    private DatabaseManager dbManager;
+    
+    /**
+     * Constructor for class Administrator
+     */
     public Administrator() {
-
+	dbManager = DatabaseManager.getSingleton();
     }
 
     /**
@@ -25,17 +35,6 @@ public class Administrator {
     public boolean createAppointment(String examID, String netID, Date timeStart) {
 	return false;
 
-    }
-
-    /**
-     * Imports information from a .csv file
-     * 
-     * @param f
-     *            the .csv file to be uploaded
-     * @return if the .csv file was successfully uploaded
-     */
-    public boolean importData(File f) {
-	return false;
     }
 
     /**
@@ -112,4 +111,27 @@ public class Administrator {
 
     }
 
+    /**
+     * Edit testing centers information
+     * @param term		term of the operation of TC
+     * @param openHours		open hours of the TC
+     * @param seats		number of seats in TC
+     * @param setAsideSeats	number of set aside seats in TC
+     * @param reserveTime	reserve time of TC
+     * @param gapTime		gap time of TC
+     * @param reminderInterval	reminder interval of TC
+     */
+    public void editTestCenterInfo(String term, String openHours, int seats,
+	    int setAsideSeats, String reserveTime, int gapTime,
+	    int reminderInterval) {
+	TestCenterInfo info = new TestCenterInfo();
+	info.setTerm(term);
+	info.setOpenHours(openHours);
+	info.setSeats(seats);
+	info.setSetAsideSeats(setAsideSeats);
+	info.setReserveTime(reserveTime);
+	info.setGapTime(gapTime);
+	info.setReminderInterval(reminderInterval);
+	dbManager.loadData(info);
+    }
 }

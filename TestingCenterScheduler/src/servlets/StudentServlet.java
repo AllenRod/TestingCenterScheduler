@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * Servlet implementation class StudentServlet
+ * Handle Student request and response
+ * @author CSE308 Team Five
  */
 @WebServlet("/StudentHome")
 public class StudentServlet extends HttpServlet {

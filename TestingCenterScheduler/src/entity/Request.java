@@ -23,7 +23,8 @@ import javax.persistence.TemporalType;
 
 /**
  * Entity implementation class for Entity: Request
- *
+ * Provides inheritance for sub entities ClassExamRequest and NonClassRequest
+ * @author CSE308 Team Five
  */
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)

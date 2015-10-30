@@ -16,6 +16,8 @@ import application.DatabaseManager;
 
 /**
  * Servlet implementation class Authenticator
+ * Handle client login and authentication request and response
+ * @author CSE308 Team Five
  */
 @WebServlet("/Login")
 public class Authenticator extends HttpServlet {

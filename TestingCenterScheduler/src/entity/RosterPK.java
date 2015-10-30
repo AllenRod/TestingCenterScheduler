@@ -6,8 +6,8 @@ import java.lang.String;
 import javax.persistence.Column;
 
 /**
- * ID class for entity: Roster
- *
+ * Primary ID class for entity: Roster
+ * @author CSE308 Team Five
  */
 public class RosterPK implements Serializable {
 

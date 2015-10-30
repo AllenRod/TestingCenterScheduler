@@ -5,20 +5,29 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import javax.persistence.EntityTransaction;
-import javax.persistence.TypedQuery;
-
 import entity.Course;
 import entity.Roster;
 import entity.User;
 
+/**
+ * Read data from CSV file and load to the proper table.
+ * @author CSE308 Team Five
+ */
 public class CSVLoader {
     private DatabaseManager dbManager;
 
+    /**
+     * Constructor for class CSVLoader
+     */
     public CSVLoader() {
 	dbManager = DatabaseManager.getSingleton();
     }
 
+    /**
+     * 
+     * @param fileName	Path of the file
+     * @param table	Name of the table that the datas load into
+     */
     public void loadCSV(String fileName, String table) {
 	if (!(table.toLowerCase().equals("user")
 		|| table.toLowerCase().equals("class") || table.toLowerCase()
@@ -63,7 +72,6 @@ public class CSVLoader {
 		    dataList.add(r);
 		}
 	    }
-	    System.out.println("finish adding");
 	    dbManager.loadDataList(dataList);
 	    sc.close();
 	} catch (FileNotFoundException e) {
