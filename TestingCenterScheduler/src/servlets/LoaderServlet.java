@@ -2,6 +2,7 @@ package servlets;
 
 import java.io.IOException;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -47,7 +48,10 @@ public class LoaderServlet extends HttpServlet {
 	    String fileName = request.getParameter("fileName");
 	    String table = request.getParameter("table");
 	    // dataMgn.loadCSV(fileName, table);
-	    loader.loadCSV(fileName, table);
+	    String s = loader.loadCSV(fileName, table);
+	    request.setAttribute("returnVal", s);
+	    RequestDispatcher rd = request.getRequestDispatcher("ImportData.jsp");
+		rd.forward(request, response);
 	} catch (Throwable Exception) {
 	    System.out.println(Exception);
 	}

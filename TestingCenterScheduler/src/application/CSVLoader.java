@@ -28,17 +28,15 @@ public class CSVLoader {
      * @param fileName	Path of the file
      * @param table	Name of the table that the datas load into
      */
-    public void loadCSV(String fileName, String table) {
+    public String loadCSV(String fileName, String table) {
 	if (!(table.toLowerCase().equals("user")
 		|| table.toLowerCase().equals("class") || table.toLowerCase()
 		.equals("roster"))) {
-	    System.out.println("You did not enter a correct table name");
-	    return;
+	    return "You did not enter a correct table name";
 	}
 	ArrayList<Object> dataList = new ArrayList<>();
 	if (!fileName.endsWith(".csv")) {
-	    System.out.println("File must be .csv file");
-	    return;
+	    return "File must be .csv file";
 	}
 	File file = new File(fileName);
 	Scanner sc;
@@ -77,6 +75,7 @@ public class CSVLoader {
 	} catch (FileNotFoundException e) {
 	    System.out.println("Cannot find the file");
 	}
+	return "Success";
 
     }
 }

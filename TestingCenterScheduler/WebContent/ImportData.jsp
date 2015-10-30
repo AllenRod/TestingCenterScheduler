@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -75,6 +76,31 @@
 						</ol>
 					</div>
 				</div>
+				
+				<c:choose>
+				    <c:when test="${returnVal == 'Success'}">
+				        <div class="row">
+							<div class="col-lg-12">
+								<div class="alert alert-success">
+									${returnVal}
+								</div>
+							</div>
+						</div>
+				    </c:when>
+				    <c:when test="${not empty returnVal}">
+				        <div class="row">
+							<div class="col-lg-12">
+								<div class="alert alert-danger">
+									${returnVal}
+								</div>
+							</div>
+						</div>
+				    </c:when>
+				    <c:otherwise>
+				    </c:otherwise>
+				</c:choose>
+				<c:remove var="returnVal" scope="session" />
+				
 				<form action="LoadCSV" method="POST">
 					<p>
 					CSV Type: 
@@ -89,7 +115,7 @@
 					<input type="file" name="fileName" size="50" required>
 					</p>
 					<div>
-						<input type="submit" value="Send">
+						<input type="submit" value="Send" onClick="this.disabled=true; this.value='Uploading...';">
 					</div>
 				</form>
 			</div>

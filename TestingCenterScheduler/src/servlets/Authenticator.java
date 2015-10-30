@@ -69,7 +69,7 @@ public class Authenticator extends HttpServlet {
 		    response.sendRedirect("Student.jsp");
 		}
 	    } else {
-	    request.setAttribute("error", "Invalid username or password");
+	    request.setAttribute("returnVal", "Invalid username or password");
 		RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
 		rd.forward(request, response);
 	    }

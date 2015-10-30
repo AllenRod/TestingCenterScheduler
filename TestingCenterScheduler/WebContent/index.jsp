@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -68,19 +69,16 @@
 	<!-- About -->
 	<section class="about">
 		<div class="container">
-			<%
-			if(request.getAttribute("error") != null){
-			%>
+			<c:if test="${not empty returnVal}">
 				<div class="row">
 					<div class="col-lg-12">
 						<div class="alert alert-danger">
-							<%=((String)request.getAttribute("error")) %>
+							${returnVal}
 						</div>
 					</div>
 				</div>
-			<%
-			request.removeAttribute("error");
-			}%>
+			</c:if>
+			<c:remove var="returnVal" scope="session" />
 			<div class="row">
 				<div class="col-lg-12 text-center">
 					<h2>Sign in</h2>
