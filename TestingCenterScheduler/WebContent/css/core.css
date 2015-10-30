@@ -175,62 +175,21 @@ ul.alert-dropdown {
 }
 
 
-/* Custom Colored Panels 
-
-.huge {
-    font-size: 40px;
+.info-Table{
+	margin-left: 30px;
+	width: 90%;
 }
-
-.panel-green {
-    border-color: #5cb85c;
+.info-Table th{
+	width: 200px;
 }
-
-.panel-green > .panel-heading {
-    border-color: #5cb85c;
-    color: #fff;
-    background-color: #5cb85c;
+.info-Table tr:nth-child(even) {
+    background-color: #FFF;
 }
-
-.panel-green > a {
-    color: #5cb85c;
+.info-Table tr:nth-child(odd) {
+    background-color: #FFC9C9;
 }
-
-.panel-green > a:hover {
-    color: #3d8b3d;
+.info-Table td{
+	padding-top:5px;
+	padding-Bottom:5px;
+	text-align: center;
 }
-
-.panel-red {
-    border-color: #d9534f;
-}
-
-.panel-red > .panel-heading {
-    border-color: #d9534f;
-    color: #fff;
-    background-color: #d9534f;
-}
-
-.panel-red > a {
-    color: #d9534f;
-}
-
-.panel-red > a:hover {
-    color: #b52b27;
-}
-
-.panel-yellow {
-    border-color: #f0ad4e;
-}
-
-.panel-yellow > .panel-heading {
-    border-color: #f0ad4e;
-    color: #fff;
-    background-color: #f0ad4e;
-}
-
-.panel-yellow > a {
-    color: #f0ad4e;
-}
-
-.panel-yellow > a:hover {
-    color: #df8a13;
-}*/

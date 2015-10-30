@@ -71,7 +71,7 @@
 							Import Data <small>Importing CSV files</small>
 						</h1>
 						<ol class="breadcrumb">
-							<li class="active"><i class="fa fa-dashboard"></i> <a href= "Admin.jsp">Home</a> > Import Data</li>
+							<li class="active"> <a href= "Admin.jsp">Home</a> > Import Data</li>
 						</ol>
 					</div>
 				</div>
