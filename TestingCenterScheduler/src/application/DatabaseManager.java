@@ -6,7 +6,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+import javax.persistence.PersistenceException;
 import javax.persistence.Query;
+
+import javax.persistence.RollbackException;
 
 import entity.Course;
 import entity.Request;
@@ -62,20 +65,37 @@ public class DatabaseManager {
 
     }
 
+    public boolean emptyTable(String tableName) {
+	try {
+	    createTransactionalEntityManager();
+	    em.createNativeQuery("SET FOREIGN_KEY_CHECKS = 0;").executeUpdate();
+	    em.createNativeQuery("TRUNCATE " + tableName).executeUpdate();
+	    em.createNativeQuery("SET FOREIGN_KEY_CHECKS = 1;").executeUpdate();
+	    closeTransactionalEntityManager();
+	    return true;
+	} catch (Exception error) {
+	    closeEntityManager();
+	    return false;
+	}
+    }
+
     /**
-     * Load a single entity into database
+     * Import a single entity into database
      * 
      * @param data
      *            single entity to be persisted into database
+     * @return if the data is successfully imported into database
      */
-    public void loadData(Object data) {
+    public String loadData(Object data) {
 	createTransactionalEntityManager();
 	try {
 	    em.persist(data);
-	} catch (Exception error) {
-
+	    closeTransactionalEntityManager();
+	    return "Data import succeeds";
+	} catch (PersistenceException error) {
+	    closeEntityManager();
+	    return error.getClass() + ":" + error.getMessage();
 	}
-	closeTransactionalEntityManager();
     }
 
     /**
@@ -83,9 +103,9 @@ public class DatabaseManager {
      * 
      * @param dataList
      *            ArrayList that contains the data
+     * @return if all data are successfully imported into database
      */
-    public void loadDataList(ArrayList<Object> dataList) {
-	System.out.println("start loading");
+    public String loadDataList(ArrayList<Object> dataList) {
 	createTransactionalEntityManager();
 	try {
 	    Iterator<Object> it = dataList.iterator();
@@ -94,15 +114,18 @@ public class DatabaseManager {
 		Object e = it.next();
 		em.persist(e);
 		c++;
-		if (c >= 1000) {
+		if (c >= 500) {
 		    em.flush();
+		    System.out.println("flushed");
 		    c = 0;
 		}
 	    }
-	} catch (Exception error) {
-
+	    closeTransactionalEntityManager();
+	    return "All data imports succeed";
+	} catch (PersistenceException error) {
+	    closeEntityManager();
+	    return error.getMessage();
 	}
-	closeTransactionalEntityManager();
     }
 
     /**
@@ -142,7 +165,7 @@ public class DatabaseManager {
     }
 
     /**
-     * Kevin do this
+     * Kevin document this
      * 
      * @return
      */

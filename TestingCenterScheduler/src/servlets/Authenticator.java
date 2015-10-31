@@ -10,13 +10,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import application.DatabaseManager;
 import entity.Course;
 import entity.UserAccount;
-import application.DatabaseManager;
 
 /**
- * Servlet implementation class Authenticator
- * Handle client login and authentication request and response
+ * Servlet implementation class Authenticator Handle client login and
+ * authentication request and response
+ * 
  * @author CSE308 Team Five
  */
 @WebServlet("/Login")
@@ -41,9 +42,9 @@ public class Authenticator extends HttpServlet {
     protected void doGet(HttpServletRequest request,
 	    HttpServletResponse response) throws ServletException, IOException {
 	// TODO Auto-generated method stub
-    	if(request.getSession(false) != null)
-    		request.getSession(false).invalidate();
-    	response.sendRedirect("index.jsp");
+	if (request.getSession(false) != null)
+	    request.getSession(false).invalidate();
+	response.sendRedirect("index.jsp");
     }
 
     /**
@@ -62,19 +63,22 @@ public class Authenticator extends HttpServlet {
 		if (role.equals("admin")) {
 		    response.sendRedirect("Admin.jsp");
 		} else if (role.equals("instr")) {
-			List<Course> courses = dbManager.I_getCourses();
-			request.getSession().setAttribute("courses", courses);
+		    List<Course> courses = dbManager.I_getCourses();
+		    request.getSession().setAttribute("courses", courses);
 		    response.sendRedirect("Instructor.jsp");
-		} if (role.equals("student")) {
+		}
+		if (role.equals("student")) {
 		    response.sendRedirect("Student.jsp");
 		}
 	    } else {
-	    request.setAttribute("returnVal", "Invalid username or password");
-		RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
+		request.setAttribute("returnVal",
+			"Invalid username or password");
+		RequestDispatcher rd = request
+			.getRequestDispatcher("index.jsp");
 		rd.forward(request, response);
 	    }
-	} catch (Throwable Exception) {
-	    System.out.println(Exception);
+	} catch (Exception error) {
+	    System.out.println(error.getMessage());
 	}
 
     }

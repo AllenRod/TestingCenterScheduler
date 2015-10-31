@@ -24,16 +24,11 @@ public class CSVLoader {
     }
 
     /**
-     * 
+     * Load data in CSV file into the proper table
      * @param fileName	Path of the file
-     * @param table	Name of the table that the datas load into
+     * @param table	Name of the table that the data load into
      */
     public String loadCSV(String fileName, String table) {
-	if (!(table.toLowerCase().equals("user")
-		|| table.toLowerCase().equals("class") || table.toLowerCase()
-		.equals("roster"))) {
-	    return "You did not enter a correct table name";
-	}
 	ArrayList<Object> dataList = new ArrayList<>();
 	if (!fileName.endsWith(".csv")) {
 	    return "File must be .csv file";
@@ -42,7 +37,41 @@ public class CSVLoader {
 	Scanner sc;
 	try {
 	    sc = new Scanner(file);
-	    sc.nextLine(); // ignore header line
+	    String header = sc.nextLine();
+	    String[] headerVal = header.split(",");
+	    if (table.toLowerCase().equals("class")){
+		if (!headerVal[0].toLowerCase().equals("classid") ||
+			!headerVal[1].toLowerCase().equals("subject") ||
+			!headerVal[2].toLowerCase().equals("catalognumber") ||
+			!headerVal[3].toLowerCase().equals("section") ||
+			!headerVal[4].toLowerCase().equals("instructornetid")){
+		    sc.close();
+		    return "Wrong csv format for Class table";
+		} else {
+		    dbManager.emptyTable("course");
+		}
+	    } else if (table.toLowerCase().equals("roster")) {
+		if (!headerVal[0].toLowerCase().equals("netid") ||
+			!headerVal[1].toLowerCase().equals("classid")){
+		    sc.close();
+		    return "Wrong csv format for Roster table";
+		} else {
+		    dbManager.emptyTable("roster");
+		}
+	    } else if (table.toLowerCase().equals("user")) {
+		if (!headerVal[0].toLowerCase().equals("firstname") ||
+			!headerVal[1].toLowerCase().equals("lastname") ||
+			!headerVal[2].toLowerCase().equals("netid") ||
+			!headerVal[3].toLowerCase().equals("email")){
+		    sc.close();
+		    return "Wrong csv format for User table";
+		} else {
+		    dbManager.emptyTable("user");
+		}
+	    } else {
+		sc.close();
+		return "Wrong CSV format";
+	    }
 	    while (sc.hasNext()) {
 		String line = sc.nextLine();
 		// Guess what? A comma separates in a comma separated values
@@ -70,12 +99,11 @@ public class CSVLoader {
 		    dataList.add(r);
 		}
 	    }
-	    dbManager.loadDataList(dataList);
+	    String str = dbManager.loadDataList(dataList);
 	    sc.close();
-	} catch (FileNotFoundException e) {
-	    System.out.println("Cannot find the file");
+	    return str;
+	} catch (Exception e) {
+	    return e.getClass() + ":" + e.getMessage();
 	}
-	return "Success";
-
     }
 }

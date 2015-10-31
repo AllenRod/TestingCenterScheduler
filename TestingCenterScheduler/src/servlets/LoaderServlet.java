@@ -14,6 +14,7 @@ import application.CSVLoader;
 /**
  * Servlet implementation class LoaderServlet Handle file loading functionality
  * Handle file loading request and response
+ * 
  * @author CSE308 Team Five
  */
 @WebServlet("/LoadCSV")
@@ -47,11 +48,12 @@ public class LoaderServlet extends HttpServlet {
 	try {
 	    String fileName = request.getParameter("fileName");
 	    String table = request.getParameter("table");
-	    // dataMgn.loadCSV(fileName, table);
+	    
 	    String s = loader.loadCSV(fileName, table);
 	    request.setAttribute("returnVal", s);
-	    RequestDispatcher rd = request.getRequestDispatcher("ImportData.jsp");
-		rd.forward(request, response);
+	    RequestDispatcher rd = request
+		    .getRequestDispatcher("ImportData.jsp");
+	    rd.forward(request, response);
 	} catch (Throwable Exception) {
 	    System.out.println(Exception);
 	}
