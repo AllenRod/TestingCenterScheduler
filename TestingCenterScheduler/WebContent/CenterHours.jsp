@@ -89,29 +89,71 @@
 				</div>
 				<!-- /.row -->
 				<div class="row">
+				
+					<form action="Administrator" method="POST" >
 					<table class = "info-Table">
 						<tr>
-							<th>Term:</th><td> NULL </td><td><button class="btn btn-default"> Edit </button></td>
+							<th>Term:</th>
+							<td><input type="text" class="form-control" id="term" name="term" placeholder="Enter term" required/></td>
 						</tr>
 						<tr>
-							<th>Gap Time:</th><td> NULL </td><td><button class="btn btn-default"> Edit </button></td>
+							<th>Gap Time:</th>
+							<td><input type="text" class="form-control" id="gaptime" name="gaptime" placeholder="Enter gap time" required/></td>
 						</tr>
 						<tr>
-							<th>Open Hours:</th><td> NULL </td><td><button class="btn btn-default"> Edit </button></td>
+							<th>Open Hours:</th>
+							<td>
+							<table class="info-table">
+								<tr>
+									<th>Monday:</th>
+									<td><input type="text" class="form-control" id="mon" name="mon" placeholder="Enter open hours on Monday" required/></td>
+								</tr>
+								<tr>
+									<th>Tuesday:</th>
+									<td><input type="text" class="form-control" id="tue" name="tue" placeholder="Enter open hours on Tuesday" required/></td>
+								</tr>
+								<tr>
+									<th>Wednesday:</th>
+									<td><input type="text" class="form-control" id="wed" name="wed" placeholder="Enter open hours on Wednesday" required/></td>
+								</tr>
+								<tr>
+									<th>Thursday:</th>
+									<td><input type="text" class="form-control" id="thu" name="thu" placeholder="Enter open hours on Thursday" required/></td>
+								</tr>
+								<tr>
+									<th>Friday:</th>
+									<td><input type="text" class="form-control" id="fri" name="fri" placeholder="Enter open hours on Friday" required/></td>
+								</tr>
+								<tr>
+									<th>Saturday:</th>
+									<td><input type="text" class="form-control" id="sat" name="sat" placeholder="Enter open hours on Saturday" required/></td>
+								</tr>
+								<tr>
+									<th>Sunday:</th>
+									<td><input type="text" class="form-control" id="sun" name="sun" placeholder="Enter open hours on Sunday" required/></td>
+								</tr>
+							</table>
+							</td>
 						</tr>
 						<tr>
-							<th>Reminder Interval:</th><td> NULL </td><td><button class="btn btn-default"> Edit </button></td>
+							<th>Reminder Interval:</th>
+							<td><input type="text" class="form-control" id="reminder" name="reminder" placeholder="Enter reminder interval" required/></td>
 						</tr>
 						<tr>
-							<th>Reserve Time:</th><td> NULL </td><td><button class="btn btn-default"> Edit </button></td>
+							<th>Reserve Time:</th>
+							<td><input type="text" class="form-control" id="reserve" name="reserve" placeholder="Enter reserve time" required/></td>
 						</tr>
 						<tr>
-							<th>Seats:</th><td> NULL </td><td><button class="btn btn-default"> Edit </button></td>
+							<th>Seats:</th>
+							<td><input type="text" class="form-control" id="seat" name="seat" placeholder="Enter seats" required/></td>
 						</tr>
 						<tr>
-							<th>Set-a-side Seats:</th><td> NULL </td><td><button class="btn btn-default"> Edit </button></td>
+							<th>Set-a-side Seats:</th>
+							<td><input type="text" class="form-control" id="setseat" name="setseat" placeholder="Enter seat aside seats" required/></td>
 						</tr>
 					</table>
+					<input type="submit" class="btn btn-primary" name="edit" value="Submit"/>
+					</form>
 				</div>
 				
 			</div>

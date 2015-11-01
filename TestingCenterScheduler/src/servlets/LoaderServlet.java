@@ -22,11 +22,12 @@ public class LoaderServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
 
+    // csv file loader object
     private CSVLoader loader;
 
     public LoaderServlet() {
 	super();
-	loader = new CSVLoader();
+	loader = CSVLoader.getSingleton();
     }
 
     /**
@@ -46,10 +47,10 @@ public class LoaderServlet extends HttpServlet {
 	    HttpServletResponse response) throws ServletException, IOException {
 
 	try {
-	    String fileName = request.getParameter("fileName");
+	    String file = request.getParameter("file");
 	    String table = request.getParameter("table");
 	    
-	    String s = loader.loadCSV(fileName, table);
+	    String s = loader.loadCSV(file, table);
 	    request.setAttribute("returnVal", s);
 	    RequestDispatcher rd = request
 		    .getRequestDispatcher("ImportData.jsp");

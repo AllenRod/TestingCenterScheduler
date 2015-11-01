@@ -12,12 +12,18 @@ import entity.TestCenterInfo;
  * @author CSE308 Team Five
  */
 public class Administrator {
+    // database manager object
     private DatabaseManager dbManager;
+    
+    // netID of the administrator
+    private String netID;
     
     /**
      * Constructor for class Administrator
+     * @param netID	netID of the administrator
      */
-    public Administrator() {
+    public Administrator(String netID) {
+	this.netID = netID;
 	dbManager = DatabaseManager.getSingleton();
     }
 
@@ -132,6 +138,18 @@ public class Administrator {
 	info.setReserveTime(reserveTime);
 	info.setGapTime(gapTime);
 	info.setReminderInterval(reminderInterval);
+	//System.out.println(info.getTerm() + " " + info.getOpenHours() + " " + 
+	//	info.getSeats() + " " + info.getSetAsideSeats() + " " + 
+	//	info.getReserveTime() + " " + info.getGapTime() + " " +
+	//	info.getReminderInterval());
 	dbManager.loadData(info);
+    }
+    
+    /**
+     * Set new netID for the administrator
+     * @param netID	new netID of the administrator
+     */
+    public void setNetID(String netID) {
+	this.netID = netID;
     }
 }

@@ -114,7 +114,7 @@
 					</p>
 					<p>
 					Choose your .csv file <br>
-					<input type="file" name="fileName" size="50" required>
+					<input type="file" name="file" size="50" required>
 					</p>
 					<div>
 						<input id = "submit" type="submit" value="Send" onClick="this.disabled=true; this.value='Uploading...';">

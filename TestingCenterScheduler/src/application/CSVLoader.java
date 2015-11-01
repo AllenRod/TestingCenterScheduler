@@ -14,7 +14,10 @@ import entity.User;
  * @author CSE308 Team Five
  */
 public class CSVLoader {
+    // database manager object
     private DatabaseManager dbManager;
+    
+    private static CSVLoader loader = null;
 
     /**
      * Constructor for class CSVLoader
@@ -105,5 +108,17 @@ public class CSVLoader {
 	} catch (Exception e) {
 	    return e.getClass() + ":" + e.getMessage();
 	}
+    }
+    
+    /**
+     * Return a singleton of CSVLoader
+     * 
+     * @return a singleton of class CSVLoader
+     */
+    public static CSVLoader getSingleton() {
+	if (loader == null) {
+	    loader = new CSVLoader();
+	}
+	return loader;
     }
 }
