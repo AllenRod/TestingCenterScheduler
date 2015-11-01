@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="java.util.List" %>
 <%@ page import="entity.Course" %>
 <!DOCTYPE html>
@@ -48,10 +49,10 @@
 			<!-- Top Menu Items -->
 			<ul class="nav navbar-right top-nav">
 				<li class="dropdown"><a href="#" class="dropdown-toggle"
-					data-toggle="dropdown"><i class="fa fa-user"></i>
+					data-toggle="dropdown">
 						${user.firstName} ${user.lastName}<b class="caret"></b></a>
 					<ul class="dropdown-menu">
-						<li><a href="#"><i class="fa fa-fw fa-gear"></i> Settings</a>
+						<li><a href="#"> Settings</a>
 						</li>
 						<li class="divider"></li>
 						<li>
@@ -68,12 +69,10 @@
 			<div class="collapse navbar-collapse navbar-ex1-collapse">
 				<ul class="nav navbar-nav side-nav">
 					<li id="current"><a href="Instructor.html"
-						style="color: #fff;"><i class="fa fa-fw fa-dashboard"></i>
+						style="color: #fff;">
 							View Courses</a></li>
-					<li><a href="Requests.html" style="color: #fff;"><i
-							class="fa fa-fw fa-desktop"></i>View Requests</a></li>
-					<li><a href="Exams.html" style="color: #fff;"><i
-							class="fa fa-fw fa-table"></i>View Scheduled Exams</a></li>
+					<li><a href="Requests.html" style="color: #fff;">View Requests</a></li>
+					<li><a href="Exams.html" style="color: #fff;">View Scheduled Exams</a></li>
 				</ul>
 			</div>
 			<!-- /.navbar-collapse -->
@@ -90,7 +89,7 @@
 							View Courses <small>Courses</small>
 						</h1>
 						<ol class="breadcrumb">
-							<li class="active"><i class="fa fa-dashboard"></i> Home</li>
+							<li class="active"> Home</li>
 						</ol>
 					</div>
 				</div>
@@ -99,16 +98,13 @@
 				<div class="row">
 					<div class="col-sm-6">
 						<ul class="list-group">
-						<%  
-						// retrieve your list from the request, with casting 
-						List<Course> list = (List<Course>) request.getSession().getAttribute("courses");
-						if(list != null){
-						// print the information about every category of the list
-						for(Course courses : list) {%>
-						    <a href="#" class="list-group-item"><%=courses.getSubject()%>.<%=courses.getSection()%><font size="1" style="color:grey; margin-left: 10px;">ClassID: <%=courses.getClassID()%></font></a>
-						<%
-						}}
-						%>
+						<c:if test="${empty courses}">
+   							You have no courses
+						</c:if>
+						
+						<c:forEach items="${courses}" var="courses">    
+    						<a href="#" class="list-group-item">${courses.subject}.${courses.catalogNum}.${courses.section}<font size="1" style="color:grey; margin-left: 10px;">ClassID: ${courses.classID}</font></a>
+						</c:forEach>
 							
 						</ul>
 					</div>
@@ -127,11 +123,6 @@
 
 	<!-- Bootstrap Core JavaScript -->
 	<script src="js/bootstrap.min.js"></script>
-
-	<!-- Morris Charts JavaScript -->
-	<script src="js/plugins/morris/raphael.min.js"></script>
-	<script src="js/plugins/morris/morris.min.js"></script>
-	<script src="js/plugins/morris/morris-data.js"></script>
 
 </body>
 

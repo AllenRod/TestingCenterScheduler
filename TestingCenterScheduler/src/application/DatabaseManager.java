@@ -169,11 +169,12 @@ public class DatabaseManager {
      * 
      * @return
      */
-    public List<Course> I_getCourses() {
+    public List<Course> I_getCourses(String netID) {
 	createEntityManager();
-	Query a = em.createQuery("SELECT c FROM Course c");
+	Query a = em.createQuery("SELECT c FROM Course c WHERE c.instructorNetID = :nID");
+	a.setParameter("nID", netID);
 	try {
-	    List<Course> rs = a.setMaxResults(10).getResultList();
+	    List<Course> rs = a.getResultList();
 	    return rs;
 	} catch (Exception NoResultException) {
 	    return null;

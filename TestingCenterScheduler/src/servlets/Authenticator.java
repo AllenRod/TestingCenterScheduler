@@ -63,7 +63,7 @@ public class Authenticator extends HttpServlet {
 		if (role.equals("admin")) {
 		    response.sendRedirect("Admin.jsp");
 		} else if (role.equals("instr")) {
-		    List<Course> courses = dbManager.I_getCourses();
+		    List<Course> courses = dbManager.I_getCourses(userName);
 		    request.getSession().setAttribute("courses", courses);
 		    response.sendRedirect("Instructor.jsp");
 		}

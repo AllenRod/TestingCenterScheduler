@@ -78,7 +78,7 @@
 				</div>
 				
 				<c:choose>
-				    <c:when test="${returnVal == 'Success'}">
+				    <c:when test="${returnVal == 'All data imports succeed'}">
 				        <div class="row">
 							<div class="col-lg-12">
 								<div class="alert alert-success">
@@ -86,6 +86,7 @@
 								</div>
 							</div>
 						</div>
+						document.getElementById('submit').disabled = false;
 				    </c:when>
 				    <c:when test="${not empty returnVal}">
 				        <div class="row">
@@ -95,6 +96,7 @@
 								</div>
 							</div>
 						</div>
+						document.getElementById('submit').disabled = false;
 				    </c:when>
 				    <c:otherwise>
 				    </c:otherwise>
@@ -115,7 +117,7 @@
 					<input type="file" name="fileName" size="50" required>
 					</p>
 					<div>
-						<input type="submit" value="Send" onClick="this.disabled=true; this.value='Uploading...';">
+						<input id = "submit" type="submit" value="Send" onClick="this.disabled=true; this.value='Uploading...';">
 					</div>
 				</form>
 			</div>
