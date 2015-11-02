@@ -36,12 +36,15 @@ public class Request implements Serializable {
     @Column(name = "EXAM_ID")
     private int examIndex;
 
-    private String examID;
+    private String examName;
 
     @Column(name = "START_TIME", columnDefinition = "DATETIME")
     @Temporal(TemporalType.TIMESTAMP)
     private Date timeStart;
-
+    
+    @Column(name = "CLASSID")
+    private String classID;
+    
     @Column(name = "END_TIME", columnDefinition = "DATETIME")
     @Temporal(TemporalType.TIMESTAMP)
     private Date timeEnd;
@@ -55,7 +58,9 @@ public class Request implements Serializable {
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "ENUM('PENDING', 'APPROVED', 'DENIED', 'COMPLETED')")
     private RequestStatus status;
-
+    
+    private String instructorNetID;
+    
     @OneToMany(mappedBy = "request", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Appointment> appointment = new ArrayList<>();
 
@@ -64,15 +69,23 @@ public class Request implements Serializable {
     public Request() {
 	super();
     }
-
-    public String getRequestID() {
-	return this.examID;
+    
+    public String getExamName() {
+    	return this.examName;
     }
 
-    public void setRequestID(String examID) {
-	this.examID = examID;
+    public void setExamName(String examName) {
+    	this.examName = examName;
+    }
+    
+    public String getClassID() {
+    	return this.classID;
     }
 
+    public void setClassID(String classID) {
+    	this.classID = classID;
+    }
+    
     public Date getTimeStart() {
 	return this.timeStart;
     }
@@ -144,7 +157,15 @@ public class Request implements Serializable {
     public void setAppointment(List<Appointment> appointment) {
 	this.appointment = appointment;
     }
+    
+    public String getInstructorNetID() {
+    	return this.instructorNetID;
+    }
 
+    public void setInstructorNetID(String instructorNetID) {
+    	this.instructorNetID = instructorNetID;
+    }
+    
     enum RequestStatus {
 	PENDING, APPROVED, DENIED, COMPLETED
     }

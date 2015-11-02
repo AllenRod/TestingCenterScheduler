@@ -71,13 +71,12 @@ public class Authenticator extends HttpServlet {
 		    wrapper.logger.info("Redirect to Admin homepage");
 		    response.sendRedirect("Admin.jsp");
 		} else if (role.equals("instr")) {
-		    List<Course> courses = dbManager.I_getCourses(userName);
-		    wrapper.logger.info("Redirect to Admin homepage");
-		    request.getSession().setAttribute("courses", courses);
-		    response.sendRedirect("Instructor.jsp");
+		    wrapper.logger.info("Redirect to Instructor homepage");
+		    RequestDispatcher rd = request.getRequestDispatcher("/InstructorHome");
+		    rd.forward(request,response);
 		}
 		if (role.equals("student")) {
-		    wrapper.logger.info("Redirect to Admin homepage");
+		    wrapper.logger.info("Redirect to Student homepage");
 		    response.sendRedirect("Student.jsp");
 		}
 	    } else {
