@@ -103,7 +103,7 @@
 						<tr>
 							<th>Open Hours:</th>
 							<td>
-							<table class="info-table">
+							<table class="info-table" style="width:100%">
 								<tr>
 									<th>Monday:</th>
 									<td><input type="text" class="form-control" id="mon" name="mon" placeholder="Enter open hours on Monday" required/></td>

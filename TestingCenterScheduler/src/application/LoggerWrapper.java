@@ -7,7 +7,7 @@ import java.util.logging.SimpleFormatter;
 
 public class LoggerWrapper {
 
-	public static final Logger myLogger = Logger.getLogger("Logger");
+	public static final Logger logger = Logger.getLogger("Logger");
 
 	private static LoggerWrapper instance = null;
 
@@ -20,12 +20,13 @@ public class LoggerWrapper {
 	}
 
 	private static void prepareLogger() {
-		FileHandler myFileHandler;
+		FileHandler fileHandler;
 		try {
-			myFileHandler = new FileHandler("C:/Log Files/log.txt");
-			myFileHandler.setFormatter(new SimpleFormatter());
-			myLogger.addHandler(myFileHandler);
-			myLogger.setUseParentHandlers(false);
+			fileHandler = new FileHandler("/application.log");
+			System.out.println(fileHandler.toString());
+			fileHandler.setFormatter(new SimpleFormatter());
+			logger.addHandler(fileHandler);
+			logger.setUseParentHandlers(false);
 		} catch (SecurityException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

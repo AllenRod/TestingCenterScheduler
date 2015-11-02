@@ -17,6 +17,7 @@ public class CSVLoader {
     // database manager object
     private DatabaseManager dbManager;
     
+    // singleton object for CSVLoader
     private static CSVLoader loader = null;
 
     /**

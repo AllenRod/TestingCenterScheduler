@@ -23,17 +23,24 @@ import entity.UserAccount;
  * @author CSE308 Team Five
  */
 public class DatabaseManager {
+    // entity manager factory object
     private EntityManagerFactory emf;
 
+    // single entity manager object
     private EntityManager em;
 
+    // singleton object of DatabaseManager
     private static DatabaseManager databasemanager = null;
+
+    // logger wrapper object
+    private LoggerWrapper wrapper;
 
     /**
      * Constructor for class DatabaseManager
      */
     public DatabaseManager() {
 	emf = Persistence.createEntityManagerFactory("TestingCenterScheduler");
+	wrapper = LoggerWrapper.getInstance();
     }
 
     /**
@@ -56,13 +63,15 @@ public class DatabaseManager {
 
 	try {
 	    result = (UserAccount) q.getSingleResult();
+	    wrapper.logger.info("User " + result.getFirstName() + " "
+		    + result.getLastName() + " log in as " + result.getRole());
 	    return result;
-	} catch (Exception NoResultException) {
+	} catch (Exception error) {
+	    wrapper.logger.warning("Error in user login");
 	    return null;
 	} finally {
 	    closeEntityManager();
 	}
-
     }
 
     public boolean emptyTable(String tableName) {
@@ -71,9 +80,11 @@ public class DatabaseManager {
 	    em.createNativeQuery("SET FOREIGN_KEY_CHECKS = 0;").executeUpdate();
 	    em.createNativeQuery("TRUNCATE " + tableName).executeUpdate();
 	    em.createNativeQuery("SET FOREIGN_KEY_CHECKS = 1;").executeUpdate();
+	    wrapper.logger.info("Table " + tableName + " is emptied");
 	    closeTransactionalEntityManager();
 	    return true;
 	} catch (Exception error) {
+	    wrapper.logger.warning("Error in emptying table " + tableName);
 	    closeEntityManager();
 	    return false;
 	}
@@ -91,9 +102,12 @@ public class DatabaseManager {
 	try {
 	    em.persist(data);
 	    closeTransactionalEntityManager();
+	    wrapper.logger.info("Data imported into database");
 	    return "Data import succeeds";
 	} catch (PersistenceException error) {
 	    closeEntityManager();
+	    wrapper.logger.warning("Data import error occured:\n"
+		    + error.getClass() + ":" + error.getMessage());
 	    return error.getClass() + ":" + error.getMessage();
 	}
     }
@@ -121,9 +135,12 @@ public class DatabaseManager {
 		}
 	    }
 	    closeTransactionalEntityManager();
+	    wrapper.logger.info("All data imported into database");
 	    return "All data imports succeed";
 	} catch (PersistenceException error) {
 	    closeEntityManager();
+	    wrapper.logger.warning("Data import error occured:\n"
+		    + error.getClass() + ":" + error.getMessage());
 	    return error.getMessage();
 	}
     }
@@ -136,6 +153,7 @@ public class DatabaseManager {
 	em = emf.createEntityManager();
 	// Begin transaction
 	em.getTransaction().begin();
+	wrapper.logger.info("Transaction begins");
     }
 
     /**
@@ -146,6 +164,7 @@ public class DatabaseManager {
 	em.getTransaction().commit();
 	// Close this EntityManager
 	em.close();
+	wrapper.logger.info("Transaction commits");
     }
 
     /**
@@ -154,6 +173,7 @@ public class DatabaseManager {
     private void createEntityManager() {
 	// Create a new EntityManager
 	em = emf.createEntityManager();
+	wrapper.logger.info("Create entity manager");
     }
 
     /**
@@ -162,16 +182,20 @@ public class DatabaseManager {
     private void closeEntityManager() {
 	// Close this EntityManager
 	em.close();
+	wrapper.logger.info("Close entity manager");
     }
 
     /**
-     * Kevin document this
+     * Queries DB by InstructorNetID and returns a list of courses
      * 
-     * @return
+     * @param String
+     *            Name of instructor to get courses for
+     * @return List<Course> List of all courses belonging to the instructor
      */
     public List<Course> I_getCourses(String netID) {
 	createEntityManager();
-	Query a = em.createQuery("SELECT c FROM Course c WHERE c.instructorNetID = :nID");
+	Query a = em
+		.createQuery("SELECT c FROM Course c WHERE c.instructorNetID = :nID");
 	a.setParameter("nID", netID);
 	try {
 	    List<Course> rs = a.getResultList();

@@ -146,6 +146,14 @@ public class Administrator {
     }
     
     /**
+     * Get netID of the administrator
+     * @return		netID of the administrator
+     */
+    public String getNetID() {
+	return netID;
+    }
+    
+    /**
      * Set new netID for the administrator
      * @param netID	new netID of the administrator
      */

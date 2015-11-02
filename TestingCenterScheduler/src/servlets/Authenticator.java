@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import application.DatabaseManager;
+import application.LoggerWrapper;
 import entity.Course;
 import entity.UserAccount;
 
@@ -25,7 +26,11 @@ public class Authenticator extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
 
+    // single DatabaseManager object
     private DatabaseManager dbManager;
+    
+    // single logger wrapper object
+    private LoggerWrapper wrapper;
 
     /**
      * @see HttpServlet#HttpServlet()
@@ -33,6 +38,7 @@ public class Authenticator extends HttpServlet {
     public Authenticator() {
 	super();
 	dbManager = DatabaseManager.getSingleton();
+	wrapper = LoggerWrapper.getInstance();
     }
 
     /**
@@ -56,21 +62,26 @@ public class Authenticator extends HttpServlet {
 	try {
 	    String userName = request.getParameter("user");
 	    String password = request.getParameter("password");
+	    wrapper.logger.info("User log in using netID " + userName);
 	    UserAccount user = dbManager.getUser(userName, password);
 	    if (user != null) {
 		request.getSession().setAttribute("user", user);
 		String role = user.getRole();
 		if (role.equals("admin")) {
+		    wrapper.logger.info("Redirect to Admin homepage");
 		    response.sendRedirect("Admin.jsp");
 		} else if (role.equals("instr")) {
 		    List<Course> courses = dbManager.I_getCourses(userName);
+		    wrapper.logger.info("Redirect to Admin homepage");
 		    request.getSession().setAttribute("courses", courses);
 		    response.sendRedirect("Instructor.jsp");
 		}
 		if (role.equals("student")) {
+		    wrapper.logger.info("Redirect to Admin homepage");
 		    response.sendRedirect("Student.jsp");
 		}
 	    } else {
+		wrapper.logger.info("Invalid login info, return to index page");
 		request.setAttribute("returnVal",
 			"Invalid username or password");
 		RequestDispatcher rd = request
@@ -78,7 +89,8 @@ public class Authenticator extends HttpServlet {
 		rd.forward(request, response);
 	    }
 	} catch (Exception error) {
-	    System.out.println(error.getMessage());
+	    wrapper.logger.warning("Error occurs in Authenticator:\n" + 
+		    error.getClass() + ":" + error.getMessage());
 	}
 
     }

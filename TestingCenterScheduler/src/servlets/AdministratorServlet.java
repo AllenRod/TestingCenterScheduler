@@ -15,6 +15,7 @@ import entity.User;
 import entity.UserAccount;
 import application.Administrator;
 import application.DatabaseManager;
+import application.LoggerWrapper;
 
 /**
  * Servlet implementation class AdministratorServlet Handle Administrator
@@ -26,14 +27,18 @@ import application.DatabaseManager;
 public class AdministratorServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
+    // single Administrator object
     private Administrator admin;
+    
+    // single logger wrapper object
+    private LoggerWrapper wrapper;
 
     /**
      * @see HttpServlet#HttpServlet()
      */
     public AdministratorServlet() {
 	super();
-	// TODO Auto-generated constructor stub
+	wrapper = LoggerWrapper.getInstance();
     }
 
     /**
@@ -62,6 +67,7 @@ public class AdministratorServlet extends HttpServlet {
 	}
 	try {
 	    if (request.getParameter("edit") != null) {
+		wrapper.logger.info("Admin " + admin.getNetID() + " edits testing center info");
 		System.out.println(request.getParameter("edit"));
 		String term = request.getParameter("term");
 		String openHours = request.getParameter("mon") + ";"
@@ -82,7 +88,8 @@ public class AdministratorServlet extends HttpServlet {
 			reserveTime, gapTime, reminderInterval);
 	    }
 	} catch (Exception error) {
-	    System.out.println(error.getMessage());
+	    wrapper.logger.warning("Error occurs in AdministratorServlet:\n" + 
+		    error.getClass() + ":" + error.getMessage());
 	}
     }
 }
