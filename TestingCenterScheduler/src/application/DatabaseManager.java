@@ -216,7 +216,7 @@ public class DatabaseManager {
     public List<Request> I_getRequests(String netID) {
     	createEntityManager();
     	Query a = em
-    		.createQuery("SELECT c FROM Request c WHERE c.instructorNetID = :nID");
+    		.createQuery("SELECT r FROM Request r WHERE r.instructorNetID = :nID");
     	a.setParameter("nID", netID);
     	try {
     	    List<Request> rs = a.getResultList();

@@ -42,9 +42,6 @@ public class Request implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date timeStart;
     
-    @Column(name = "CLASSID")
-    private String classID;
-    
     @Column(name = "END_TIME", columnDefinition = "DATETIME")
     @Temporal(TemporalType.TIMESTAMP)
     private Date timeEnd;
@@ -76,14 +73,6 @@ public class Request implements Serializable {
 
     public void setExamName(String examName) {
     	this.examName = examName;
-    }
-    
-    public String getClassID() {
-    	return this.classID;
-    }
-
-    public void setClassID(String classID) {
-    	this.classID = classID;
     }
     
     public Date getTimeStart() {
