@@ -27,13 +27,13 @@
 						class="icon-bar"></span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="Admin.html" style="color: #fff;">Testing
+				<a class="navbar-brand" href="Admin.jsp" style="color: #fff;">Testing
 					Center</a>
 			</div>
 			<!-- Top Menu Items -->
 			<ul class="nav navbar-right top-nav">
 				<li class="dropdown"><a href="#" class="dropdown-toggle"
-					data-toggle="dropdown"><i class="fa fa-user"></i>
+					data-toggle="dropdown">
 						${user.firstName} ${user.lastName}<b class="caret"></b></a>
 					<ul class="dropdown-menu">
 						<li><a href="#">Settings</a>
@@ -86,7 +86,6 @@
 								</div>
 							</div>
 						</div>
-						document.getElementById('submit').disabled = false;
 				    </c:when>
 				    <c:when test="${not empty returnVal}">
 				        <div class="row">
@@ -96,7 +95,6 @@
 								</div>
 							</div>
 						</div>
-						document.getElementById('submit').disabled = false;
 				    </c:when>
 				    <c:otherwise>
 				    </c:otherwise>
@@ -114,7 +112,7 @@
 					</p>
 					<p>
 					Choose your .csv file <br>
-					<input type="file" name="file" size="50" required>
+					<input type="file" name="file" size="50" onClick="enableButton()" required>
 					</p>
 					<div>
 						<input id = "submit" type="submit" value="Send" onClick="this.disabled=true; this.value='Uploading...';">
@@ -123,5 +121,11 @@
 			</div>
 		</div>
 	</div>
+	<script>
+        function enableButton() {
+            document.getElementById("submit").disabled = false;
+            document.getElementById("submit").value = "Send";
+        }
+    </script>
 </body>
 </html>

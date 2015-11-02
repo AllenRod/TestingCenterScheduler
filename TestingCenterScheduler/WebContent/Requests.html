@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -44,14 +45,14 @@
             <!-- Top Menu Items -->
             <ul class="nav navbar-right top-nav">
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> John Smith <b class="caret"></b></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">${user.firstName} ${user.lastName}<b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <li>
-                            <a href="#"><i class="fa fa-fw fa-gear"></i> Settings</a>
+                            <a href="#"> Settings</a>
                         </li>
                         <li class="divider"></li>
                         <li>
-                            <a href="index.html"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
+                            <a href="index.html"> Log Out</a>
                         </li>
                     </ul>
                 </li>
@@ -60,13 +61,13 @@
             <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav side-nav">
                     <li id = "current">
-                        <a href="Instructor.html" style="color:#fff;"><i class="fa fa-fw fa-dashboard"></i> View Courses</a>
+                        <a href="Instructor.html" style="color:#fff;"> View Courses</a>
                     </li>
                     <li>
-                        <a href="Requests.html" style="color:#fff;"><i class="fa fa-fw fa-desktop"></i>View Requests</a>
+                        <a href="Requests.html" style="color:#fff;"> View Requests</a>
                     </li>
                     <li>
-                        <a href="Exams.html" style="color:#fff;"><i class="fa fa-fw fa-table"></i>View Scheduled Exams</a>
+                        <a href="Exams.html" style="color:#fff;"> View Scheduled Exams</a>
                     </li>
                 </ul>
             </div>
@@ -85,7 +86,7 @@
                         </h1>
                         <ol class="breadcrumb">
                             <li class="active">
-                                <i class="fa fa-dashboard"></i><a href="Instructor.html"> Home</a> > Requests
+                                <a href="Instructor.html"> Home</a> > Requests
                             </li>
                         </ol>
                     </div>

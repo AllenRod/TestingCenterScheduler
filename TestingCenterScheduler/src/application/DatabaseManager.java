@@ -206,7 +206,28 @@ public class DatabaseManager {
 	    closeEntityManager();
 	}
     }
-
+    /**
+     * Queries DB by InstructorNetID and returns a list of Requests
+     * 
+     * @param String
+     *            Name of instructor to get requests for
+     * @return List<Course> List of all requests belonging to the instructor
+     */
+    public List<Request> I_getRequests(String netID) {
+    	createEntityManager();
+    	Query a = em
+    		.createQuery("SELECT c FROM Request c WHERE c.instructorNetID = :nID");
+    	a.setParameter("nID", netID);
+    	try {
+    	    List<Request> rs = a.getResultList();
+    	    return rs;
+    	} catch (Exception NoResultException) {
+    	    return null;
+    	} finally {
+    	    closeEntityManager();
+    	}
+    }
+    
     enum RequestStatus {
 	PENDING, APPROVED, DENIED, COMPLETED
     }

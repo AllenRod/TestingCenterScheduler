@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -14,12 +15,13 @@
 <!-- Bootstrap Core CSS -->
 <link href="css/bootstrap.min.css" rel="stylesheet">
 
-<!-- Morris Charts CSS -->
-<link href="css/plugins/morris.css" rel="stylesheet">
-
 <!-- Custom CSS -->
 <link href="css/core.css" rel="stylesheet">
 
+<link rel="stylesheet" href="css/bootstrap-datepicker.min.css" />
+<link rel="stylesheet" href="css/bootstrap-datepicker3.min.css" />
+
+<script src="js/bootstrap-datepicker.min.js"></script>
 </head>
 
 <body>
@@ -103,34 +105,203 @@
 						<tr>
 							<th>Open Hours:</th>
 							<td>
-							<table class="info-table" style="width:100%">
+							<table class="info-table"  style="width:70%">
 								<tr>
 									<th>Monday:</th>
-									<td><input type="text" class="form-control" id="mon" name="mon" placeholder="Enter open hours on Monday" required/></td>
+									<td><select name="MondayOpen" class="form-control" style="width:100px">
+											<c:forEach begin="1" end="12" var="val">
+											    <option> ${val}:00am</option>
+											    <option> ${val}:30am</option>
+											</c:forEach>
+											<c:forEach begin="1" end="12" var="val">
+											    <option> ${val}:00pm</option>
+											    <option> ${val}:30pm</option>
+											</c:forEach>
+										</select>
+										 to 
+										<select name="MondayClose" class="form-control" style="width:100px">
+											<c:forEach begin="1" end="12" var="val">
+											    <option> ${val}:00am</option>
+											    <option> ${val}:30am</option>
+											</c:forEach>
+											<c:forEach begin="1" end="12" var="val">
+											    <option> ${val}:00pm</option>
+											    <option> ${val}:30pm</option>
+											</c:forEach>
+										</select>
+									</td>
 								</tr>
 								<tr>
 									<th>Tuesday:</th>
-									<td><input type="text" class="form-control" id="tue" name="tue" placeholder="Enter open hours on Tuesday" required/></td>
+									<td><select name="TuesdayOpen" class="form-control" style="width:100px">
+											<c:forEach begin="1" end="12" var="val">
+											    <option> ${val}:00am</option>
+											    <option> ${val}:30am</option>
+											</c:forEach>
+											<c:forEach begin="1" end="12" var="val">
+											    <option> ${val}:00pm</option>
+											    <option> ${val}:30pm</option>
+											</c:forEach>
+										</select>
+										 to 
+										<select name="TuesdayClose" class="form-control" style="width:100px">
+											<c:forEach begin="1" end="12" var="val">
+											    <option> ${val}:00am</option>
+											    <option> ${val}:30am</option>
+											</c:forEach>
+											<c:forEach begin="1" end="12" var="val">
+											    <option> ${val}:00pm</option>
+											    <option> ${val}:30pm</option>
+											</c:forEach>
+										</select>
+									</td>
 								</tr>
 								<tr>
 									<th>Wednesday:</th>
-									<td><input type="text" class="form-control" id="wed" name="wed" placeholder="Enter open hours on Wednesday" required/></td>
+									<td><select name="WednesdayOpen" class="form-control" style="width:100px">
+											<c:forEach begin="1" end="12" var="val">
+											    <option> ${val}:00am</option>
+											    <option> ${val}:30am</option>
+											</c:forEach>
+											<c:forEach begin="1" end="12" var="val">
+											    <option> ${val}:00pm</option>
+											    <option> ${val}:30pm</option>
+											</c:forEach>
+										</select>
+										 to 
+										<select name="WednesdayClose" class="form-control" style="width:100px">
+											<c:forEach begin="1" end="12" var="val">
+											    <option> ${val}:00am</option>
+											    <option> ${val}:30am</option>
+											</c:forEach>
+											<c:forEach begin="1" end="12" var="val">
+											    <option> ${val}:00pm</option>
+											    <option> ${val}:30pm</option>
+											</c:forEach>
+										</select>
+									</td>
 								</tr>
 								<tr>
 									<th>Thursday:</th>
-									<td><input type="text" class="form-control" id="thu" name="thu" placeholder="Enter open hours on Thursday" required/></td>
+									<td><select name="ThursdayOpen" class="form-control" style="width:100px">
+											<c:forEach begin="1" end="12" var="val">
+											    <option> ${val}:00am</option>
+											    <option> ${val}:30am</option>
+											</c:forEach>
+											<c:forEach begin="1" end="12" var="val">
+											    <option> ${val}:00pm</option>
+											    <option> ${val}:30pm</option>
+											</c:forEach>
+										</select>
+										 to 
+										<select name="ThursdayClose" class="form-control" style="width:100px">
+											<c:forEach begin="1" end="12" var="val">
+											    <option> ${val}:00am</option>
+											    <option> ${val}:30am</option>
+											</c:forEach>
+											<c:forEach begin="1" end="12" var="val">
+											    <option> ${val}:00pm</option>
+											    <option> ${val}:30pm</option>
+											</c:forEach>
+										</select>
+									</td>
 								</tr>
 								<tr>
 									<th>Friday:</th>
-									<td><input type="text" class="form-control" id="fri" name="fri" placeholder="Enter open hours on Friday" required/></td>
+									<td><select name="FridayOpen" class="form-control" style="width:100px">
+											<c:forEach begin="1" end="12" var="val">
+											    <option> ${val}:00am</option>
+											    <option> ${val}:30am</option>
+											</c:forEach>
+											<c:forEach begin="1" end="12" var="val">
+											    <option> ${val}:00pm</option>
+											    <option> ${val}:30pm</option>
+											</c:forEach>
+										</select>
+										 to 
+										<select name="FridayClose" class="form-control" style="width:100px">
+											<c:forEach begin="1" end="12" var="val">
+											    <option> ${val}:00am</option>
+											    <option> ${val}:30am</option>
+											</c:forEach>
+											<c:forEach begin="1" end="12" var="val">
+											    <option> ${val}:00pm</option>
+											    <option> ${val}:30pm</option>
+											</c:forEach>
+										</select>
+									</td>
 								</tr>
 								<tr>
 									<th>Saturday:</th>
-									<td><input type="text" class="form-control" id="sat" name="sat" placeholder="Enter open hours on Saturday" required/></td>
+									<td><select name="SaturdayOpen" class="form-control" style="width:100px">
+											<c:forEach begin="1" end="12" var="val">
+											    <option> ${val}:00am</option>
+											    <option> ${val}:30am</option>
+											</c:forEach>
+											<c:forEach begin="1" end="12" var="val">
+											    <option> ${val}:00pm</option>
+											    <option> ${val}:30pm</option>
+											</c:forEach>
+										</select>
+										 to 
+										<select name="SaturdayClose" class="form-control" style="width:100px">
+											<c:forEach begin="1" end="12" var="val">
+											    <option> ${val}:00am</option>
+											    <option> ${val}:30am</option>
+											</c:forEach>
+											<c:forEach begin="1" end="12" var="val">
+											    <option> ${val}:00pm</option>
+											    <option> ${val}:30pm</option>
+											</c:forEach>
+										</select>
+									</td>
 								</tr>
 								<tr>
 									<th>Sunday:</th>
-									<td><input type="text" class="form-control" id="sun" name="sun" placeholder="Enter open hours on Sunday" required/></td>
+									<td><select name="SundayOpen" class="form-control" style="width:100px">
+											<c:forEach begin="1" end="12" var="val">
+											    <option> ${val}:00am</option>
+											    <option> ${val}:30am</option>
+											</c:forEach>
+											<c:forEach begin="1" end="12" var="val">
+											    <option> ${val}:00pm</option>
+											    <option> ${val}:30pm</option>
+											</c:forEach>
+										</select>
+										 to 
+										<select name="SundayClose" class="form-control" style="width:100px">
+											<c:forEach begin="1" end="12" var="val">
+											    <option> ${val}:00am</option>
+											    <option> ${val}:30am</option>
+											</c:forEach>
+											<c:forEach begin="1" end="12" var="val">
+											    <option> ${val}:00pm</option>
+											    <option> ${val}:30pm</option>
+											</c:forEach>
+										</select>
+									</td>
+								</tr>
+							</table>
+							</td>
+						</tr>
+						<tr>
+							<th>Reserve Dates:</th>
+							<td>
+							<table class="info-table" style="width:100%">
+								<tr>
+									<th>MCAT:</th>
+									<td>
+										
+							             to 
+							            
+									</td>
+								</tr>
+								<tr>
+									<th>Holiday:</th>
+									<td>
+										 to 
+										
+									</td>
 								</tr>
 							</table>
 							</td>
@@ -164,7 +335,7 @@
 
 	</div>
 	<!-- /#wrapper -->
-
+	
 	<!-- jQuery -->
 	<script src="js/jquery.js"></script>
 
