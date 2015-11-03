@@ -51,7 +51,10 @@ public class Request implements Serializable {
     @Column(name = "REQUEST_DATE", columnDefinition = "DATE")
     @Temporal(TemporalType.DATE)
     private Date requestDate;
-
+/*
+    @Column(name = "REQUEST_TYPE")
+    private String requestType;
+    */
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "ENUM('PENDING', 'APPROVED', 'DENIED', 'COMPLETED')")
     private RequestStatus status;
@@ -74,7 +77,15 @@ public class Request implements Serializable {
     public void setExamName(String examName) {
     	this.examName = examName;
     }
-    
+    /*
+    public String getRequestType() {
+    	return this.requestType;
+    }
+
+    public void setRequestType(String requestType) {
+    	this.requestType = requestType;
+    }
+    */
     public Date getTimeStart() {
 	return this.timeStart;
     }
@@ -94,7 +105,11 @@ public class Request implements Serializable {
     public int getTestDuration() {
 	return this.testDuration;
     }
-
+    
+    public int getExamIndex(){
+    	return this.examIndex;
+    }
+    
     public void setTestDuration(int testDuration) {
 	this.testDuration = testDuration;
     }

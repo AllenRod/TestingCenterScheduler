@@ -16,7 +16,7 @@ import javax.persistence.*;
 public class ClassExamRequest extends Request implements Serializable {
 
     @ManyToOne
-    @JoinColumn(name="CLASSID")
+    @JoinColumn(name="CLASS_ID_FK")
     private Course course;
 
     private static final long serialVersionUID = 1L;

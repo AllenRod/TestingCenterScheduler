@@ -106,9 +106,8 @@
 								<th>Status</th>
 							</tr>
 							<c:forEach items="${requests}" var="requests">    
-    						${requests.classID}
     						<tr class="success">
-								<td><font color="blue">${requests.classID}</font></td>
+								<td><font color="blue">${requests.course.classID}</font></td>
 								<td>${requests.examName}</td>
 								<td>${requests.timeStart}</td>
 								<td>${requests.timeEnd}</td>
