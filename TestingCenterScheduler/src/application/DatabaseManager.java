@@ -8,12 +8,12 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
-
 import javax.persistence.RollbackException;
 
 import entity.Course;
 import entity.Request;
 import entity.Roster;
+import entity.TestCenterInfo;
 import entity.User;
 import entity.UserAccount;
 
@@ -137,8 +137,8 @@ public class DatabaseManager {
 		}
 	    }
 	    closeTransactionalEntityManager();
-	    wrapper.logger.info("All data successfully imported. " + 
-		    "Total of " + n + " rows inserted into database");
+	    wrapper.logger.info("All data successfully imported. "
+		    + "Total of " + n + " rows inserted into database");
 	    return "All data imports succeed";
 	} catch (PersistenceException error) {
 	    closeEntityManager();
@@ -202,13 +202,16 @@ public class DatabaseManager {
 	a.setParameter("nID", netID);
 	try {
 	    List<Course> rs = a.getResultList();
+	    wrapper.logger.info("Get courses belongs to " + netID);
 	    return rs;
 	} catch (Exception NoResultException) {
+	    wrapper.logger.info("Instructor " + netID + " has no course");
 	    return null;
 	} finally {
 	    closeEntityManager();
 	}
     }
+
     /**
      * Queries DB by InstructorNetID and returns a list of Requests
      * 
@@ -217,22 +220,40 @@ public class DatabaseManager {
      * @return List<Course> List of all requests belonging to the instructor
      */
     public List<Request> I_getRequests(String netID) {
-    	createEntityManager();
-    	Query a = em
-    		.createQuery("SELECT r FROM Request r WHERE r.instructorNetID = :nID");
-    	a.setParameter("nID", netID);
-    	try {
-    	    List<Request> rs = a.getResultList();
-    	    return rs;
-    	} catch (Exception NoResultException) {
-    	    return null;
-    	} finally {
-    	    closeEntityManager();
-    	}
+	createEntityManager();
+	Query a = em
+		.createQuery("SELECT r FROM Request r WHERE r.instructorNetID = :nID");
+	a.setParameter("nID", netID);
+	try {
+	    List<Request> rs = a.getResultList();
+	    wrapper.logger.info("Get requests belongs to " + netID);
+	    return rs;
+	} catch (Exception NoResultException) {
+	    wrapper.logger.info("Instructor " + netID + " has no course");
+	    return null;
+	} finally {
+	    closeEntityManager();
+	}
     }
-    
-    enum RequestStatus {
-	PENDING, APPROVED, DENIED, COMPLETED
+
+    /**
+     * Queries DB and returns a list of TestCenterInfo
+     * 
+     * @return List<TestCenterInfo> List of all test center info by terms
+     */
+    public List<TestCenterInfo> A_getTCInfo() {
+	createEntityManager();
+	Query a = em.createQuery("SELECT t FROM TestCenterInfo t");
+	try {
+	    List<TestCenterInfo> rs = a.getResultList();
+	    wrapper.logger.info("Get all existing testing center info by terms");
+	    return rs;
+	} catch (Exception NoResultException) {
+	    wrapper.logger.info("There is no testing center info existed");
+	    return null;
+	} finally {
+	    closeEntityManager();
+	}
     }
 
     /**

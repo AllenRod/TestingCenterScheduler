@@ -2,6 +2,7 @@ package application;
 
 import java.io.File;
 import java.util.Date;
+import java.util.List;
 
 import entity.Request;
 import entity.TestCenterInfo;
@@ -158,5 +159,13 @@ public class Administrator {
      */
     public void setNetID(String netID) {
 	this.netID = netID;
+    }
+    
+    /**
+     * Get all existing testing center info by terms
+     * @return		List of testing center info by terms
+     */
+    public List<TestCenterInfo> getTCInfo() {
+	return dbManager.A_getTCInfo();
     }
 }
