@@ -68,7 +68,7 @@
 			<!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
 			<div class="collapse navbar-collapse navbar-ex1-collapse">
 				<ul class="nav navbar-nav side-nav">
-					<li id="current"><a href="Instructor.jsp"style="color: #fff;">View Courses</a></li>
+					<li><a href="Instructor.jsp"style="color: #fff;">View Courses</a></li>
 					<li><a href="Requests.jsp" style="color: #fff;">View Requests</a></li>
 					<li><a href="Exams.jsp" style="color: #fff;">View Scheduled Exams</a></li>
 				</ul>

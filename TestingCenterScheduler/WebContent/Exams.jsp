@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -10,7 +11,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Instructor Requests</title>
+    <title>Instructor Exams</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -18,9 +19,16 @@
 	<!-- Custom CSS -->
     <link href="css/core.css" rel="stylesheet">
 
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
 </head>
 
 <body>
+
     <div id="wrapper">
 
         <!-- Navigation -->
@@ -79,53 +87,42 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <h1 class="page-header">
-                            View Requests <small>Requests</small>
+                            View Scheduled Exams <small>Exams</small>
                         </h1>
                         <ol class="breadcrumb">
                             <li class="active">
-                                <a href="Instructor.html"> Home</a> > Requests
+                                <a href="Instructor.jsp"> Home</a> > Exams
                             </li>
                         </ol>
                     </div>
                 </div>
                 <!-- /.row -->
 				<div class="row">
-					<a href="#" class="btn btn-default" style="margin-bottom:10px;" onclick = "newRequest()">
-						New Request
-					</a>
-					<table class ="table">
+					<table class="table table-striped table-hover">
 							<tr>
 								<th>ClassID</th>
 								<th>Test Name</th>
 								<th>Start Date</th>
 								<th>End Date</th>
 								<th>Duration</th>
-								<th>RequestID</th>
+								<th>Students Taken</th>
 								<th>Status</th>
 							</tr>
 							<c:forEach items="${requests}" var="requests">    
-    						<tr class="success">
-								<td><font color="blue">${requests.course.classID}</font></td>
-								<td>${requests.examName}</td>
-								<td>${requests.timeStart}</td>
-								<td>${requests.timeEnd}</td>
-								<td>${requests.testDuration}</td>
-								<td>${requests.examIndex}</td>
-								<td><font color="green">${requests.status}</font></th>
-							</tr>
+	    						<c:if test="${requests.status ne 'denied'}">
+		    						<c:if test="${requests.status ne 'pending'}">
+			    						<tr class="success">
+											<td><font color="blue">${requests.course.classID}</font></td>
+											<td>${requests.examName}</td>
+											<td>${requests.timeStart}</td>
+											<td>${requests.timeEnd}</td>
+											<td>${requests.testDuration}</td>
+											<td>${fn:length(requests.appointment)}</td>
+											<td><font color="green">${requests.status}</font></th>
+										</tr>
+									</c:if>
+								</c:if>
 							</c:forEach>
-							<!--
-							<tr class="info">
-								
-							</tr>
-							<tr class="success">
-								
-							</tr>
-							
-							<tr class="warning">
-								
-							</tr>
-							  -->
 					</table>
 				</div>
 			</div>
@@ -143,16 +140,6 @@
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
 
-    <script type ="text/javascript">
-                function newRequest(){
-                    var myWindow = window.open("", "New Request", "width=500, height=500");
-                    myWindow.location.replace("NewRequest.jsp");
-                }
-                function editRequest(ele){
-                    var myWindow = window.open("", "Edit Employee", "width=500, height=500");
-                    myWindow.location.replace("");
-                }
-    </script>
 
 </body>
 

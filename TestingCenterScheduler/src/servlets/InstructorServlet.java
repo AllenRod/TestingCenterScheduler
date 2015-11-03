@@ -62,8 +62,11 @@ public class InstructorServlet extends HttpServlet {
 		if(request.getSession().getAttribute("action") == null){
 			doGet(request, response);
 		}
-		else if(request.getSession().getAttribute("action").equals("UpdateRequest")){
-			// TODO 
+		else if(request.getSession().getAttribute("action").equals("newRequest")){
+			wrapper.logger.info("Processing New Request");
+		}
+		else{
+			wrapper.logger.info("Unsupported Case");
 		}
 	}
 

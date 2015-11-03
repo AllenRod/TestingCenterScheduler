@@ -60,6 +60,7 @@ public class Authenticator extends HttpServlet {
     protected void doPost(HttpServletRequest request,
 	    HttpServletResponse response) throws ServletException, IOException {
 	try {
+		request.getSession(false).invalidate();
 	    String userName = request.getParameter("user");
 	    String password = request.getParameter("password");
 	    wrapper.logger.info("User log in using netID " + userName);

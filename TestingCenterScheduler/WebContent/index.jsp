@@ -33,7 +33,6 @@
 </head>
 
 <body>
-
 	<!-- Navigation -->
 	<a id="menu-toggle" href="#" class="btn btn-dark btn-lg toggle"><i
 		class="fa fa-bars"></i></a>
@@ -97,7 +96,7 @@
 										style="width: 250px; margin-bottom: 15px; margin-left: 10px;" required/></td>
 								</tr>
 								<tr>
-									<td><a href="index.html"
+									<td><a href="#"
 										style="font-size: 12px; color: blue;">Forgot password?</a></td>
 								</tr>
 								<tr>
