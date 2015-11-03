@@ -114,10 +114,6 @@ public class Request implements Serializable {
 	return this.testDuration;
     }
     
-    public int getExamIndex(){
-    	return this.examIndex;
-    }
-    
     public void setTestDuration(int testDuration) {
 	this.testDuration = testDuration;
     }
