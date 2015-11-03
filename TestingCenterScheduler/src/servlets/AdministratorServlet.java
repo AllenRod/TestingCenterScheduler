@@ -15,6 +15,7 @@ import entity.User;
 import entity.UserAccount;
 import application.Administrator;
 import application.DatabaseManager;
+import application.Instructor;
 import application.LoggerWrapper;
 
 /**
@@ -29,7 +30,7 @@ public class AdministratorServlet extends HttpServlet {
 
     // single Administrator object
     private Administrator admin;
-    
+
     // single logger wrapper object
     private LoggerWrapper wrapper;
 
@@ -48,6 +49,16 @@ public class AdministratorServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request,
 	    HttpServletResponse response) throws ServletException, IOException {
 	// TODO Auto-generated method stub
+	UserAccount user = (UserAccount) request.getSession().getAttribute(
+		"user");
+	if (admin == null) {
+	    admin = new Administrator(user.getNetID());
+	} else {
+	    admin.setNetID(user.getNetID());
+	}
+	request.getSession().setAttribute("info", admin.getTCInfo());
+	wrapper.logger.info("Redirectiong to Admin.jsp");
+	response.sendRedirect("Admin.jsp");
     }
 
     /**
@@ -60,15 +71,18 @@ public class AdministratorServlet extends HttpServlet {
 	UserAccount user = (UserAccount) request.getSession().getAttribute(
 		"user");
 	if (admin == null) {
-	    admin = new Administrator(user.getNetID());
+	    if (request.getSession().getAttribute("action") == null) {
+		doGet(request, response);
+	    }
 	} else {
 	    admin.setNetID(user.getNetID());
 	}
 	try {
 	    if (request.getParameter("edit") != null) {
-		wrapper.logger.info("Admin " + admin.getNetID() + " editing testing center info");
+		wrapper.logger.info("Admin " + admin.getNetID()
+			+ " editing testing center info");
 		String term = request.getParameter("term");
-		String openHours = request.getParameter("mono") + "-" 
+		String openHours = request.getParameter("mono") + "-"
 			+ request.getParameter("monc") + ";"
 			+ request.getParameter("tueo") + "-"
 			+ request.getParameter("tuec") + ";"
@@ -90,15 +104,16 @@ public class AdministratorServlet extends HttpServlet {
 		int gapTime = Integer.parseInt(request.getParameter("gaptime"));
 		int reminderInterval = Integer.parseInt(request
 			.getParameter("reminder"));
-		String s = admin.editTestCenterInfo(term, openHours, seats, setAsideSeats,
-			closedDate, reserveTime, gapTime, reminderInterval);
+		String s = admin.editTestCenterInfo(term, openHours, seats,
+			setAsideSeats, closedDate, reserveTime, gapTime,
+			reminderInterval);
 		RequestDispatcher rd = request
-			    .getRequestDispatcher("CenterHours.jsp");
-		    rd.forward(request, response);
+			.getRequestDispatcher("CenterHours.jsp");
+		rd.forward(request, response);
 	    }
 	} catch (Exception error) {
-	    wrapper.logger.warning("Error occurs in AdministratorServlet:\n" + 
-		    error.getClass() + ":" + error.getMessage());
+	    wrapper.logger.warning("Error occurs in AdministratorServlet:\n"
+		    + error.getClass() + ":" + error.getMessage());
 	}
     }
 }

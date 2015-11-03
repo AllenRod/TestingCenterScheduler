@@ -89,8 +89,26 @@
 						</ol>
 					</div>
 				</div>
-				<!-- /.row -->
+				
 				<div class="row">
+					<div class="col-sm-6">
+						<ul class="list-group">
+						<c:if test="${empty info}">
+   							You have no courses
+						</c:if>
+						
+						<c:forEach items="${info}" var="info">    
+    						${info.term}<button class="btn btn-primary" id="edit${info.term}">Edit</button>
+						</c:forEach>
+							
+						</ul>
+					</div>
+				</div>
+				
+				<button class="btn btn-success" id="new">New Term</button>
+				
+				<!-- /.row -->
+				<div class="row" style="display:none;">
 				
 					<form action="Administrator" method="POST" >
 					<table class = "info-Table">
