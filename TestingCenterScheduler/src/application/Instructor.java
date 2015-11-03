@@ -71,7 +71,7 @@ public class Instructor {
 	    	ClassExamRequest r = new ClassExamRequest();
 	    	r.setExamName(examName);
 	    	//r.setRequestDate(requestDate);
-	    	r.getInstructorNetID();
+	    	r.setInstructorNetID(netID);
 	    	//r.setTestDuration(testDuration);
 	    	r.setStatus("pending");
 	    	//r.setTimeEnd(timeEnd);
@@ -83,7 +83,7 @@ public class Instructor {
     		NonClassRequest r = new NonClassRequest();
 	    	r.setExamName(examName);
 	    	//r.setRequestDate(requestDate);
-	    	r.getInstructorNetID();
+	    	r.setInstructorNetID(netID);
 	    	//r.setTestDuration(testDuration);
 	    	r.setStatus("pending");
 	    	//r.setTimeEnd(timeEnd);
