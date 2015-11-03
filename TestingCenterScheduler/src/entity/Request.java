@@ -67,6 +67,14 @@ public class Request implements Serializable {
 	super();
     }
     
+    public int getExamIndex() {
+        return examIndex;
+    }
+
+    public void setExamIndex(int examIndex) {
+        this.examIndex = examIndex;
+    }
+    
     public String getExamName() {
     	return this.examName;
     }

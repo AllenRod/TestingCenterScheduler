@@ -2,7 +2,6 @@ package entity;
 
 import java.io.Serializable;
 import java.lang.String;
-import java.util.Date;
 
 import javax.persistence.*;
 
@@ -21,6 +20,8 @@ public class TestCenterInfo implements Serializable {
     private int seats;
 
     private int setAsideSeats;
+    
+    private String closedDate;
 
     private String reserveTime;
 
@@ -64,6 +65,14 @@ public class TestCenterInfo implements Serializable {
 
     public void setSetAsideSeats(int setAsideSeats) {
 	this.setAsideSeats = setAsideSeats;
+    }
+
+    public String getClosedDate() {
+	return closedDate;
+    }
+
+    public void setClosedDate(String closedDate) {
+	this.closedDate = closedDate;
     }
 
     public String getReserveTime() {

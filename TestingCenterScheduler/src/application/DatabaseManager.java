@@ -124,18 +124,21 @@ public class DatabaseManager {
 	try {
 	    Iterator<Object> it = dataList.iterator();
 	    int c = 0;
+	    int n = 0;
 	    while (it.hasNext()) {
 		Object e = it.next();
 		em.persist(e);
 		c++;
+		n++;
 		if (c >= 500) {
 		    em.flush();
-		    System.out.println("flushed");
+		    wrapper.logger.info("Flush entity manager");
 		    c = 0;
 		}
 	    }
 	    closeTransactionalEntityManager();
-	    wrapper.logger.info("All data imported into database");
+	    wrapper.logger.info("All data successfully imported. " + 
+		    "Total of " + n + " rows inserted into database");
 	    return "All data imports succeed";
 	} catch (PersistenceException error) {
 	    closeEntityManager();
