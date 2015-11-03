@@ -142,6 +142,8 @@ public class Administrator {
 	info.setReserveTime(reserveTime);
 	info.setGapTime(gapTime);
 	info.setReminderInterval(reminderInterval);
+	System.out.println(term + " " + openHours);
+	dbManager.A_checkTerm(term);
 	return dbManager.loadData(info);
     }
     
@@ -162,8 +164,8 @@ public class Administrator {
     }
     
     /**
-     * Get all existing testing center info by terms
-     * @return		List of testing center info by terms
+     * Get all existing testing center info 
+     * @return		List of testing center info
      */
     public List<TestCenterInfo> getTCInfo() {
 	return dbManager.A_getTCInfo();

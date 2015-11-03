@@ -73,7 +73,12 @@ public class DatabaseManager {
 	    closeEntityManager();
 	}
     }
-
+    
+    /**
+     * Empty table by given table name
+     * @param tableName		table to be emptied
+     * @return			if the transaction is successful
+     */
     public boolean emptyTable(String tableName) {
 	try {
 	    createTransactionalEntityManager();
@@ -149,6 +154,109 @@ public class DatabaseManager {
     }
 
     /**
+     * Queries DB by InstructorNetID and returns a list of courses
+     * 
+     * @param String
+     *            Name of instructor to get courses for
+     * @return List<Course> List of all courses belonging to the instructor
+     */
+    public List<Course> I_getCourses(String netID) {
+	createEntityManager();
+	Query a = em
+		.createQuery("SELECT c FROM Course c WHERE c.instructorNetID = :nID");
+	a.setParameter("nID", netID);
+	try {
+	    List<Course> rs = a.getResultList();
+	    wrapper.logger.info("Get courses belongs to " + netID);
+	    return rs;
+	} catch (PersistenceException error) {
+	    wrapper.logger.info("There is an error in I_getCourses:\n" + error.getClass() 
+		    + ":" + error.getMessage());
+	    return null;
+	} finally {
+	    closeEntityManager();
+	}
+    }
+
+    /**
+     * Queries DB by InstructorNetID and returns a list of Requests
+     * 
+     * @param String
+     *            Name of instructor to get requests for
+     * @return List<Course> List of all requests belonging to the instructor
+     */
+    public List<Request> I_getRequests(String netID) {
+	createEntityManager();
+	Query a = em
+		.createQuery("SELECT r FROM Request r WHERE r.instructorNetID = :nID");
+	a.setParameter("nID", netID);
+	try {
+	    List<Request> rs = a.getResultList();
+	    wrapper.logger.info("Get requests belongs to " + netID);
+	    return rs;
+	} catch (PersistenceException error) {
+	    wrapper.logger.info("There is an error in I_getRequests:\n" + error.getClass() 
+		    + ":" + error.getMessage());
+	    return null;
+	} finally {
+	    closeEntityManager();
+	}
+    }
+
+    /**
+     * Queries DB and returns a list of TestCenterInfo by term
+     * 
+     * @return List<TestCenterInfo> List of all test center info by term
+     */
+    public List<TestCenterInfo> A_getTCInfo() {
+	createEntityManager();
+	Query a = em.createQuery("SELECT t FROM TestCenterInfo t");
+	try {
+	    List<TestCenterInfo> rs = a.getResultList();
+	    wrapper.logger.info("Get all existing testing center info");
+	    return rs;
+	} catch (PersistenceException error) {
+	    wrapper.logger.info("There is an error in A_getTCInfo:\n" + error.getClass() 
+		    + ":" + error.getMessage());
+	    return null;
+	} finally {
+	    closeEntityManager();
+	}
+    }
+
+    public void A_checkTerm(String term) {
+	createTransactionalEntityManager();
+	try {
+	    TestCenterInfo t = em.find(TestCenterInfo.class, term);
+	    System.out.println("Got t");
+	    if (t == null) {
+		wrapper.logger.info("Term " + term + " does not exist");
+		return;
+	    } else {
+		wrapper.logger.info("Term " + term + " already exists, info would be updated");
+		em.remove(t);
+	    }
+	} catch (PersistenceException error) {
+	    wrapper.logger.info("There is an error in A_checkTerm:\n" + error.getClass() 
+		    + ":" + error.getMessage());
+	} finally {
+	    closeTransactionalEntityManager();
+	}
+    }
+    
+    /**
+     * Return a singleton of DatabaseManager
+     * 
+     * @return a singleton of class DatabaseManager
+     */
+    public static DatabaseManager getSingleton() {
+	if (databasemanager == null) {
+	    databasemanager = new DatabaseManager();
+	}
+	return databasemanager;
+    }
+    
+    /**
      * Start entity transaction
      */
     private void createTransactionalEntityManager() {
@@ -186,85 +294,5 @@ public class DatabaseManager {
 	// Close this EntityManager
 	em.close();
 	wrapper.logger.info("Close entity manager");
-    }
-
-    /**
-     * Queries DB by InstructorNetID and returns a list of courses
-     * 
-     * @param String
-     *            Name of instructor to get courses for
-     * @return List<Course> List of all courses belonging to the instructor
-     */
-    public List<Course> I_getCourses(String netID) {
-	createEntityManager();
-	Query a = em
-		.createQuery("SELECT c FROM Course c WHERE c.instructorNetID = :nID");
-	a.setParameter("nID", netID);
-	try {
-	    List<Course> rs = a.getResultList();
-	    wrapper.logger.info("Get courses belongs to " + netID);
-	    return rs;
-	} catch (Exception NoResultException) {
-	    wrapper.logger.info("Instructor " + netID + " has no course");
-	    return null;
-	} finally {
-	    closeEntityManager();
-	}
-    }
-
-    /**
-     * Queries DB by InstructorNetID and returns a list of Requests
-     * 
-     * @param String
-     *            Name of instructor to get requests for
-     * @return List<Course> List of all requests belonging to the instructor
-     */
-    public List<Request> I_getRequests(String netID) {
-	createEntityManager();
-	Query a = em
-		.createQuery("SELECT r FROM Request r WHERE r.instructorNetID = :nID");
-	a.setParameter("nID", netID);
-	try {
-	    List<Request> rs = a.getResultList();
-	    wrapper.logger.info("Get requests belongs to " + netID);
-	    return rs;
-	} catch (Exception NoResultException) {
-	    wrapper.logger.info("Instructor " + netID + " has no course");
-	    return null;
-	} finally {
-	    closeEntityManager();
-	}
-    }
-
-    /**
-     * Queries DB and returns a list of TestCenterInfo
-     * 
-     * @return List<TestCenterInfo> List of all test center info by terms
-     */
-    public List<TestCenterInfo> A_getTCInfo() {
-	createEntityManager();
-	Query a = em.createQuery("SELECT t FROM TestCenterInfo t");
-	try {
-	    List<TestCenterInfo> rs = a.getResultList();
-	    wrapper.logger.info("Get all existing testing center info by terms");
-	    return rs;
-	} catch (Exception NoResultException) {
-	    wrapper.logger.info("There is no testing center info existed");
-	    return null;
-	} finally {
-	    closeEntityManager();
-	}
-    }
-
-    /**
-     * Return a singleton of DatabaseManager
-     * 
-     * @return a singleton of class DatabaseManager
-     */
-    public static DatabaseManager getSingleton() {
-	if (databasemanager == null) {
-	    databasemanager = new DatabaseManager();
-	}
-	return databasemanager;
     }
 }
