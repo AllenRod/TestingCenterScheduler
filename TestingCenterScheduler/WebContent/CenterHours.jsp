@@ -108,7 +108,7 @@
 							<table class="info-table"  style="width:70%">
 								<tr>
 									<th>Monday:</th>
-									<td><select name="MondayOpen" class="form-control" style="width:100px">
+									<td><select name="mono" class="form-control" style="width:100px">
 											<c:forEach begin="1" end="12" var="val">
 											    <option> ${val}:00am</option>
 											    <option> ${val}:30am</option>
@@ -119,7 +119,7 @@
 											</c:forEach>
 										</select>
 										 to 
-										<select name="MondayClose" class="form-control" style="width:100px">
+										<select name="monc" class="form-control" style="width:100px">
 											<c:forEach begin="1" end="12" var="val">
 											    <option> ${val}:00am</option>
 											    <option> ${val}:30am</option>
@@ -133,7 +133,7 @@
 								</tr>
 								<tr>
 									<th>Tuesday:</th>
-									<td><select name="TuesdayOpen" class="form-control" style="width:100px">
+									<td><select name="tueo" class="form-control" style="width:100px">
 											<c:forEach begin="1" end="12" var="val">
 											    <option> ${val}:00am</option>
 											    <option> ${val}:30am</option>
@@ -144,7 +144,7 @@
 											</c:forEach>
 										</select>
 										 to 
-										<select name="TuesdayClose" class="form-control" style="width:100px">
+										<select name="tuec" class="form-control" style="width:100px">
 											<c:forEach begin="1" end="12" var="val">
 											    <option> ${val}:00am</option>
 											    <option> ${val}:30am</option>
@@ -158,7 +158,7 @@
 								</tr>
 								<tr>
 									<th>Wednesday:</th>
-									<td><select name="WednesdayOpen" class="form-control" style="width:100px">
+									<td><select name="wedo" class="form-control" style="width:100px">
 											<c:forEach begin="1" end="12" var="val">
 											    <option> ${val}:00am</option>
 											    <option> ${val}:30am</option>
@@ -169,7 +169,7 @@
 											</c:forEach>
 										</select>
 										 to 
-										<select name="WednesdayClose" class="form-control" style="width:100px">
+										<select name="wedc" class="form-control" style="width:100px">
 											<c:forEach begin="1" end="12" var="val">
 											    <option> ${val}:00am</option>
 											    <option> ${val}:30am</option>
@@ -183,7 +183,7 @@
 								</tr>
 								<tr>
 									<th>Thursday:</th>
-									<td><select name="ThursdayOpen" class="form-control" style="width:100px">
+									<td><select name="thuo" class="form-control" style="width:100px">
 											<c:forEach begin="1" end="12" var="val">
 											    <option> ${val}:00am</option>
 											    <option> ${val}:30am</option>
@@ -194,7 +194,7 @@
 											</c:forEach>
 										</select>
 										 to 
-										<select name="ThursdayClose" class="form-control" style="width:100px">
+										<select name="thuc" class="form-control" style="width:100px">
 											<c:forEach begin="1" end="12" var="val">
 											    <option> ${val}:00am</option>
 											    <option> ${val}:30am</option>
@@ -208,7 +208,7 @@
 								</tr>
 								<tr>
 									<th>Friday:</th>
-									<td><select name="FridayOpen" class="form-control" style="width:100px">
+									<td><select name="frio" class="form-control" style="width:100px">
 											<c:forEach begin="1" end="12" var="val">
 											    <option> ${val}:00am</option>
 											    <option> ${val}:30am</option>
@@ -219,7 +219,7 @@
 											</c:forEach>
 										</select>
 										 to 
-										<select name="FridayClose" class="form-control" style="width:100px">
+										<select name="fric" class="form-control" style="width:100px">
 											<c:forEach begin="1" end="12" var="val">
 											    <option> ${val}:00am</option>
 											    <option> ${val}:30am</option>
@@ -233,7 +233,7 @@
 								</tr>
 								<tr>
 									<th>Saturday:</th>
-									<td><select name="SaturdayOpen" class="form-control" style="width:100px">
+									<td><select name="sato" class="form-control" style="width:100px">
 											<c:forEach begin="1" end="12" var="val">
 											    <option> ${val}:00am</option>
 											    <option> ${val}:30am</option>
@@ -244,7 +244,7 @@
 											</c:forEach>
 										</select>
 										 to 
-										<select name="SaturdayClose" class="form-control" style="width:100px">
+										<select name="satc" class="form-control" style="width:100px">
 											<c:forEach begin="1" end="12" var="val">
 											    <option> ${val}:00am</option>
 											    <option> ${val}:30am</option>
@@ -258,7 +258,7 @@
 								</tr>
 								<tr>
 									<th>Sunday:</th>
-									<td><select name="SundayOpen" class="form-control" style="width:100px">
+									<td><select name="suno" class="form-control" style="width:100px">
 											<c:forEach begin="1" end="12" var="val">
 											    <option> ${val}:00am</option>
 											    <option> ${val}:30am</option>
@@ -269,7 +269,7 @@
 											</c:forEach>
 										</select>
 										 to 
-										<select name="SundayClose" class="form-control" style="width:100px">
+										<select name="sunc" class="form-control" style="width:100px">
 											<c:forEach begin="1" end="12" var="val">
 											    <option> ${val}:00am</option>
 											    <option> ${val}:30am</option>
@@ -285,34 +285,17 @@
 							</td>
 						</tr>
 						<tr>
-							<th>Reserve Dates:</th>
-							<td>
-							<table class="info-table" style="width:100%">
-								<tr>
-									<th>MCAT:</th>
-									<td>
-										
-							             to 
-							            
-									</td>
-								</tr>
-								<tr>
-									<th>Holiday:</th>
-									<td>
-										 to 
-										
-									</td>
-								</tr>
-							</table>
-							</td>
+							<th>Closing Dates:</th>
+							<td><input type="text" class="form-control" id="closing" name="closing" placeholder="Enter closing date range" required/></td>
+						</tr>
+						<tr>
+						<tr>
+							<th>Reserve Time:</th>
+							<td><input type="text" class="form-control" id="reserve" name="reserve" placeholder="Enter reserve time" required/></td>
 						</tr>
 						<tr>
 							<th>Reminder Interval:</th>
 							<td><input type="text" class="form-control" id="reminder" name="reminder" placeholder="Enter reminder interval" required/></td>
-						</tr>
-						<tr>
-							<th>Reserve Time:</th>
-							<td><input type="text" class="form-control" id="reserve" name="reserve" placeholder="Enter reserve time" required/></td>
 						</tr>
 						<tr>
 							<th>Seats:</th>

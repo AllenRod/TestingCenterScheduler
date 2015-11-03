@@ -123,26 +123,25 @@ public class Administrator {
      * @param openHours		open hours of the TC
      * @param seats		number of seats in TC
      * @param setAsideSeats	number of set aside seats in TC
+     * @param closedDate	closing date range of TC
      * @param reserveTime	reserve time of TC
      * @param gapTime		gap time of TC
      * @param reminderInterval	reminder interval of TC
+     * @return			editing result from database
      */
-    public void editTestCenterInfo(String term, String openHours, int seats,
-	    int setAsideSeats, String reserveTime, int gapTime,
+    public String editTestCenterInfo(String term, String openHours, int seats,
+	    int setAsideSeats, String closedDate, String reserveTime, int gapTime,
 	    int reminderInterval) {
 	TestCenterInfo info = new TestCenterInfo();
 	info.setTerm(term);
 	info.setOpenHours(openHours);
 	info.setSeats(seats);
 	info.setSetAsideSeats(setAsideSeats);
+	info.setClosedDate(closedDate);
 	info.setReserveTime(reserveTime);
 	info.setGapTime(gapTime);
 	info.setReminderInterval(reminderInterval);
-	//System.out.println(info.getTerm() + " " + info.getOpenHours() + " " + 
-	//	info.getSeats() + " " + info.getSetAsideSeats() + " " + 
-	//	info.getReserveTime() + " " + info.getGapTime() + " " +
-	//	info.getReminderInterval());
-	dbManager.loadData(info);
+	return dbManager.loadData(info);
     }
     
     /**

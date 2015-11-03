@@ -57,7 +57,6 @@ public class AdministratorServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request,
 	    HttpServletResponse response) throws ServletException, IOException {
 	// TODO Auto-generated method stub
-	System.out.println("here");
 	UserAccount user = (UserAccount) request.getSession().getAttribute(
 		"user");
 	if (admin == null) {
@@ -67,25 +66,35 @@ public class AdministratorServlet extends HttpServlet {
 	}
 	try {
 	    if (request.getParameter("edit") != null) {
-		wrapper.logger.info("Admin " + admin.getNetID() + " edits testing center info");
-		System.out.println(request.getParameter("edit"));
+		wrapper.logger.info("Admin " + admin.getNetID() + " editing testing center info");
 		String term = request.getParameter("term");
-		String openHours = request.getParameter("mon") + ";"
-			+ request.getParameter("tue") + ";"
-			+ request.getParameter("wed") + ";"
-			+ request.getParameter("thu") + ";"
-			+ request.getParameter("fri") + ";"
-			+ request.getParameter("sat") + ";"
-			+ request.getParameter("sun");
+		String openHours = request.getParameter("mono") + "-" 
+			+ request.getParameter("monc") + ";"
+			+ request.getParameter("tueo") + "-"
+			+ request.getParameter("tuec") + ";"
+			+ request.getParameter("wedo") + "-"
+			+ request.getParameter("wedc") + ";"
+			+ request.getParameter("thuo") + "-"
+			+ request.getParameter("thuc") + ";"
+			+ request.getParameter("frio") + "-"
+			+ request.getParameter("frio") + ";"
+			+ request.getParameter("sato") + "-"
+			+ request.getParameter("satc") + ";"
+			+ request.getParameter("suno") + "-"
+			+ request.getParameter("sunc");
 		int seats = Integer.parseInt(request.getParameter("seat"));
 		int setAsideSeats = Integer.parseInt(request
 			.getParameter("setseat"));
+		String closedDate = request.getParameter("closing");
 		String reserveTime = request.getParameter("reserve");
 		int gapTime = Integer.parseInt(request.getParameter("gaptime"));
 		int reminderInterval = Integer.parseInt(request
 			.getParameter("reminder"));
-		admin.editTestCenterInfo(term, openHours, seats, setAsideSeats,
-			reserveTime, gapTime, reminderInterval);
+		String s = admin.editTestCenterInfo(term, openHours, seats, setAsideSeats,
+			closedDate, reserveTime, gapTime, reminderInterval);
+		RequestDispatcher rd = request
+			    .getRequestDispatcher("CenterHours.jsp");
+		    rd.forward(request, response);
 	    }
 	} catch (Exception error) {
 	    wrapper.logger.warning("Error occurs in AdministratorServlet:\n" + 
