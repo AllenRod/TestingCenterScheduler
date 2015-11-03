@@ -144,7 +144,7 @@ public class Request implements Serializable {
 	this.status = status;
     }
     public void setStatus(String status) {
-    	switch (status) {
+    	switch (status.toLowerCase()) {
 		    case "pending":
 		    	this.status = RequestStatus.PENDING;
 		    	break;

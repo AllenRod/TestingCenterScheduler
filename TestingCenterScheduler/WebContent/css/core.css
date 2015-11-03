@@ -174,29 +174,20 @@ ul.alert-dropdown {
     height: 100%;
 }
 
-.center-Table{
-	margin: 0 auto;
-}
-
-.center-Table td{
-	padding-top:5px;
-	padding-Bottom:5px;
-}
-
-.info-Table{
+.info-table{
 	margin-left: 30px;
 	width: 90%;
 }
-.info-Table th{
+.info-table th{
 	width: 200px;
 }
-.info-Table tr:nth-child(even) {
+.info-table tr:nth-child(even) {
     background-color: #FFF;
 }
-.info-Table tr:nth-child(odd) {
+.info-table tr:nth-child(odd) {
     background-color: #FFC9C9;
 }
-.info-Table td{
+.info-table td{
 	padding-top:5px;
 	padding-Bottom:5px;
 	text-align: center;

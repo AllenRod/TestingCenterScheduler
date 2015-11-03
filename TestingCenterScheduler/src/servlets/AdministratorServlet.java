@@ -107,6 +107,7 @@ public class AdministratorServlet extends HttpServlet {
 		String s = admin.editTestCenterInfo(term, openHours, seats,
 			setAsideSeats, closedDate, reserveTime, gapTime,
 			reminderInterval);
+		request.getSession().setAttribute("infolist", admin.getTCInfo());
 		RequestDispatcher rd = request
 			.getRequestDispatcher("CenterHours.jsp");
 		rd.forward(request, response);

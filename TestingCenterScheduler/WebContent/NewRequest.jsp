@@ -22,60 +22,60 @@
 
 <body>
 
-	<h1 style="text-align:center;">Requests</h1>
-
-	<form action="InstructorHome" method="POST">
-		<table class="center-table">
-			<tr>
-				<th>Request Type: </th>
-				<td><select class="form-control input-sm" id="Rtype"
-					name="Rtype">
-						<option value="CLASS" selected>CLASS</option>
-						<option value="AD_HOC">AD_HOC</option>
-				</select></td>
-			</tr>
-			<tr>
-				<th>ClassID: <br></th>
-				<td><select class="form-control input-sm" id="Rclass"
-					name="Rclass">
-						<c:forEach items="${courses}" var="courses">
-							<option value="${courses.classID}">${courses.classID}</option>
-						</c:forEach>
-				</select></td>
-			</tr>
-			<tr>
-				<th>Exam Name: <br></th>
-				<td><input type="text" id="Rname" name="Rname" size="16"
-					style="width: 250px; margin-bottom: 15px; margin-left: 10px;"
-					required /></td>
-			</tr>
-			<tr>
-				<th>Test Duration: <br></th>
-				<td><input type="text" id="Rtime" name="Rtime" size="16"
-					style="width: 250px; margin-bottom: 15px; margin-left: 10px;"
-					required /></td>
-			</tr>
-			<tr>
-				<th>Start Date: <br></th>
-				<td><input type="text" id="Rstart" name="Rstart" size="16"
-					style="width: 250px; margin-bottom: 15px; margin-left: 10px;"
-					required /></td>
-			</tr>
-			<tr>
-				<th>End Date: <br></th>
-				<td><input type="text" id="Rend" name="Rend" size="16"
-					style="width: 250px; margin-bottom: 15px; margin-left: 10px;"
-					required /></td>
-			</tr>
-			<tr>
-				<td><c:set var="action" value="newRequest" scope="session" /></td>
-				<td><input type="submit" value="Submit Request"
-					class="btn btn-lg btn-dark" style="background: #980100; color: #FFF;"></td>
-			</tr>
-		</table>
-	</form>
+	<h1 style="text-align: center;">Requests</h1>
+	<div>
+		<form action="InstructorHome" method="POST">
+			<table style="margin-left: auto; margin-right: auto;">
+				<tr>
+					<th style="padding-Bottom: 5px;">Request Type:</th>
+					<td style="padding-Bottom: 5px;"><select
+						class="form-control input-sm" id="Rtype" name="Rtype">
+							<option value="CLASS" selected>CLASS</option>
+							<option value="AD_HOC">AD_HOC</option>
+					</select></td>
+				</tr>
+				<tr>
+					<th style="padding-Bottom: 5px;">ClassID: <br></th>
+					<td style="padding-Bottom: 5px;"><select
+						class="form-control input-sm" id="Rclass" name="Rclass">
+							<c:forEach items="${courses}" var="courses">
+								<option value="${courses.classID}">${courses.classID}</option>
+							</c:forEach>
+					</select></td>
+				</tr>
+				<tr>
+					<th style="padding-Bottom: 5px;">Exam Name: <br></th>
+					<td style="padding-Bottom: 5px;"><input id="Rname" name="Rname"
+						class="form-control input-sm" type="text" placeholder="Exam Name" required></td>
+				</tr>
+				<tr>
+					<th>Test Duration: <br></th>
+					<td style="padding-Bottom: 5px;"><input id="Rduration" name="Rduration"
+						class="form-control input-sm" type="text" placeholder="Duration" required></td>
+				</tr>
+				<tr>
+					<th>Start Date: <br></th>
+					<td style="padding-Bottom: 5px;"><input id="Rstart" name="Rstart"
+						class="form-control input-sm" type="text" placeholder="Start Date" required></td>
+				</tr>
+				<tr>
+					<th>End Date: <br></th>
+					<td style="padding-Bottom: 5px;"><input id="Rend" name="Rend"
+						class="form-control input-sm" type="text" placeholder="End Date" required></td>
+				</tr>
+				<tr>
+					<td><c:set var="action" value="newRequest" scope="session" /></td>
+					<td><input type="submit" value="Submit Request"
+						class="btn btn-lg btn-dark"
+						style="background: #980100; color: #FFF;"></td>
+				</tr>
+			</table>
+		</form>
+	</div>
 	<!-- /.container-fluid -->
-
+	<script>
+		
+	</script>
 	<!-- jQuery -->
 	<script src="js/jquery.js"></script>
 
