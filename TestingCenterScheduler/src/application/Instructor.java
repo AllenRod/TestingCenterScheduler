@@ -1,6 +1,12 @@
 package application;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import entity.ClassExamRequest;
 import entity.Course;
@@ -63,33 +69,55 @@ public class Instructor {
     public List<Course> getCourses() {
 	return dbManager.I_getCourses(netID);
     }
-    
-    public String newRequest(String examType, String course, String examName, String testDuration, String timeStart,
-			String timeEnd) {
-    	String s = "";
-    	if(examType.equals("CLASS")){
-	    	ClassExamRequest r = new ClassExamRequest();
-	    	r.setExamName(examName);
-	    	//r.setRequestDate(requestDate);
-	    	r.setInstructorNetID(netID);
-	    	//r.setTestDuration(testDuration);
-	    	r.setStatus("pending");
-	    	//r.setTimeEnd(timeEnd);
-	    	//r.setTimeStart(timeStart);
-	    	//r.setCourse(course);
-	    	s = dbManager.loadData(r);
-    	}
-    	else if(examType.equals("AD_HOC")){
-    		NonClassRequest r = new NonClassRequest();
-	    	r.setExamName(examName);
-	    	//r.setRequestDate(requestDate);
-	    	r.setInstructorNetID(netID);
-	    	//r.setTestDuration(testDuration);
-	    	r.setStatus("pending");
-	    	//r.setTimeEnd(timeEnd);
-	    	//r.setTimeStart(timeStart);
-	    	s = dbManager.loadData(r);
-    	}
-    	return s;
+
+    public String newRequest(String examType, String course, String examName,
+	    String testDuration, String sMonth, String sDay, String sTime,
+	    String eMonth, String eDay, String eTime) {
+	try {
+	    String s = "";
+	    DateFormat formatter = new SimpleDateFormat("yyyy");
+	    Calendar curC = Calendar.getInstance();
+	    String year = formatter.format(curC.getTime());
+	    formatter = new SimpleDateFormat("YYYY-mm-dd HH:mm:ss");
+	    Date requestDate = curC.getTime();
+	    if (sMonth.length() == 1) {
+		sMonth = "0" + sMonth;
+	    }
+	    if (eMonth.length() == 1) {
+		eMonth = "0" + eMonth;
+	    }
+	    String timeStartstr = year + "-" + sMonth + "-" + sDay + " " + sTime + ":00";
+	    String timeEndstr = year + "-" + eMonth + "-" + eDay + " " + eTime + ":00";
+	    Date timeStart = formatter.parse(timeStartstr);
+	    Date timeEnd = formatter.parse(timeEndstr);
+	    System.out.println(timeStartstr);
+	    System.out.println(timeEndstr);
+	    if (examType.equals("CLASS")) {
+		ClassExamRequest r = new ClassExamRequest();
+		r.setExamName(examName);
+		r.setRequestDate(requestDate);
+		r.setInstructorNetID(netID);
+		r.setTestDuration(Integer.parseInt(testDuration));
+		r.setStatus("pending");
+		r.setTimeEnd(timeEnd);
+		r.setTimeStart(timeStart);
+		// r.setCourse(course);
+		s = dbManager.loadData(r);
+	    } else if (examType.equals("AD_HOC")) {
+		NonClassRequest r = new NonClassRequest();
+		r.setExamName(examName);
+		// r.setRequestDate(requestDate);
+		r.setInstructorNetID(netID);
+		// r.setTestDuration(testDuration);
+		r.setStatus("pending");
+		// r.setTimeEnd(timeEnd);
+		// r.setTimeStart(timeStart);
+		// s = dbManager.loadData(r);
+	    }
+	    return s;
+	} catch (ParseException error) {
+	    System.out.println(error.getClass() + ":" + error.getMessage());
+	    return error.getClass() + ":" + error.getMessage();
+	}
     }
 }

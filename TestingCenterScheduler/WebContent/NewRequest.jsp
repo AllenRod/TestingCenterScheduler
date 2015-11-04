@@ -54,14 +54,56 @@
 						class="form-control input-sm" type="text" placeholder="Duration" required></td>
 				</tr>
 				<tr>
-					<th>Start Date: <br></th>
-					<td style="padding-Bottom: 5px;"><input id="Rstart" name="Rstart"
-						class="form-control input-sm" type="text" placeholder="Start Date" required></td>
+					<th>Start Time: <br></th>
+					<td style="padding-Bottom: 5px;">
+						<select name="Rsmon" class="form-control" style="width:100px">
+							<c:forEach begin="1" end="12" var="val">
+								<option> ${val}</option>
+							</c:forEach>
+						</select>
+						/
+						<select name="Rsday" class="form-control" style="width:100px">
+							<c:forEach begin="1" end="31" var="val">
+								<option> ${val}</option>
+							</c:forEach>
+						</select>
+						
+						<p>&emsp;</p>
+						<select name="Rstime" class="form-control" style="width:100px">
+							<c:forEach begin="0" end="23" var="val">
+								<option> ${val}:00</option>
+								<option> ${val}:15</option>
+								<option> ${val}:30</option>
+								<option> ${val}:45</option>
+							</c:forEach>
+						</select>
+					</td>
 				</tr>
 				<tr>
 					<th>End Date: <br></th>
-					<td style="padding-Bottom: 5px;"><input id="Rend" name="Rend"
-						class="form-control input-sm" type="text" placeholder="End Date" required></td>
+					<td style="padding-Bottom: 5px;">
+					<select name="Remon" class="form-control" style="width:100px">
+							<c:forEach begin="1" end="12" var="val">
+								<option> ${val}</option>
+							</c:forEach>
+						</select>
+						/
+						<select name="Reday" class="form-control" style="width:100px">
+							<c:forEach begin="1" end="31" var="val">
+								<option> ${val}</option>
+							</c:forEach>
+						</select>
+						
+						<p>&emsp;</p>
+						<select name="Retime" class="form-control" style="width:100px">
+							<c:forEach begin="0" end="23" var="val">
+								<option> ${val}:00</option>
+								<option> ${val}:15</option>
+								<option> ${val}:30</option>
+								<option> ${val}:45</option>
+							</c:forEach>
+						</select>			
+					</td>
 				</tr>
 				<tr>
 					<td><c:set var="action" value="newRequest" scope="session" /></td>

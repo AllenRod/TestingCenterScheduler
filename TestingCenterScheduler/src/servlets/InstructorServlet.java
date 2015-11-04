@@ -23,57 +23,68 @@ import entity.UserAccount;
 @WebServlet("/InstructorHome")
 public class InstructorServlet extends HttpServlet {
 
-	// single Administrator object
-	private Instructor instr;
+    // single Administrator object
+    private Instructor instr;
 
-	// single logger wrapper object
-	private LoggerWrapper wrapper;
+    // single logger wrapper object
+    private LoggerWrapper wrapper;
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	/**
-	 * @see HttpServlet#HttpServlet()
-	 */
-	public InstructorServlet() {
-		super();
-		// TODO Auto-generated constructor stub
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public InstructorServlet() {
+	super();
+	wrapper = LoggerWrapper.getInstance();
+    }
+
+    /**
+     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+     *      response)
+     */
+    protected void doGet(HttpServletRequest request,
+	    HttpServletResponse response) throws ServletException, IOException {
+	UserAccount user = (UserAccount) request.getSession().getAttribute(
+		"user");
+	if (instr == null) {
+	    instr = new Instructor(user.getNetID());
+	} else {
+	    instr.setNetID(user.getNetID());
 	}
+	request.getSession().setAttribute("requests", instr.getRequests());
+	request.getSession().setAttribute("courses", instr.getCourses());
+	request.getSession().setAttribute("login", true);
+	wrapper.logger.info("Redirect to Instructor homepage");
+	response.sendRedirect("Instructor.jsp");
+    }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		wrapper.logger.info("Redirect to Instructor homepage");
-		UserAccount user = (UserAccount) request.getSession().getAttribute("user");
-		if (instr == null) {
-			instr = new Instructor(user.getNetID());
-		} else {
-			instr.setNetID(user.getNetID());
-		}
-		request.getSession().setAttribute("requests", instr.getRequests());
-		request.getSession().setAttribute("courses", instr.getCourses());
-		response.sendRedirect("Instructor.jsp");
+    /**
+     * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+     *      response)
+     */
+    protected void doPost(HttpServletRequest request,
+	    HttpServletResponse response) throws ServletException, IOException {
+	// TODO Auto-generated method stub
+	if (request.getSession().getAttribute("login") == null || 
+		(Boolean)request.getSession().getAttribute("login") != null) {
+	    doGet(request, response);
 	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		if (request.getSession().getAttribute("action") == null) {
-			doGet(request, response);
-		} else if (request.getSession().getAttribute("action").equals("newRequest")) {
-			wrapper.logger.info("Processing New Request");
-			instr.newRequest(request.getParameter("Rtype"), request.getParameter("Rclass"),
-					request.getParameter("Rname"), request.getParameter("Rduration"), request.getParameter("Rstart"),
-					request.getParameter("Rend"));
-		} else {
-			wrapper.logger.info("Unsupported Case");
-		}
+	if (request.getSession().getAttribute("action") != null) {
+	    wrapper.logger.info("Processing New Request");
+	    instr.newRequest(request.getParameter("Rtype"),
+		    request.getParameter("Rclass"),
+		    request.getParameter("Rname"),
+		    request.getParameter("Rduration"),
+		    request.getParameter("Rsmon"),
+		    request.getParameter("Rsday"),
+		    request.getParameter("Rstime"),
+		    request.getParameter("Remon"),
+		    request.getParameter("Reday"),
+		    request.getParameter("Retime"));
+	} else {
+	    wrapper.logger.info("Unsupported Case");
 	}
+    }
 
 }

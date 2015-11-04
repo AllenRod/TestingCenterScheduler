@@ -24,7 +24,7 @@ import application.LoggerWrapper;
  * 
  * @author CSE308 Team Five
  */
-@WebServlet("/Administrator")
+@WebServlet("/AdministratorHome")
 public class AdministratorServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
@@ -48,7 +48,6 @@ public class AdministratorServlet extends HttpServlet {
      */
     protected void doGet(HttpServletRequest request,
 	    HttpServletResponse response) throws ServletException, IOException {
-	// TODO Auto-generated method stub
 	UserAccount user = (UserAccount) request.getSession().getAttribute(
 		"user");
 	if (admin == null) {
@@ -57,6 +56,7 @@ public class AdministratorServlet extends HttpServlet {
 	    admin.setNetID(user.getNetID());
 	}
 	request.getSession().setAttribute("infolist", admin.getTCInfo());
+	request.getSession().setAttribute("login", true);
 	wrapper.logger.info("Redirectiong to Admin.jsp");
 	response.sendRedirect("Admin.jsp");
     }
@@ -68,16 +68,11 @@ public class AdministratorServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request,
 	    HttpServletResponse response) throws ServletException, IOException {
 	// TODO Auto-generated method stub
-	UserAccount user = (UserAccount) request.getSession().getAttribute(
-		"user");
-	if (admin == null) {
-	    if (request.getSession().getAttribute("action") == null) {
-		doGet(request, response);
-	    }
-	} else {
-	    admin.setNetID(user.getNetID());
-	}
 	try {
+	    if (request.getSession().getAttribute("login") == null || 
+			(Boolean)request.getSession().getAttribute("login") != null) {
+		    doGet(request, response);
+		}
 	    if (request.getParameter("edit") != null) {
 		wrapper.logger.info("Admin " + admin.getNetID()
 			+ " editing testing center info");

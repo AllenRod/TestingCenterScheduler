@@ -71,7 +71,7 @@ public class Authenticator extends HttpServlet {
 		String role = user.getRole();
 		if (role.equals("admin")) {
 		    wrapper.logger.info("Forward to Administrator");
-		    RequestDispatcher rd = request.getRequestDispatcher("/Administrator");
+		    RequestDispatcher rd = request.getRequestDispatcher("/AdministratorHome");
 		    rd.forward(request,response);
 		} else if (role.equals("instr")) {
 		    wrapper.logger.info("Forward to Instructor");
