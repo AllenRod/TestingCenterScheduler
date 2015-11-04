@@ -72,7 +72,6 @@ public class InstructorServlet extends HttpServlet {
 	}
 	else if (request.getSession().getAttribute("action") != null) {
 	    wrapper.logger.info("Processing New Request");
-	    String roster = request.getParameter("Rlist");
 	    instr.newRequest(request.getParameter("Rtype"),
 		    request.getParameter("Rclass"),
 		    request.getParameter("Rname"),
@@ -83,7 +82,7 @@ public class InstructorServlet extends HttpServlet {
 		    request.getParameter("Remon"),
 		    request.getParameter("Reday"),
 		    request.getParameter("Retime"),
-		    Arrays.asList(roster.split(";")));
+		    request.getParameter("roster"));
 	    response.sendRedirect("Close.jsp");
 	} else {
 	    wrapper.logger.info("Unsupported Case");

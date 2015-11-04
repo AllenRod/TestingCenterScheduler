@@ -120,7 +120,13 @@
 							<c:forEach items="${requests}" var="requests">
 								<c:if test="${requests.status eq 'completed'}">
 									<a href="#" class="list-group-item"><b>ClassID:</b>
-										${requests.course.classID} <b>Test Name:</b> ${requests.examName}
+										<c:if test="${empty requests.course}"> 
+											Non-class Exam
+										</c:if>
+										<c:if test="${not empty requests.course}">
+											"${requests.course.classID}
+										</c:if> 
+										<b>Test Name:</b> ${requests.examName}
 										<b>Start Date:</b> ${requests.timeStart} <b>End Date:</b> ${requests.timeEnd}
 										<b>Duration:</b> ${requests.testDuration} <b>RequestID:</b>
 										${requests.examIndex} <b>Status:</b> ${requests.status}</a>

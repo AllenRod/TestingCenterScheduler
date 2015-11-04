@@ -70,9 +70,24 @@ public class Instructor {
 	return dbManager.I_getCourses(netID);
     }
 
+    /**
+     * Make new request from instructor's input
+     * @param examType		Type of exam
+     * @param course		Course of exam. If not for a course set null
+     * @param examName		Name of exam
+     * @param testDuration	Duration of exam
+     * @param sMonth		Start month
+     * @param sDay		Start day
+     * @param sTime		Start time
+     * @param eMonth		End month
+     * @param eDay		End day
+     * @param eTime		End time
+     * @param roster		Roster list of students. If exam for a course set null
+     * @return			Result from making new request
+     */
     public String newRequest(String examType, String course, String examName,
 	    String testDuration, String sMonth, String sDay, String sTime,
-	    String eMonth, String eDay, String eTime, List<String> roster) {
+	    String eMonth, String eDay, String eTime, String roster) {
 	try {
 	    String s = "";
 	    DateFormat formatter = new SimpleDateFormat("yyyy");
