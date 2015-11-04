@@ -72,7 +72,7 @@ public class Instructor {
 
     public String newRequest(String examType, String course, String examName,
 	    String testDuration, String sMonth, String sDay, String sTime,
-	    String eMonth, String eDay, String eTime) {
+	    String eMonth, String eDay, String eTime, List<String> roster) {
 	try {
 	    String s = "";
 	    DateFormat formatter = new SimpleDateFormat("yyyy");
@@ -80,18 +80,10 @@ public class Instructor {
 	    String year = formatter.format(curC.getTime());
 	    formatter = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss");
 	    Date requestDate = curC.getTime();
-	    if (sMonth.length() == 1) {
-		sMonth = "0" + sMonth;
-	    }
-	    if (eMonth.length() == 1) {
-		eMonth = "0" + eMonth;
-	    }
 	    String timeStartstr = year + "-" + sMonth + "-" + sDay + " " + sTime + ":00";
 	    String timeEndstr = year + "-" + eMonth + "-" + eDay + " " + eTime + ":00";
 	    Date timeStart = (Date)formatter.parse(timeStartstr);
 	    Date timeEnd = (Date)formatter.parse(timeEndstr);
-	    System.out.println(timeStartstr);
-	    System.out.println(timeEndstr);
 	    if (examType.equals("CLASS")) {
 		ClassExamRequest r = new ClassExamRequest();
 		r.setExamName(examName);
@@ -101,18 +93,19 @@ public class Instructor {
 		r.setStatus("pending");
 		r.setTimeEnd(timeEnd);
 		r.setTimeStart(timeStart);
-		// r.setCourse(course);
+		r.setCourse(dbManager.I_findCourse(course, netID));
 		s = dbManager.loadData(r);
 	    } else if (examType.equals("AD_HOC")) {
 		NonClassRequest r = new NonClassRequest();
 		r.setExamName(examName);
-		// r.setRequestDate(requestDate);
+		r.setRequestDate(requestDate);
 		r.setInstructorNetID(netID);
-		// r.setTestDuration(testDuration);
+		r.setTestDuration(Integer.parseInt(testDuration));
 		r.setStatus("pending");
-		// r.setTimeEnd(timeEnd);
-		// r.setTimeStart(timeStart);
-		// s = dbManager.loadData(r);
+		r.setTimeEnd(timeEnd);
+		r.setTimeStart(timeStart);
+		r.setRosterList(roster);
+		s = dbManager.loadData(r);
 	    }
 	    return s;
 	} catch (ParseException error) {

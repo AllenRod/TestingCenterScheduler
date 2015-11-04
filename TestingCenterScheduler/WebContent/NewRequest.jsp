@@ -68,7 +68,6 @@
 							</c:forEach>
 						</select>
 						
-						<p>&emsp;</p>
 						<select name="Rstime" class="form-control" style="width:100px">
 							<c:forEach begin="0" end="23" var="val">
 								<option> ${val}:00</option>
@@ -94,7 +93,6 @@
 							</c:forEach>
 						</select>
 						
-						<p>&emsp;</p>
 						<select name="Retime" class="form-control" style="width:100px">
 							<c:forEach begin="0" end="23" var="val">
 								<option> ${val}:00</option>
@@ -103,6 +101,12 @@
 								<option> ${val}:45</option>
 							</c:forEach>
 						</select>			
+					</td>
+				</tr>
+				<tr>
+					<th>Student List(For non-Stony Brook course exam)</th>
+					<td>
+					<textarea name="Rlist" class="form-control" rows="3"></textarea>
 					</td>
 				</tr>
 				<tr>

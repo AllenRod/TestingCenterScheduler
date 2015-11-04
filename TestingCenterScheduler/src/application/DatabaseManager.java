@@ -154,6 +154,33 @@ public class DatabaseManager {
     }
 
     /**
+     * Find the course by the given courseID and instructor netID
+     * @param courseID		Given courseID
+     * @param netID		Given instructor netID
+     * @return			Course with the courseID and instructor netID
+     */
+    public Course I_findCourse(String courseID, String netID) {
+	createEntityManager();
+	Query q = em
+		.createQuery("SELECT c FROM Course c WHERE c.classID = :cID "
+			+ "AND c.instructorNetID = :nID");
+	q.setParameter("cID", courseID);
+	q.setParameter("nID", netID);
+	try {
+	    Course rs = (Course) q.getSingleResult();
+	    wrapper.logger.info("Get course with course " + courseID + " and instruction netID "
+		    + netID);
+	    return rs;
+	} catch (PersistenceException error) {
+	    wrapper.logger.info("There is an error in I_findCourse:\n" + error.getClass() 
+		    + ":" + error.getMessage());
+	    return null;
+	} finally {
+	    closeEntityManager();
+	}
+    }
+    
+    /**
      * Queries DB by InstructorNetID and returns a list of courses
      * 
      * @param String
