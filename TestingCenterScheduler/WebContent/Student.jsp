@@ -58,12 +58,8 @@
 			<!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
 			<div class="collapse navbar-collapse navbar-ex1-collapse">
 				<ul class="nav navbar-nav side-nav">
-					<li id="current"><a href="#" style="color: #fff;"> View Courses</a></li>
-					<li><a href="#" style="color: #fff;">View Appointments</a></li>
-					<!--
-                    <li>
-                        <a href="#" style="color:#fff;">View Scheduled Exams</a>
-                    </li>-->
+					<li id="current">
+					<li><a href="Student.jsp" style="color: #fff;">View Appointments</a></li>
 				</ul>
 			</div>
 			<!-- /.navbar-collapse -->
@@ -77,7 +73,7 @@
 				<div class="row">
 					<div class="col-lg-12">
 						<h1 class="page-header">
-							View Courses <small>Courses</small>
+							Home <small>Upcoming Exams</small>
 						</h1>
 						<ol class="breadcrumb">
 							<li class="active"> Home</li>

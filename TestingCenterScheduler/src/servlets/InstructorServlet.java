@@ -66,11 +66,10 @@ public class InstructorServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request,
 	    HttpServletResponse response) throws ServletException, IOException {
 	// TODO Auto-generated method stub
-	if (request.getSession().getAttribute("login") == null || 
-		(Boolean)request.getSession().getAttribute("login") != null) {
+	if (request.getSession().getAttribute("action") == null){
 	    doGet(request, response);
 	}
-	if (request.getSession().getAttribute("action") != null) {
+	else if (request.getSession().getAttribute("action") != null) {
 	    wrapper.logger.info("Processing New Request");
 	    instr.newRequest(request.getParameter("Rtype"),
 		    request.getParameter("Rclass"),
@@ -82,6 +81,7 @@ public class InstructorServlet extends HttpServlet {
 		    request.getParameter("Remon"),
 		    request.getParameter("Reday"),
 		    request.getParameter("Retime"));
+	    response.sendRedirect("Close.jsp");
 	} else {
 	    wrapper.logger.info("Unsupported Case");
 	}
