@@ -17,12 +17,6 @@
 <!-- Custom CSS -->
 <link href="css/core.css" rel="stylesheet">
 
-<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-<!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
 </head>
 
 <body>
@@ -39,16 +33,16 @@
 						class="icon-bar"></span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="Student.html" style="color: #fff;">Testing
+				<a class="navbar-brand" href="Student.jsp" style="color: #fff;">Testing
 					Center</a>
 			</div>
 			<!-- Top Menu Items -->
 			<ul class="nav navbar-right top-nav">
 				<li class="dropdown"><a href="#" class="dropdown-toggle"
-					data-toggle="dropdown"><i class="fa fa-user"></i>
+					data-toggle="dropdown">
 						${user.firstName} ${user.lastName}<b class="caret"></b></a>
 					<ul class="dropdown-menu">
-						<li><a href="#"><i class="fa fa-fw fa-gear"></i> Settings</a>
+						<li><a href="#"> Settings</a>
 						</li>
 						<li class="divider"></li>
 						<li>
@@ -64,13 +58,11 @@
 			<!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
 			<div class="collapse navbar-collapse navbar-ex1-collapse">
 				<ul class="nav navbar-nav side-nav">
-					<li id="current"><a href="#" style="color: #fff;"><i
-							class="fa fa-fw fa-dashboard"></i> View Courses</a></li>
-					<li><a href="#" style="color: #fff;"><i
-							class="fa fa-fw fa-desktop"></i>View Appointments</a></li>
+					<li id="current"><a href="#" style="color: #fff;"> View Courses</a></li>
+					<li><a href="#" style="color: #fff;">View Appointments</a></li>
 					<!--
                     <li>
-                        <a href="#" style="color:#fff;"><i class="fa fa-fw fa-table"></i>View Scheduled Exams</a>
+                        <a href="#" style="color:#fff;">View Scheduled Exams</a>
                     </li>-->
 				</ul>
 			</div>
@@ -88,7 +80,7 @@
 							View Courses <small>Courses</small>
 						</h1>
 						<ol class="breadcrumb">
-							<li class="active"><i class="fa fa-dashboard"></i> Home</li>
+							<li class="active"> Home</li>
 						</ol>
 					</div>
 				</div>

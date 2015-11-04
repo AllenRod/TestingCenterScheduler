@@ -78,7 +78,7 @@ public class Instructor {
 	    DateFormat formatter = new SimpleDateFormat("yyyy");
 	    Calendar curC = Calendar.getInstance();
 	    String year = formatter.format(curC.getTime());
-	    formatter = new SimpleDateFormat("YYYY-mm-dd HH:mm:ss");
+	    formatter = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss");
 	    Date requestDate = curC.getTime();
 	    if (sMonth.length() == 1) {
 		sMonth = "0" + sMonth;
@@ -88,8 +88,8 @@ public class Instructor {
 	    }
 	    String timeStartstr = year + "-" + sMonth + "-" + sDay + " " + sTime + ":00";
 	    String timeEndstr = year + "-" + eMonth + "-" + eDay + " " + eTime + ":00";
-	    Date timeStart = formatter.parse(timeStartstr);
-	    Date timeEnd = formatter.parse(timeEndstr);
+	    Date timeStart = (Date)formatter.parse(timeStartstr);
+	    Date timeEnd = (Date)formatter.parse(timeEndstr);
 	    System.out.println(timeStartstr);
 	    System.out.println(timeEndstr);
 	    if (examType.equals("CLASS")) {
