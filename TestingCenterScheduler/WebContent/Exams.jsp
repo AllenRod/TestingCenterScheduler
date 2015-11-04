@@ -66,7 +66,7 @@
             <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav side-nav">
                     <li>
-                        <a href="Instructor.jsp" style="color:#fff;"> View Courses</a>
+                        <a href="Instructor.jsp" style="color:#fff;">Overview</a>
                     </li>
                     <li>
                         <a href="Requests.jsp" style="color:#fff;"> View Requests</a>

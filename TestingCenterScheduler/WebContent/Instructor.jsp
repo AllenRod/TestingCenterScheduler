@@ -1,6 +1,6 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page import="java.util.List" %>
-<%@ page import="entity.Course" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page import="java.util.List"%>
+<%@ page import="entity.Course"%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -49,28 +49,27 @@
 			<!-- Top Menu Items -->
 			<ul class="nav navbar-right top-nav">
 				<li class="dropdown"><a href="#" class="dropdown-toggle"
-					data-toggle="dropdown">
-						${user.firstName} ${user.lastName}<b class="caret"></b></a>
+					data-toggle="dropdown"> ${user.firstName} ${user.lastName}<b
+						class="caret"></b></a>
 					<ul class="dropdown-menu">
-						<li><a href="#"> Settings</a>
-						</li>
+						<li><a href="#"> Settings</a></li>
 						<li class="divider"></li>
-						<li>
-							<a>
+						<li><a>
 								<form action="Login" method="GET">
-									<input type="submit" value="Log Out" style="background-color: Transparent; border: none;">
+									<input type="submit" value="Log Out"
+										style="background-color: Transparent; border: none;">
 								</form>
-							</a>
-						</li>
-					</ul>
-				</li>
+						</a></li>
+					</ul></li>
 			</ul>
 			<!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
 			<div class="collapse navbar-collapse navbar-ex1-collapse">
 				<ul class="nav navbar-nav side-nav">
-					<li><a href="Instructor.jsp"style="color: #fff;">View Courses</a></li>
-					<li><a href="Requests.jsp" style="color: #fff;">View Requests</a></li>
-					<li><a href="Exams.jsp" style="color: #fff;">View Scheduled Exams</a></li>
+					<li><a href="Instructor.jsp" style="color: #fff;">Overview</a></li>
+					<li><a href="Requests.jsp" style="color: #fff;">View
+							Requests</a></li>
+					<li><a href="Exams.jsp" style="color: #fff;">View
+							Scheduled Exams</a></li>
 				</ul>
 			</div>
 			<!-- /.navbar-collapse -->
@@ -84,27 +83,50 @@
 				<div class="row">
 					<div class="col-lg-12">
 						<h1 class="page-header">
-							View Courses <small>Courses</small>
+							Instructor <small>Home</small>
 						</h1>
 						<ol class="breadcrumb">
-							<li class="active"> Home</li>
+							<li class="active">Home</li>
 						</ol>
 					</div>
 				</div>
 				<!-- /.row -->
 
 				<div class="row">
-					<div class="col-sm-6">
-						<ul class="list-group">
-						<c:if test="${empty courses}">
-   							You have no courses
-						</c:if>
-						
-						<c:forEach items="${courses}" var="courses">    
-    						<a href="#" class="list-group-item">${courses.subject}.${courses.catalogNum}.${courses.section}<font size="1" style="color:grey; margin-left: 10px;">ClassID: ${courses.classID}</font></a>
-						</c:forEach>
-							
-						</ul>
+					<!-- /.col-sm-4 -->
+					<div class="col-sm-12">
+						<div class="list-group">
+							<a class="list-group-item active">Current and Upcoming Exams</a>
+							<c:forEach items="${requests}" var="requests">
+								<c:if test="${requests.status ne 'completed'}">
+									<c:if test="${requests.status ne 'denied'}">
+										<a href="#" class="list-group-item"><b>ClassID:</b>
+										${requests.course.classID} <b>Test Name:</b> ${requests.examName}
+										<b>Start Date:</b> ${requests.timeStart} <b>End Date:</b> ${requests.timeEnd}
+										<b>Duration:</b> ${requests.testDuration} <b>RequestID:</b>
+										${requests.examIndex} <b>Status:</b> ${requests.status}</a>
+									</c:if>
+								</c:if>
+							</c:forEach>
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<!-- /.col-sm-4 -->
+					<div class="col-sm-12">
+						<div class="list-group">
+							<a class="list-group-item active">Past Exams</a>
+							<c:forEach items="${requests}" var="requests">
+								<c:if test="${requests.status eq 'completed'}">
+									<a href="#" class="list-group-item"><b>ClassID:</b>
+										${requests.course.classID} <b>Test Name:</b> ${requests.examName}
+										<b>Start Date:</b> ${requests.timeStart} <b>End Date:</b> ${requests.timeEnd}
+										<b>Duration:</b> ${requests.testDuration} <b>RequestID:</b>
+										${requests.examIndex} <b>Status:</b> ${requests.status}</a>
+								</c:if>
+							</c:forEach>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -115,7 +137,12 @@
 
 	</div>
 	<!-- /#wrapper -->
+	<script>
+		function toCourses(ele) {
 
+			window.location.href = "Courses.jsp"
+		}
+	</script>
 	<!-- jQuery -->
 	<script src="js/jquery.js"></script>
 
