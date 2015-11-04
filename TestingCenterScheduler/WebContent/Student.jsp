@@ -58,8 +58,8 @@
 			<!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
 			<div class="collapse navbar-collapse navbar-ex1-collapse">
 				<ul class="nav navbar-nav side-nav">
-					<li id="current">
-					<li><a href="Student.jsp" style="color: #fff;">View Appointments</a></li>
+					<li><a href="Student.jsp" style="color: #fff;">Upcoming Exams</a></li>
+					<li><a href="StudentAppointments.jsp" style="color: #fff;">View Appointments</a></li>
 				</ul>
 			</div>
 			<!-- /.navbar-collapse -->
@@ -83,14 +83,28 @@
 				<!-- /.row -->
 
 				<div class="row">
-					<div class="col-sm-4">
-						<ul class="list-group">
-							<a href="#" class="list-group-item">CSE 114.01</a>
-							<a href="#" class="list-group-item">CSE 114.L01</a>
-							<a href="#" class="list-group-item">CSE 102.01</a>
-							<a href="#" class="list-group-item">AMS 151.01</a>
-						</ul>
-					</div>
+					<table class ="table">
+							<tr>
+								<th>Class</th>
+								<th>Exam Name</th>
+								<th>Instructor</th>
+								<th>ExamID</th>
+								<th>Exam Start Date</th>
+								<th>Exam End Date</th>
+								<th>Status</th>
+							</tr><!--
+							<c:forEach items="${requests}" var="requests">    
+    						<tr class="success">
+								<td><font color="blue">${requests.course.classID}</font></td>
+								<td>${requests.examName}</td>
+								<td>${requests.timeStart}</td>
+								<td>${requests.timeEnd}</td>
+								<td>${requests.testDuration}</td>
+								<td>${requests.examIndex}</td>
+								<td><font color="green">${requests.status}</font></th>
+							</tr>
+							</c:forEach>-->
+					</table>
 				</div>
 			</div>
 			<!-- /.container-fluid -->
