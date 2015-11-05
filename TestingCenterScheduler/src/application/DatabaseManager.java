@@ -31,16 +31,12 @@ public class DatabaseManager {
 
     // singleton object of DatabaseManager
     private static DatabaseManager databasemanager = null;
-
-    // logger wrapper object
-    private LoggerWrapper wrapper;
-
+    
     /**
      * Constructor for class DatabaseManager
      */
     public DatabaseManager() {
 	emf = Persistence.createEntityManagerFactory("TestingCenterScheduler");
-	wrapper = LoggerWrapper.getInstance();
     }
 
     /**
@@ -63,11 +59,11 @@ public class DatabaseManager {
 
 	try {
 	    result = (UserAccount) q.getSingleResult();
-	    wrapper.logger.info("User " + result.getFirstName() + " "
+	    LoggerWrapper.logger.info("User " + result.getFirstName() + " "
 		    + result.getLastName() + " log in as " + result.getRole());
 	    return result;
 	} catch (Exception error) {
-	    wrapper.logger.warning("Error in user login");
+	    LoggerWrapper.logger.warning("Error in user login");
 	    return null;
 	} finally {
 	    closeEntityManager();
@@ -85,11 +81,11 @@ public class DatabaseManager {
 	    em.createNativeQuery("SET FOREIGN_KEY_CHECKS = 0;").executeUpdate();
 	    em.createNativeQuery("TRUNCATE " + tableName).executeUpdate();
 	    em.createNativeQuery("SET FOREIGN_KEY_CHECKS = 1;").executeUpdate();
-	    wrapper.logger.info("Table " + tableName + " is emptied");
+	    LoggerWrapper.logger.info("Table " + tableName + " is emptied");
 	    closeTransactionalEntityManager();
 	    return true;
 	} catch (Exception error) {
-	    wrapper.logger.warning("Error in emptying table " + tableName);
+	    LoggerWrapper.logger.warning("Error in emptying table " + tableName);
 	    closeEntityManager();
 	    return false;
 	}
@@ -107,11 +103,11 @@ public class DatabaseManager {
 	try {
 	    em.persist(data);
 	    closeTransactionalEntityManager();
-	    wrapper.logger.info("Data imported into database");
+	    LoggerWrapper.logger.info("Data imported into database");
 	    return "Data import succeeds";
 	} catch (PersistenceException error) {
 	    closeEntityManager();
-	    wrapper.logger.warning("Data import error occured:\n"
+	    LoggerWrapper.logger.warning("Data import error occured:\n"
 		    + error.getClass() + ":" + error.getMessage());
 	    return error.getClass() + ":" + error.getMessage();
 	}
@@ -137,17 +133,17 @@ public class DatabaseManager {
 		n++;
 		if (c >= 500) {
 		    em.flush();
-		    wrapper.logger.info("Flush entity manager");
+		    LoggerWrapper.logger.info("Flush entity manager");
 		    c = 0;
 		}
 	    }
 	    closeTransactionalEntityManager();
-	    wrapper.logger.info("All data successfully imported. "
+	    LoggerWrapper.logger.info("All data successfully imported. "
 		    + "Total of " + n + " rows inserted into database");
 	    return "All data imports succeed";
 	} catch (PersistenceException error) {
 	    closeEntityManager();
-	    wrapper.logger.warning("Data import error occured:\n"
+	    LoggerWrapper.logger.warning("Data import error occured:\n"
 		    + error.getClass() + ":" + error.getMessage());
 	    return error.getMessage();
 	}
@@ -168,11 +164,11 @@ public class DatabaseManager {
 	q.setParameter("nID", netID);
 	try {
 	    Course rs = (Course) q.getSingleResult();
-	    wrapper.logger.info("Get course with course " + courseID + " and instruction netID "
+	    LoggerWrapper.logger.info("Get course with course " + courseID + " and instruction netID "
 		    + netID);
 	    return rs;
 	} catch (PersistenceException error) {
-	    wrapper.logger.info("There is an error in I_findCourse:\n" + error.getClass() 
+	    LoggerWrapper.logger.info("There is an error in I_findCourse:\n" + error.getClass() 
 		    + ":" + error.getMessage());
 	    return null;
 	} finally {
@@ -194,10 +190,10 @@ public class DatabaseManager {
 	a.setParameter("nID", netID);
 	try {
 	    List<Course> rs = a.getResultList();
-	    wrapper.logger.info("Get courses belongs to " + netID);
+	    LoggerWrapper.logger.info("Get courses belongs to " + netID);
 	    return rs;
 	} catch (PersistenceException error) {
-	    wrapper.logger.info("There is an error in I_getCourses:\n" + error.getClass() 
+	    LoggerWrapper.logger.info("There is an error in I_getCourses:\n" + error.getClass() 
 		    + ":" + error.getMessage());
 	    return null;
 	} finally {
@@ -219,11 +215,36 @@ public class DatabaseManager {
 	a.setParameter("nID", netID);
 	try {
 	    List<Request> rs = a.getResultList();
-	    wrapper.logger.info("Get requests belongs to " + netID);
+	    LoggerWrapper.logger.info("Get requests belongs to " + netID);
 	    return rs;
 	} catch (PersistenceException error) {
-	    wrapper.logger.info("There is an error in I_getRequests:\n" + error.getClass() 
-		    + ":" + error.getMessage());
+	    LoggerWrapper.logger.info("There is an error in I_getRequests:\n" 
+		    + error.getClass() + ":" + error.getMessage());
+	    return null;
+	} finally {
+	    closeEntityManager();
+	}
+    }
+    
+    /**
+     * Queries DB by InstructorNetID and returns a list of Requests
+     * 
+     * @param String
+     *            Name of instructor to get requests for
+     * @return List<Course> List of all requests belonging to the instructor
+     */
+    public List<Request> I_getNonClassRequests(String netID) {
+	createEntityManager();
+	Query a = em
+		.createQuery("SELECT r FROM NonClassRequest r WHERE r.instructorNetID = :nID");
+	a.setParameter("nID", netID);
+	try {
+	    List<Request> rs = a.getResultList();
+	    LoggerWrapper.logger.info("Get requests belongs to " + netID);
+	    return rs;
+	} catch (PersistenceException error) {
+	    LoggerWrapper.logger.info("There is an error in I_getNonClassRequests:\n" 
+		    + error.getClass() + ":" + error.getMessage());
 	    return null;
 	} finally {
 	    closeEntityManager();
@@ -240,10 +261,10 @@ public class DatabaseManager {
 	Query a = em.createQuery("SELECT t FROM TestCenterInfo t");
 	try {
 	    List<TestCenterInfo> rs = a.getResultList();
-	    wrapper.logger.info("Get all existing testing center info");
+	    LoggerWrapper.logger.info("Get all existing testing center info");
 	    return rs;
 	} catch (PersistenceException error) {
-	    wrapper.logger.info("There is an error in A_getTCInfo:\n" + error.getClass() 
+	    LoggerWrapper.logger.info("There is an error in A_getTCInfo:\n" + error.getClass() 
 		    + ":" + error.getMessage());
 	    return null;
 	} finally {
@@ -251,20 +272,23 @@ public class DatabaseManager {
 	}
     }
 
+    /**
+     * Check if the test center info for a term already existed
+     * @param term		The term to chec
+     */
     public void A_checkTerm(String term) {
 	createTransactionalEntityManager();
 	try {
 	    TestCenterInfo t = em.find(TestCenterInfo.class, term);
-	    System.out.println("Got t");
 	    if (t == null) {
-		wrapper.logger.info("Term " + term + " does not exist");
+		LoggerWrapper.logger.info("Term " + term + " does not exist");
 		return;
 	    } else {
-		wrapper.logger.info("Term " + term + " already exists, info would be updated");
+		LoggerWrapper.logger.info("Term " + term + " already exists, info would be updated");
 		em.remove(t);
 	    }
 	} catch (PersistenceException error) {
-	    wrapper.logger.info("There is an error in A_checkTerm:\n" + error.getClass() 
+	    LoggerWrapper.logger.info("There is an error in A_checkTerm:\n" + error.getClass() 
 		    + ":" + error.getMessage());
 	} finally {
 	    closeTransactionalEntityManager();
@@ -291,7 +315,7 @@ public class DatabaseManager {
 	em = emf.createEntityManager();
 	// Begin transaction
 	em.getTransaction().begin();
-	wrapper.logger.info("Transaction begins");
+	LoggerWrapper.logger.info("Transaction begins");
     }
 
     /**
@@ -302,7 +326,7 @@ public class DatabaseManager {
 	em.getTransaction().commit();
 	// Close this EntityManager
 	em.close();
-	wrapper.logger.info("Transaction commits");
+	LoggerWrapper.logger.info("Transaction commits");
     }
 
     /**
@@ -311,7 +335,7 @@ public class DatabaseManager {
     private void createEntityManager() {
 	// Create a new EntityManager
 	em = emf.createEntityManager();
-	wrapper.logger.info("Create entity manager");
+	LoggerWrapper.logger.info("Create entity manager");
     }
 
     /**
@@ -320,6 +344,6 @@ public class DatabaseManager {
     private void closeEntityManager() {
 	// Close this EntityManager
 	em.close();
-	wrapper.logger.info("Close entity manager");
+	LoggerWrapper.logger.info("Close entity manager");
     }
 }

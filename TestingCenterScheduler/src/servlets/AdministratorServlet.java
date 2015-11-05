@@ -31,15 +31,11 @@ public class AdministratorServlet extends HttpServlet {
     // single Administrator object
     private Administrator admin;
 
-    // single logger wrapper object
-    private LoggerWrapper wrapper;
-
     /**
      * @see HttpServlet#HttpServlet()
      */
     public AdministratorServlet() {
 	super();
-	wrapper = LoggerWrapper.getInstance();
     }
 
     /**
@@ -57,7 +53,7 @@ public class AdministratorServlet extends HttpServlet {
 	}
 	request.getSession().setAttribute("infolist", admin.getTCInfo());
 	request.getSession().setAttribute("login", true);
-	wrapper.logger.info("Redirectiong to Admin.jsp");
+	LoggerWrapper.logger.info("Redirectiong to Admin.jsp");
 	response.sendRedirect("Admin.jsp");
     }
 
@@ -69,12 +65,12 @@ public class AdministratorServlet extends HttpServlet {
 	    HttpServletResponse response) throws ServletException, IOException {
 	// TODO Auto-generated method stub
 	try {
-	    if (request.getSession().getAttribute("login") == null || 
-			(Boolean)request.getSession().getAttribute("login") != null) {
-		    doGet(request, response);
-		}
+	    if (request.getSession().getAttribute("login") == null) {
+		doGet(request, response);
+		return;
+	    }
 	    if (request.getParameter("edit") != null) {
-		wrapper.logger.info("Admin " + admin.getNetID()
+		LoggerWrapper.logger.info("Admin " + admin.getNetID()
 			+ " editing testing center info");
 		String term = request.getParameter("term");
 		String openHours = request.getParameter("mono") + "-"
@@ -102,14 +98,14 @@ public class AdministratorServlet extends HttpServlet {
 		String s = admin.editTestCenterInfo(term, openHours, seats,
 			setAsideSeats, closedDate, reserveTime, gapTime,
 			reminderInterval);
-		request.getSession().setAttribute("infolist", admin.getTCInfo());
-		RequestDispatcher rd = request
-			.getRequestDispatcher("CenterHours.jsp");
-		rd.forward(request, response);
+		request.getSession()
+			.setAttribute("infolist", admin.getTCInfo());
+		response.sendRedirect("CenterHours.jsp");
 	    }
 	} catch (Exception error) {
-	    wrapper.logger.warning("Error occurs in AdministratorServlet:\n"
-		    + error.getClass() + ":" + error.getMessage());
+	    LoggerWrapper.logger
+		    .warning("Error occurs in AdministratorServlet:\n"
+			    + error.getClass() + ":" + error.getMessage());
 	}
     }
 }

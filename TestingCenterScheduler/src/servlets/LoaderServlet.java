@@ -25,14 +25,10 @@ public class LoaderServlet extends HttpServlet {
 
     // csv file loader object
     private CSVLoader loader;
-    
-    // single logger wrapper object
-    private LoggerWrapper wrapper;
 
     public LoaderServlet() {
 	super();
 	loader = CSVLoader.getSingleton();
-	wrapper = LoggerWrapper.getInstance();
     }
 
     /**
@@ -55,15 +51,15 @@ public class LoaderServlet extends HttpServlet {
 	    String file = request.getParameter("file");
 	    String table = request.getParameter("table");
 	    
-	    wrapper.logger.info("Loading file " + file + " to " + table);
+	    LoggerWrapper.logger.info("Loading file " + file + " to " + table);
 	    String s = loader.loadCSV(file, table);
-	    wrapper.logger.info("Result:" + s);
+	    LoggerWrapper.logger.info("Result:" + s);
 	    request.setAttribute("returnVal", s);
 	    RequestDispatcher rd = request
 		    .getRequestDispatcher("ImportData.jsp");
 	    rd.forward(request, response);
 	} catch (Exception error) {
-	    wrapper.logger.warning("Error occurs in LoaderServlet:\n" + 
+	    LoggerWrapper.logger.warning("Error occurs in LoaderServlet:\n" + 
 		    error.getClass() + ":" + error.getMessage());
 	}
 

@@ -18,6 +18,8 @@ public class ClassExamRequest extends Request implements Serializable {
     @ManyToOne
     @JoinColumn(name="CLASS_ID_FK")
     private Course course;
+    
+    private String term;
 
     private static final long serialVersionUID = 1L;
 
@@ -31,5 +33,13 @@ public class ClassExamRequest extends Request implements Serializable {
 
     public void setCourse(Course course) {
 	this.course = course;
+    }
+
+    public String getTerm() {
+	return term;
+    }
+
+    public void setTerm(String term) {
+	this.term = term;
     }    
 }

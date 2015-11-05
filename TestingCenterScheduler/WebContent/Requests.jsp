@@ -105,7 +105,13 @@
 							</tr>
 							<c:forEach items="${requests}" var="requests">    
     						<tr class="success">
-								<td><font color="blue">${requests.course.classID}</font></td>
+								<td><font color="blue">
+										<c:if test="${empty requests.course}">
+											Non-class Exam
+										</c:if>
+										<c:if test="${not empty requests.course}">
+											${requests.course.classID}
+										</c:if></font></td>
 								<td>${requests.examName}</td>
 								<td>${requests.timeStart}</td>
 								<td>${requests.timeEnd}</td>

@@ -63,14 +63,6 @@ public class Instructor {
     }
 
     /**
-     * 
-     * @return
-     */
-    public List<Course> getCourses() {
-	return dbManager.I_getCourses(netID);
-    }
-
-    /**
      * Make new request from instructor's input
      * @param examType		Type of exam
      * @param course		Course of exam. If not for a course set null
@@ -108,6 +100,7 @@ public class Instructor {
 		r.setStatus("pending");
 		r.setTimeEnd(timeEnd);
 		r.setTimeStart(timeStart);
+		r.setTerm(course.split("-")[1]);
 		r.setCourse(dbManager.I_findCourse(course, netID));
 		s = dbManager.loadData(r);
 	    } else if (examType.equals("AD_HOC")) {

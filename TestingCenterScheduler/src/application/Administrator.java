@@ -142,7 +142,6 @@ public class Administrator {
 	info.setReserveTime(reserveTime);
 	info.setGapTime(gapTime);
 	info.setReminderInterval(reminderInterval);
-	System.out.println(term + " " + openHours);
 	dbManager.A_checkTerm(term);
 	return dbManager.loadData(info);
     }
