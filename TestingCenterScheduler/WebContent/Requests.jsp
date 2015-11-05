@@ -103,23 +103,28 @@
 								<th>RequestID</th>
 								<th>Status</th>
 							</tr>
-							<c:forEach items="${requests}" var="requests">    
-    						<tr class="success">
+							<tr class="success">
+							<c:forEach items="${crequests}" var="requests">
 								<td><font color="blue">
-										<c:if test="${empty requests.course}">
-											Non-class Exam
-										</c:if>
-										<c:if test="${not empty requests.course}">
-											${requests.course.classID}
-										</c:if></font></td>
+										${requests.course.classID}</font></td>
 								<td>${requests.examName}</td>
 								<td>${requests.timeStart}</td>
 								<td>${requests.timeEnd}</td>
 								<td>${requests.testDuration}</td>
 								<td>${requests.examIndex}</td>
-								<td><font color="green">${requests.status}</font></th>
-							</tr>
+								<td><font color="green">${requests.status}</font>
 							</c:forEach>
+							<c:forEach items="${nrequests}" var="requests">    
+								<td><font color="blue">
+										Non-Class Exam</font></td>
+								<td>${requests.examName}</td>
+								<td>${requests.timeStart}</td>
+								<td>${requests.timeEnd}</td>
+								<td>${requests.testDuration}</td>
+								<td>${requests.examIndex}</td>
+								<td><font color="green">${requests.status}</font>
+							</c:forEach>
+							</tr>
 							<!--
 							<tr class="info">
 								

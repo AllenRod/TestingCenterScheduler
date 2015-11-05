@@ -202,23 +202,23 @@ public class DatabaseManager {
     }
 
     /**
-     * Queries DB by InstructorNetID and returns a list of Requests
+     * Queries DB by InstructorNetID and returns a list of ClassExamRequests
      * 
      * @param String
      *            Name of instructor to get requests for
-     * @return List<Course> List of all requests belonging to the instructor
+     * @return List<Course> List of all class exam requests belonging to the instructor
      */
-    public List<Request> I_getRequests(String netID) {
+    public List<Request> I_getClassExamRequests(String netID) {
 	createEntityManager();
 	Query a = em
-		.createQuery("SELECT r FROM Request r WHERE r.instructorNetID = :nID");
+		.createQuery("SELECT r FROM ClassExamRequest r WHERE r.instructorNetID = :nID");
 	a.setParameter("nID", netID);
 	try {
 	    List<Request> rs = a.getResultList();
 	    LoggerWrapper.logger.info("Get requests belongs to " + netID);
 	    return rs;
 	} catch (PersistenceException error) {
-	    LoggerWrapper.logger.info("There is an error in I_getRequests:\n" 
+	    LoggerWrapper.logger.info("There is an error in I_getClassExamRequests:\n" 
 		    + error.getClass() + ":" + error.getMessage());
 	    return null;
 	} finally {
@@ -227,11 +227,11 @@ public class DatabaseManager {
     }
     
     /**
-     * Queries DB by InstructorNetID and returns a list of Requests
+     * Queries DB by InstructorNetID and returns a list of NonClassRequests
      * 
      * @param String
      *            Name of instructor to get requests for
-     * @return List<Course> List of all requests belonging to the instructor
+     * @return List<Course> List of all non-class requests belonging to the instructor
      */
     public List<Request> I_getNonClassRequests(String netID) {
 	createEntityManager();

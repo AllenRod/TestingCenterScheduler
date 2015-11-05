@@ -55,11 +55,27 @@ public class Instructor {
     }
 
     /**
-     * 
-     * @return
+     * Get all class exam requests of this instructor
+     * @return		List of all class exam requests
      */
-    public List<Request> getRequests() {
-	return dbManager.I_getRequests(netID);
+    public List<Request> getClassExamRequests() {
+	return dbManager.I_getClassExamRequests(netID);
+    }
+    
+    /**
+     * Get all courses taught by this instructor
+     * @return		List of taught courses
+     */
+    public List<Course> getCourses() {
+	return dbManager.I_getCourses(netID);
+    }
+    
+    /**
+     * Get all non class exam requests of this instructor
+     * @return		List of all non class exam requests
+     */
+    public List<Request> getNonClassRequests() {
+	return dbManager.I_getNonClassRequests(netID);
     }
 
     /**

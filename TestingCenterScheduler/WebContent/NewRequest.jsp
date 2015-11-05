@@ -119,14 +119,25 @@
 		</form>
 	</div>
 	<!-- /.container-fluid -->
-	<script>
-		
-	</script>
+	
 	<!-- jQuery -->
 	<script src="js/jquery.js"></script>
 
 	<!-- Bootstrap Core JavaScript -->
 	<script src="js/bootstrap.min.js"></script>
+	
+	<script>
+		$(function() {
+			$('#Rtype').change(function(){
+				var type = $('#Rtype').find(":selected").val();
+				if (type == "AD_HOC") {
+					$('#Rclass').hide();
+				} else {
+					$('#Rclass').show();
+				}
+			});
+		});	
+	</script>
 
 </body>
 

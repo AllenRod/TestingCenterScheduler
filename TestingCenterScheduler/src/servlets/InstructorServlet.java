@@ -47,7 +47,11 @@ public class InstructorServlet extends HttpServlet {
 	} else {
 	    instr.setNetID(user.getNetID());
 	}
-	request.getSession().setAttribute("requests", instr.getRequests());
+	request.getSession().setAttribute("crequests",
+		instr.getClassExamRequests());
+	request.getSession().setAttribute("nrequests",
+		instr.getNonClassRequests());
+	request.getSession().setAttribute("courses", instr.getCourses());
 	request.getSession().setAttribute("login", true);
 	LoggerWrapper.logger.info("Redirect to Instructor homepage");
 	response.sendRedirect("Instructor.jsp");
@@ -63,7 +67,7 @@ public class InstructorServlet extends HttpServlet {
 	if (request.getSession().getAttribute("login") == null) {
 	    doGet(request, response);
 	    return;
-	} 
+	}
 	if (request.getSession().getAttribute("action") != null) {
 	    LoggerWrapper.logger.info("Processing New Request");
 	    instr.newRequest(request.getParameter("Rtype"),
@@ -77,9 +81,12 @@ public class InstructorServlet extends HttpServlet {
 		    request.getParameter("Reday"),
 		    request.getParameter("Retime"),
 		    request.getParameter("Rlist"));
+	    request.getSession().setAttribute("crequests",
+		    instr.getClassExamRequests());
+	    request.getSession().setAttribute("nrequests",
+		    instr.getNonClassRequests());
+	    request.getSession().setAttribute("courses", instr.getCourses());
 	    response.sendRedirect("Close.jsp");
-	    request.getSession().setAttribute("requests", instr.getRequests());
-	    response.sendRedirect("Requests.jsp");
 	} else {
 	    LoggerWrapper.logger.info("Unsupported Case");
 	}
