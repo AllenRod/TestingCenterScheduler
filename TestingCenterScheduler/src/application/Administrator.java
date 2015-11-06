@@ -191,6 +191,6 @@ public class Administrator {
 	 * @return	List of existing terms
 	 */
 	public List<Term> getTerms() {
-		return dbManager.A_getTerm();
+		return dbManager.getTerm();
 	}
 }

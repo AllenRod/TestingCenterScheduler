@@ -30,7 +30,7 @@ public class ClassExamRequest extends Request implements Serializable {
 		super();
 	}
 
-	public Course getCoursePK() {
+	public Course getCourse() {
 		return this.course;
 	}
 

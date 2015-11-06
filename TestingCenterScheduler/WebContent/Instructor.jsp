@@ -134,17 +134,23 @@
 							<c:forEach items="${crequests}" var="requests">
 								<c:if test="${requests.status eq 'COMPLETED'}">
 									<a href="#" class="list-group-item">
-										<b>ClassID:</b>
-										<c:if test="${empty requests.course}">
-											Non-class Exam
-										</c:if>
-										<c:if test="${not empty requests.course}">
-											${requests.course.classID}
-										</c:if>
+										<b>ClassID:</b>	${requests.course.classID}
 										<b>Test Name:</b> ${requests.examName}
 										<b>Start Date:</b> ${requests.timeStart} <b>End Date:</b> ${requests.timeEnd}
 										<b>Duration:</b> ${requests.testDuration} <b>RequestID:</b>
-										${requests.examIndex} <b>Status:</b> ${requests.status}</a>
+										${requests.examIndex} <b>Status:</b> ${requests.status}
+									</a>
+								</c:if>
+							</c:forEach>
+							<c:forEach items="${nrequests}" var="requests">
+								<c:if test="${requests.status eq 'COMPLETED'}">
+									<a href="#" class="list-group-item">
+										<b>ClassID:</b>	Non-Class Exam
+										<b>Test Name:</b> ${requests.examName}
+										<b>Start Date:</b> ${requests.timeStart} <b>End Date:</b> ${requests.timeEnd}
+										<b>Duration:</b> ${requests.testDuration} <b>RequestID:</b>
+										${requests.examIndex} <b>Status:</b> ${requests.status}
+									</a>
 								</c:if>
 							</c:forEach>
 						</div>

@@ -39,7 +39,16 @@
 					<td style="padding-Bottom: 5px;"><select
 						class="form-control input-sm" id="Rclass" name="Rclass">
 							<c:forEach items="${courses}" var="courses">
-								<option value="${courses.classID}">${courses.classID}</option>
+								<option value="${courses.classID}">${courses.subject}${courses.catalogNum}-${courses.section}_${courses.term.termID}</option>
+							</c:forEach>
+					</select></td>
+				</tr>
+				<tr>
+					<th style="padding-Bottom: 5px;">Term: <br></th>
+					<td style="padding-Bottom: 5px;"><select
+						class="form-control input-sm" id="Rterm" name="Rterm">
+							<c:forEach items="${termlist}" var="term">
+								<option value="${term.termID}">${term.termID} ${term.termSeason}_${term.termYear}</option>
 							</c:forEach>
 					</select></td>
 				</tr>

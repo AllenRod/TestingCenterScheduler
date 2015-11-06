@@ -11,6 +11,7 @@ import entity.ClassExamRequest;
 import entity.Course;
 import entity.NonClassRequest;
 import entity.Request;
+import entity.Term;
 
 /**
  * 
@@ -107,7 +108,7 @@ public class Instructor {
 	 *            Roster list of students. If exam for a course set null
 	 * @return Result from making new request
 	 */
-	public String newRequest(String examType, String course, String examName,
+	public String newRequest(String examType, String course, String termID, String examName,
 			String testDuration, String sMonth, String sDay, String sTime,
 			String eMonth, String eDay, String eTime, String roster) {
 		try {
@@ -132,8 +133,11 @@ public class Instructor {
 				r.setStatus("pending");
 				r.setTimeEnd(timeEnd);
 				r.setTimeStart(timeStart);
-				String termID = course.split("-")[1];
-				r.setCourse(dbManager.I_findCourse(course, netID, termID));
+				Course c = dbManager.I_findCourse(course, termID);
+				if (c == null) {
+					return "Conflict between classID and termID, please check your input again";
+				}
+				r.setCourse(dbManager.I_findCourse(course, termID));
 				s = dbManager.loadData(r);
 			} else if (examType.equals("AD_HOC")) {
 				NonClassRequest r = new NonClassRequest();
@@ -152,5 +156,13 @@ public class Instructor {
 			System.out.println(error.getClass() + ":" + error.getMessage());
 			return error.getClass() + ":" + error.getMessage();
 		}
+	}
+	
+	/**
+	 * Get all existing terms
+	 * @return	List of existing terms
+	 */
+	public List<Term> getTerms() {
+		return dbManager.getTerm();
 	}
 }

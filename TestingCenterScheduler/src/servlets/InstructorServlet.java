@@ -52,6 +52,7 @@ public class InstructorServlet extends HttpServlet {
 	request.getSession().setAttribute("nrequests",
 		instr.getNonClassRequests());
 	request.getSession().setAttribute("courses", instr.getCourses());
+	request.getSession().setAttribute("termlist", instr.getTerms());
 	request.getSession().setAttribute("login", true);
 	LoggerWrapper.logger.info("Redirect to Instructor homepage");
 	response.sendRedirect("Instructor.jsp");
@@ -72,6 +73,7 @@ public class InstructorServlet extends HttpServlet {
 	    LoggerWrapper.logger.info("Processing New Request");
 	    instr.newRequest(request.getParameter("Rtype"),
 		    request.getParameter("Rclass"),
+		    request.getParameter("Rterm"),
 		    request.getParameter("Rname"),
 		    request.getParameter("Rduration"),
 		    request.getParameter("Rsmon"),

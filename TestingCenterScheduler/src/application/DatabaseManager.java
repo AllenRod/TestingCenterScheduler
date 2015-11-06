@@ -110,7 +110,7 @@ public class DatabaseManager {
 							+ " tab WHERE tab.term = :termDel")
 					.setParameter("termDel", term).executeUpdate();
 			// em.createNativeQuery("SET FOREIGN_KEY_CHECKS = 1;").executeUpdate();
-			LoggerWrapper.logger.info("Table " + tableName + " with data in "
+			LoggerWrapper.logger.info("Table " + tableName + " with data in term "
 					+ termID + " is deleted");
 			closeTransactionalEntityManager();
 			return true;
@@ -189,21 +189,25 @@ public class DatabaseManager {
 	 * @param netID
 	 *            Given instructor netID
 	 * @param termID
-	 * 				Given termID
+	 *            Given termID
 	 * @return Course with the courseID, instructor netID and termID
 	 */
-	public Course I_findCourse(String courseID, String netID, String termID) {
+	public Course I_findCourse(String courseID, String termID) {
+		Term term = getTerm(termID);
+		createEntityManager();
 		Query q = em
 				.createQuery("SELECT c FROM Course c WHERE c.classID = :cID "
-						+ "AND c.instructorNetID = :nID AND c.term = :cTerm");
+						+ "AND c.term = :cTerm");
 		q.setParameter("cID", courseID);
-		q.setParameter("nID", netID);
-		q.setParameter("cTerm", getTerm(termID));
-		createEntityManager();
+		q.setParameter("cTerm", term);
 		try {
 			Course rs = (Course) q.getSingleResult();
+			if (rs == null) {
+				LoggerWrapper.logger.info("Course not found, conflict between courseID and termID");
+				return null;
+			}
 			LoggerWrapper.logger.info("Get course with course " + courseID
-					+ ", instruction netID " + netID + " and termID " + termID);
+					+ ", instruction netID " + rs.getInstructorNetID() + " and termID " + termID);
 			return rs;
 		} catch (PersistenceException error) {
 			LoggerWrapper.logger.info("There is an error in I_findCourse:\n"
@@ -254,7 +258,8 @@ public class DatabaseManager {
 		a.setParameter("nID", netID);
 		try {
 			List<Request> rs = a.getResultList();
-			LoggerWrapper.logger.info("Get requests belongs to " + netID);
+			LoggerWrapper.logger.info("Get class exam requests belongs to "
+					+ netID);
 			return rs;
 		} catch (PersistenceException error) {
 			LoggerWrapper.logger
@@ -281,7 +286,8 @@ public class DatabaseManager {
 		a.setParameter("nID", netID);
 		try {
 			List<Request> rs = a.getResultList();
-			LoggerWrapper.logger.info("Get requests belongs to " + netID);
+			LoggerWrapper.logger.info("Get non-class exam requests belongs to "
+					+ netID);
 			return rs;
 		} catch (PersistenceException error) {
 			LoggerWrapper.logger
@@ -309,9 +315,11 @@ public class DatabaseManager {
 			Course course = (Course) a.getSingleResult();
 			a = em.createQuery("SELECT COUNT(r.examIndex) FROM ClassExamRequest r WHERE r.course = :c");
 			a.setParameter("c", course);
-			long num = (long)a.getSingleResult();
+			long num = (long) a.getSingleResult();
 			num += 1;
-			String rs = classID + "_ex" + num;
+			String rs = course.getSubject() + course.getCatalogNum() + "-"
+					+ course.getSection() + "_" + course.getTerm().getTermID()
+					+ "_ex" + num;
 			LoggerWrapper.logger.info("The exam name would be " + rs);
 			return rs;
 		} catch (PersistenceException error) {
@@ -350,7 +358,7 @@ public class DatabaseManager {
 	 * 
 	 * @return List<Term> List of all term
 	 */
-	public List<Term> A_getTerm() {
+	public List<Term> getTerm() {
 		createEntityManager();
 		Query a = em.createQuery("SELECT t FROM Term t");
 		try {
