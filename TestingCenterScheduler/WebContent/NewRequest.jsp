@@ -46,7 +46,7 @@
 				<tr>
 					<th style="padding-Bottom: 5px;">Exam Name: <br></th>
 					<td style="padding-Bottom: 5px;"><input id="Rname" name="Rname"
-						class="form-control input-sm" type="text" placeholder="Exam Name" required></td>
+						class="form-control input-sm" type="text" placeholder="Exam Name" disabled></td>
 				</tr>
 				<tr>
 					<th>Test Duration: <br></th>
@@ -60,15 +60,11 @@
 							<c:forEach begin="1" end="12" var="val">
 								<option> ${val}</option>
 							</c:forEach>
-						</select>
-						/
-						<select name="Rsday" class="form-control" style="width:100px">
+						</select>/<select name="Rsday" class="form-control" style="width:100px">
 							<c:forEach begin="1" end="31" var="val">
 								<option> ${val}</option>
 							</c:forEach>
-						</select>
-						
-						<select name="Rstime" class="form-control" style="width:100px">
+						</select>	<select name="Rstime" class="form-control" style="width:100px">
 							<c:forEach begin="0" end="23" var="val">
 								<option> ${val}:00</option>
 								<option> ${val}:15</option>
@@ -85,15 +81,11 @@
 							<c:forEach begin="1" end="12" var="val">
 								<option> ${val}</option>
 							</c:forEach>
-						</select>
-						/
-						<select name="Reday" class="form-control" style="width:100px">
+						</select>/<select name="Reday" class="form-control" style="width:100px">
 							<c:forEach begin="1" end="31" var="val">
 								<option> ${val}</option>
 							</c:forEach>
-						</select>
-						
-						<select name="Retime" class="form-control" style="width:100px">
+						</select>	<select name="Retime" class="form-control" style="width:100px">
 							<c:forEach begin="0" end="23" var="val">
 								<option> ${val}:00</option>
 								<option> ${val}:15</option>
@@ -131,9 +123,13 @@
 			$('#Rtype').change(function(){
 				var type = $('#Rtype').find(":selected").val();
 				if (type == "AD_HOC") {
-					$('#Rclass').hide();
+					$('#Rclass').prop('disabled', true);
+					$('#Rname').prop('disabled', false);
+					$('#Rname').prop('required', true);
 				} else {
-					$('#Rclass').show();
+					$('#Rclass').prop('disabled', false);
+					$('#Rname').prop('disabled', true);
+					$('#Rname').prop('required', false);
 				}
 			});
 		});	

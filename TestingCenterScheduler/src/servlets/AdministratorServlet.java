@@ -52,6 +52,7 @@ public class AdministratorServlet extends HttpServlet {
 	    admin.setNetID(user.getNetID());
 	}
 	request.getSession().setAttribute("infolist", admin.getTCInfo());
+	request.getSession().setAttribute("termlist", admin.getTerms());
 	request.getSession().setAttribute("login", true);
 	LoggerWrapper.logger.info("Redirectiong to Admin.jsp");
 	response.sendRedirect("Admin.jsp");

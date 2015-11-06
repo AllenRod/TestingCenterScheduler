@@ -102,20 +102,36 @@
 				<c:remove var="returnVal" scope="session" />
 				
 				<form action="LoadCSV" method="POST">
-					<p>
-					CSV Type: 
-					<select name="table" >
-						<option value = "roster" selected> Roster</option>
-						<option value = "user" > User</option>
-						<option value = "class" > Class</option>
-					</select>
-					</p>
+				
+					<div class="row">
+						<div class="col-md-6">
+							<p>Choose a term</p>
+							<select class="form-control" name="termVal">				
+								<c:forEach items="${termlist}" var="term"> 
+	    							<option value="${term.termID}">${term.termID} ${term.termSeason}_${term.termYear}</option>
+								</c:forEach>
+							</select> 
+						</div>
+					</div>
+				
+					<div class = "row">
+						<div class="col-md-6">
+						<p>
+						CSV Type: 
+						<select name="table" class="form-control">
+							<option value = "roster" selected> Roster</option>
+							<option value = "user" > User</option>
+							<option value = "class" > Class</option>
+						</select>
+						</p>
+						</div>
+					</div>
 					<p>
 					Choose your .csv file <br>
 					<input type="file" name="file" size="50" onClick="enableButton()" required>
 					</p>
 					<div>
-						<input id = "submit" type="submit" value="Send" onClick="this.disabled=true; this.value='Uploading...';">
+						<input class="btn btn-primary" id = "submit" type="submit" value="Send" onClick="this.disabled=true; this.value='Uploading...';">
 					</div>
 				</form>
 			</div>

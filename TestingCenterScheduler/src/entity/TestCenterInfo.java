@@ -13,7 +13,9 @@ import javax.persistence.*;
 public class TestCenterInfo implements Serializable {
 
     @Id
-    private String term;
+    @ManyToOne
+    @JoinColumn(name = "TERM_ID")
+    private Term term;
 
     private String openHours;
 
@@ -35,11 +37,11 @@ public class TestCenterInfo implements Serializable {
 	super();
     }
 
-    public String getTerm() {
+    public Term getTerm() {
 	return this.term;
     }
 
-    public void setTerm(String term) {
+    public void setTerm(Term term) {
 	this.term = term;
     }
 

@@ -11,12 +11,12 @@ import javax.persistence.Column;
 public class AppointmentPK implements Serializable {
     private static final long serialVersionUID = 3368854275057451457L;
 
-    @Column(name = "EXAM_ID")
+    @Column(name = "EXAM_ID_FK")
     private int request;
 
-    @Column(name = "NET_ID")
-    private String user;
-
+    @Column(name = "USER_ID_FK")
+    private UserPK user;
+    
     public AppointmentPK() {
 
     }
@@ -29,11 +29,11 @@ public class AppointmentPK implements Serializable {
 	this.request = request;
     }
 
-    public String getUser() {
+    public UserPK getUserPK() {
 	return user;
     }
 
-    public void setUser(String user) {
+    public void setUserPK(UserPK user) {
 	this.user = user;
     }
 
@@ -49,7 +49,7 @@ public class AppointmentPK implements Serializable {
 	}
 	AppointmentPK other = (AppointmentPK) o;
 	return true && getRequest() == other.getRequest()
-		&& getUser() == other.getUser();
+		&& getUserPK() == other.getUserPK();
     }
 
     /*
@@ -59,7 +59,7 @@ public class AppointmentPK implements Serializable {
 	final int prime = 17;
 	int result = 1;
 	result = prime * result
-		+ (getUser() == null ? 0 : getUser().hashCode());
+		+ (getUserPK() == null ? 0 : getUserPK().hashCode());
 	result = prime * result + getRequest();
 	return result;
     }

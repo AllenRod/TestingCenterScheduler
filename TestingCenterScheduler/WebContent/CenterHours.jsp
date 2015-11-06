@@ -87,11 +87,11 @@
 				</div>
 				
 				  
-				<div>
+				<div class="row">
 					<div class="col-sm-6">								
 						<select class="form-control" id="select">				
 							<c:forEach items="${infolist}" var="info" varStatus="i"> 
-    							<option value="${i.index}">${info.term}</option>
+    							<option value="${i.index}">${info.term.termID} ${info.term.termSeason}_${info.term.termYear}</option>
 							</c:forEach>
 							<option value="newForm" selected>New Info</option>
 						</select>
@@ -100,13 +100,13 @@
 				
 				<c:forEach items="${infolist}" var="info" varStatus="i">
 				<!-- /.row -->
-				<div class="row" id="table${i.index}" style="display:none;">
-				
+				<div class="row formTable" id="table${i.index}" style="display:none;">
+				<div class="col-lg-12">
 					<form action="AdministratorHome" method="POST" >
 					<table class = "info-Table">
 						<tr>
 							<th>Term:</th>
-							<td><input type="text" class="form-control" id="term" name="term" value="${info.term}" readonly/></td>
+							<td><input type="text" class="form-control" id="term" name="term" value="${info.term.termID}" readonly/></td>
 						</tr>
 						<tr>
 							<th>Gap Time:</th>
@@ -276,10 +276,11 @@
 					<input type="submit" class="btn btn-primary" name="edit" value="Submit"/>
 					</form>
 				</div>
+				</div>
 				
 			</c:forEach>
-			<div class="row" id="newForm">
-				
+			<div class="row formTable" id="newForm">
+				<div class="col-lg-12">
 					<form action="AdministratorHome" method="POST" >
 					<table class = "info-Table">
 						<tr>
@@ -453,6 +454,7 @@
 					</table>
 					<input type="submit" class="btn btn-primary" name="edit" value="Submit"/>
 					</form>
+					</div>
 				</div>
 			</div>
 			<!-- /.container-fluid -->
@@ -474,10 +476,10 @@
 			$('#select').change(function(){
 				var term = $('#select').find(":selected").val();
 				if (term == "newForm") {
-					$('.row').hide();
+					$('.formTable').hide();
 					$('#newForm').show();
 				} else {
-					$('.row').hide();
+					$('.formTable').hide();
 					$('#table'+term).show();
 				}
 			});
