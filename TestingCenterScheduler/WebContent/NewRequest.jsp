@@ -55,7 +55,7 @@
 				</tr>
 				<tr>
 					<th>Start Time: <br></th>
-					<td style="padding-Bottom: 5px;">
+					<td style="padding-Bottom: 5px; overflow: hidden; text-align: left; valign: top; whitespace: nowrap;">
 						<select name="Rsmon" class="form-control" style="width:100px">
 							<c:forEach begin="1" end="12" var="val">
 								<option> ${val}</option>
@@ -68,7 +68,6 @@
 							</c:forEach>
 						</select>
 						
-						<p>&emsp;</p>
 						<select name="Rstime" class="form-control" style="width:100px">
 							<c:forEach begin="0" end="23" var="val">
 								<option> ${val}:00</option>
