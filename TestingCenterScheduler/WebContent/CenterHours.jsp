@@ -109,10 +109,6 @@
 							<td><input type="text" class="form-control" id="term" name="term" value="${info.term.termID}" readonly/></td>
 						</tr>
 						<tr>
-							<th>Gap Time:</th>
-							<td><input type="text" class="form-control" id="gaptime" name="gaptime" value="${info.gapTime}" required/></td>
-						</tr>
-						<tr>
 							<th>Open Hours:</th>
 							<td>
 							<table class="info-table"  style="width:70%">
@@ -432,12 +428,22 @@
 							</td>
 						</tr>
 						<tr>
+							<th>Gap Time:</th>
+							<td>
+								<select class="form-control" id="gaptime" name="gaptime" style="width:100px">
+									<c:forEach begin="0" end="30" var="val">
+										<option>${val}</option>
+									</c:forEach>
+								</select> min
+							</td>
+						</tr>
+						<tr>
 							<th>Closing Dates:</th>
-							<td><input type="text" class="form-control" id="closing" name="closing" placeholder="Enter closing date range" required/></td>
+							<td><input type="text" class="form-control" id="closing" name="closing" placeholder="Enter closing date range"/></td>
 						</tr>
 						<tr>
 							<th>Reserve Time:</th>
-							<td><input type="text" class="form-control" id="reserve" name="reserve" placeholder="Enter reserve time" required/></td>
+							<td><input type="text" class="form-control" id="reserve" name="reserve" placeholder="Enter reserve time"/></td>
 						</tr>
 						<tr>
 							<th>Reminder Interval:</th>

@@ -55,7 +55,7 @@ public class CSVLoader {
 			String header = sc.nextLine();
 			String[] headerVal = header.split(",");
 			if (table.toLowerCase().equals("class")) {
-				if (!headerVal[0].toLowerCase().equals("classid")
+				/**if (!headerVal[0].toLowerCase().equals("classid")
 						|| !headerVal[1].toLowerCase().equals("subject")
 						|| !headerVal[2].toLowerCase().equals("catalognumber")
 						|| !headerVal[3].toLowerCase().equals("section")
@@ -65,17 +65,19 @@ public class CSVLoader {
 					return "Wrong csv format for Class table";
 				} else {
 					dbManager.delTable("Course", termID);
-				}
+				}**/
+				dbManager.delTable("Course", termID);
 			} else if (table.toLowerCase().equals("roster")) {
-				if (!headerVal[0].toLowerCase().equals("netid")
+				/**if (!headerVal[0].toLowerCase().equals("netid")
 						|| !headerVal[1].toLowerCase().equals("classid")) {
 					sc.close();
 					return "Wrong csv format for Roster table";
 				} else {
 					dbManager.delTable("Roster", termID);
-				}
+				}**/
+				dbManager.delTable("Roster", termID);
 			} else if (table.toLowerCase().equals("user")) {
-				if (!headerVal[0].toLowerCase().equals("firstname")
+				/**if (!headerVal[0].toLowerCase().equals("firstname")
 						|| !headerVal[1].toLowerCase().equals("lastname")
 						|| !headerVal[2].toLowerCase().equals("netid")
 						|| !headerVal[3].toLowerCase().equals("email")) {
@@ -83,7 +85,8 @@ public class CSVLoader {
 					return "Wrong csv format for User table";
 				} else {
 					dbManager.delTable("User", termID);
-				}
+				}**/
+				dbManager.delTable("User", termID);
 			} else {
 				sc.close();
 				return "Wrong CSV format";
