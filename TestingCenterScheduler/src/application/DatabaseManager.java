@@ -110,8 +110,8 @@ public class DatabaseManager {
 							+ " tab WHERE tab.term = :termDel")
 					.setParameter("termDel", term).executeUpdate();
 			// em.createNativeQuery("SET FOREIGN_KEY_CHECKS = 1;").executeUpdate();
-			LoggerWrapper.logger.info("Table " + tableName + " with data in term "
-					+ termID + " is deleted");
+			LoggerWrapper.logger.info("Table " + tableName
+					+ " with data in term " + termID + " is deleted");
 			closeTransactionalEntityManager();
 			return true;
 		} catch (Exception error) {
@@ -203,11 +203,13 @@ public class DatabaseManager {
 		try {
 			Course rs = (Course) q.getSingleResult();
 			if (rs == null) {
-				LoggerWrapper.logger.info("Course not found, conflict between courseID and termID");
+				LoggerWrapper.logger
+						.info("Course not found, conflict between courseID and termID");
 				return null;
 			}
 			LoggerWrapper.logger.info("Get course with course " + courseID
-					+ ", instruction netID " + rs.getInstructorNetID() + " and termID " + termID);
+					+ ", instruction netID " + rs.getInstructorNetID()
+					+ " and termID " + termID);
 			return rs;
 		} catch (PersistenceException error) {
 			LoggerWrapper.logger.info("There is an error in I_findCourse:\n"
@@ -378,7 +380,7 @@ public class DatabaseManager {
 	 * Check if the test center info for a term already existed
 	 * 
 	 * @param term
-	 *            The term to chec
+	 *            The term to check
 	 */
 	public void A_checkTerm(String term) {
 		createTransactionalEntityManager();
@@ -397,6 +399,54 @@ public class DatabaseManager {
 					+ error.getClass() + ":" + error.getMessage());
 		} finally {
 			closeTransactionalEntityManager();
+		}
+	}
+
+	/**
+	 * Get the number of student from Roster with the given course
+	 * 
+	 * @param course
+	 *            Given course
+	 * @return Number of student in the course
+	 */
+	public int R_getStudentNum(Course course) {
+		createEntityManager();
+		try {
+			Query q = em.createQuery("SELECT COUNT(r.user) FROM Roster r WHERE r.course = :cou " + 
+					" AND r.term = :cterm");
+			q.setParameter("cou", course.getClassID());
+			q.setParameter("cterm", course.getTerm());
+			Long r = (Long) q.getSingleResult();
+			return r.intValue();
+		} catch (PersistenceException error) {
+			LoggerWrapper.logger.info("There is an error in R_getStudentNum:\n"
+					+ error.getClass() + ":" + error.getMessage());
+			return 0;
+		} finally {
+			closeEntityManager();
+		}
+	}
+	
+	/**
+	 * Get the gap time from TestCenterInfo with the given term
+	 * 
+	 * @param term
+	 *            Given term
+	 * @return Gap time of the testing center in the given term
+	 */
+	public int R_getGapTime(Term term) {
+		createEntityManager();
+		try {
+			Query q = em.createQuery("SELECT t.gapTime FROM TestCenterInfo t WHERE t.term = :tterm");
+			q.setParameter("tterm", term);
+			int r = (int)q.getSingleResult();
+			return r;
+		} catch (PersistenceException error) {
+			LoggerWrapper.logger.info("There is an error in R_getGapTime:\n"
+					+ error.getClass() + ":" + error.getMessage());
+			return 0;
+		} finally {
+			closeEntityManager();
 		}
 	}
 

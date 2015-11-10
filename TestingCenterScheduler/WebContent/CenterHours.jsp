@@ -249,6 +249,16 @@
 							</td>
 						</tr>
 						<tr>
+							<th>Gap Time:</th>
+							<td>
+								<select class="form-control" id="gaptime" name="gaptime" style="width:100px">
+									<c:forEach begin="0" end="30" var="val">
+										<option>${val}</option>
+									</c:forEach>
+								</select> min
+							</td>
+						</tr>
+						<tr>
 							<th>Closing Dates:</th>
 							<td><input type="text" class="form-control" id="closing" name="closing" value="${info.closedDate}" required/></td>
 						</tr>
@@ -282,10 +292,6 @@
 						<tr>
 							<th>Term:</th>
 							<td><input type="text" class="form-control" id="term" name="term" placeholder="Enter term" required/></td>
-						</tr>
-						<tr>
-							<th>Gap Time:</th>
-							<td><input type="text" class="form-control" id="gaptime" name="gaptime" placeholder="Enter gap time" required/></td>
 						</tr>
 						<tr>
 							<th>Open Hours:</th>

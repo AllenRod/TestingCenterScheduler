@@ -138,6 +138,9 @@ public class Instructor {
 					return "Conflict between classID and termID, please check your input again";
 				}
 				r.setCourse(dbManager.I_findCourse(course, termID));
+				// Test
+				RequestManager mag = new RequestManager();
+				mag.requestSeatHour(r);
 				s = dbManager.loadData(r);
 			} else if (examType.equals("AD_HOC")) {
 				NonClassRequest r = new NonClassRequest();
