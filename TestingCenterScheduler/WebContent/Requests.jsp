@@ -103,15 +103,54 @@
 								<th>RequestID</th>
 								<th>Status</th>
 							</tr>
-							<c:forEach items="${requests}" var="requests">    
-    						<tr class="success">
-								<td><font color="blue">${requests.course.classID}</font></td>
+							<c:forEach items="${crequests}" var="requests">
+							<tr class="success">
+								<td><font color="blue">
+										${requests.course.classID}</font></td>
 								<td>${requests.examName}</td>
 								<td>${requests.timeStart}</td>
 								<td>${requests.timeEnd}</td>
 								<td>${requests.testDuration}</td>
 								<td>${requests.examIndex}</td>
-								<td><font color="green">${requests.status}</font></th>
+								<c:choose>
+									<c:when test="${requests.status eq 'approved'}">
+										<td><font color="green">${requests.status}</font>
+									</c:when>
+									<c:when test="${requests.status eq 'denied'}">
+										<td><font color="red">${requests.status}</font>
+									</c:when>
+									<c:when test="${requests.status eq 'pending'}">
+										<td><font color="grey">${requests.status}</font>
+									</c:when>
+									<c:otherwise>
+										<td>${requests.status}</font>
+									</c:otherwise>
+								</c:choose>
+							</tr>
+							</c:forEach>
+							<c:forEach items="${nrequests}" var="requests">   
+							<tr class="info">
+								<td><font color="blue">
+										Non-Class Exam</font></td>
+								<td>${requests.examName}</td>
+								<td>${requests.timeStart}</td>
+								<td>${requests.timeEnd}</td>
+								<td>${requests.testDuration}</td>
+								<td>${requests.examIndex}</td>
+								<c:choose>
+									<c:when test="${requests.status eq 'approved'}">
+										<td><font color="green">${requests.status}</font>
+									</c:when>
+									<c:when test="${requests.status eq 'denied'}">
+										<td><font color="red">${requests.status}</font>
+									</c:when>
+									<c:when test="${requests.status eq 'pending'}">
+										<td><font color="grey">${requests.status}</font>
+									</c:when>
+									<c:otherwise>
+										<td>${requests.status}</font>
+									</c:otherwise>
+								</c:choose>
 							</tr>
 							</c:forEach>
 							<!--

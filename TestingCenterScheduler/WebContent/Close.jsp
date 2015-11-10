@@ -20,10 +20,11 @@
 
 </head>
 
-<body onload="foo()">
+<body onload="close()">
 	
 	<script>
-		function foo(){
+		function close(){
+			location.href = "localhost:8080/TestingCenterScheduler/Requests.jsp";
 			window.close();
 		}
 	</script>

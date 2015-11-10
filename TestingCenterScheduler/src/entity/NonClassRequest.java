@@ -18,7 +18,8 @@ import javax.persistence.*;
 @DiscriminatorValue("AD_HOC")
 public class NonClassRequest extends Request implements Serializable {
     
-    private List<String> rosterList = new ArrayList<>();
+    @Column(columnDefinition = "TEXT")
+    private String rosterList;
     
     private static final long serialVersionUID = 1L;
 
@@ -26,11 +27,11 @@ public class NonClassRequest extends Request implements Serializable {
 	super();
     }
     
-    public List<String> getRosterList() {
+    public String getRosterList() {
 	return this.rosterList;
     }
     
-    public void setRosterList(List<String> rosterList) {
+    public void setRosterList(String rosterList) {
 	this.rosterList = rosterList;
     }
 

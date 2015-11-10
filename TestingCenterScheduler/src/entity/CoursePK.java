@@ -6,40 +6,29 @@ import java.lang.String;
 import javax.persistence.Column;
 
 /**
- * Primary ID class for entity: Roster
+ * Primary ID class for entity: Course
  * 
  * @author CSE308 Team Five
  */
-public class RosterPK implements Serializable {
-
-	@Column(name = "USER_ID")
-	private String user;
+public class CoursePK implements Serializable {
 
 	@Column(name = "CLASS_ID")
-	private String course;
+	private String classID;
 
 	@Column(name = "TERM_ID")
 	private String term;
 
 	private static final long serialVersionUID = 1L;
 
-	public RosterPK() {
+	public CoursePK() {
 	}
 
-	public String getUser() {
-		return this.user;
+	public String getClassID() {
+		return this.classID;
 	}
 
-	public void setUser(String user) {
-		this.user = user;
-	}
-
-	public String getCourse() {
-		return this.course;
-	}
-
-	public void setCourse(String course) {
-		this.course = course;
+	public void setClassID(String classID) {
+		this.classID = classID;
 	}
 
 	public String getTerm() {
@@ -57,15 +46,13 @@ public class RosterPK implements Serializable {
 		if (o == this) {
 			return true;
 		}
-		if (!(o instanceof RosterPK)) {
+		if (!(o instanceof CoursePK)) {
 			return false;
 		}
-		RosterPK other = (RosterPK) o;
+		CoursePK other = (CoursePK) o;
 		return true
-				&& (getUser() == null ? other.getUser() == null : getUser()
-						.equals(other.getUser()))
-				&& (getCourse() == null ? other.getCourse() == null
-						: getCourse().equals(other.getCourse()))
+				&& (getClassID() == null ? other.getClassID() == null
+						: getClassID().equals(other.getClassID()))
 				&& (getTerm() == null ? other.getTerm() == null : getTerm()
 						.equals(other.getTerm()));
 	}
@@ -77,9 +64,7 @@ public class RosterPK implements Serializable {
 		final int prime = 17;
 		int result = 1;
 		result = prime * result
-				+ (getUser() == null ? 0 : getUser().hashCode());
-		result = prime * result
-				+ (getCourse() == null ? 0 : getCourse().hashCode());
+				+ (getClassID() == null ? 0 : getClassID().hashCode());
 		result = prime * result
 				+ (getTerm() == null ? 0 : getTerm().hashCode());
 		return result;

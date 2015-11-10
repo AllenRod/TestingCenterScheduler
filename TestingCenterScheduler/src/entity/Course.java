@@ -9,81 +9,101 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 /**
  * Entity implementation class for Entity: Course
+ * 
  * @author CSE308 Team Five
  */
 @Entity
+@IdClass(CoursePK.class)
 public class Course implements Serializable {
 
-    @Id
-    @Column(name="CLASS_ID")
-    private String classID;
+	@Id
+	@Column(name = "CLASS_ID")
+	private String classID;
 
-    private String subject;
+	@Id
+	@ManyToOne
+	@JoinColumn(name = "TERM_ID")
+	private Term term;
 
-    private int catalogNum;
+	private String subject;
 
-    private String section;
+	private int catalogNum;
 
-    private String instructorNetID;
-    
-    @OneToMany(mappedBy = "course", cascade=CascadeType.ALL, fetch=FetchType.LAZY)
-    private List<ClassExamRequest> request = new ArrayList<>();
+	private String section;
 
-    private static final long serialVersionUID = 1L;
+	private String instructorNetID;
 
-    public Course() {
-	super();
-    }
+	@OneToMany(mappedBy = "course", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private List<ClassExamRequest> request = new ArrayList<>();
 
-    public String getClassID() {
-	return this.classID;
-    }
+	private static final long serialVersionUID = 1L;
 
-    public void setClassID(String classID) {
-	this.classID = classID;
-    }
+	public Course() {
+		super();
+	}
 
-    public String getSubject() {
-	return this.subject;
-    }
+	public String getClassID() {
+		return this.classID;
+	}
 
-    public void setSubject(String subject) {
-	this.subject = subject;
-    }
+	public void setClassID(String classID) {
+		this.classID = classID;
+	}
 
-    public int getCatalogNum() {
-	return this.catalogNum;
-    }
+	public Term getTerm() {
+		return term;
+	}
 
-    public void setCatalogNum(int catalogNum) {
-	this.catalogNum = catalogNum;
-    }
+	public void setTerm(Term term) {
+		this.term = term;
+	}
 
-    public String getSection() {
-	return this.section;
-    }
+	public String getSubject() {
+		return this.subject;
+	}
 
-    public void setSection(String section) {
-	this.section = section;
-    }
+	public void setSubject(String subject) {
+		this.subject = subject;
+	}
 
-    public String getInstructorNetID() {
-	return this.instructorNetID;
-    }
+	public int getCatalogNum() {
+		return this.catalogNum;
+	}
 
-    public void setInstructorNetID(String instructorNetID) {
-	this.instructorNetID = instructorNetID;
-    }
-    
-    public List<ClassExamRequest> getRequest() {
-	return this.request;
-    }
-    
-    public void setRequest(List<ClassExamRequest> request) {
-	this.request = request;
-    }
+	public void setCatalogNum(int catalogNum) {
+		this.catalogNum = catalogNum;
+	}
+
+	public String getSection() {
+		return this.section;
+	}
+
+	public void setSection(String section) {
+		this.section = section;
+	}
+
+	public String getInstructorNetID() {
+		return this.instructorNetID;
+	}
+
+	public void setInstructorNetID(String instructorNetID) {
+		this.instructorNetID = instructorNetID;
+	}
+
+	public List<ClassExamRequest> getRequest() {
+		return this.request;
+	}
+
+	public void setRequest(ClassExamRequest request) {
+		if (!this.request.contains(request)) {
+			this.request.add(request);
+		}
+	}
 }

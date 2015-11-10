@@ -1,7 +1,6 @@
 package servlets;
 
 import java.io.IOException;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -26,9 +25,6 @@ public class InstructorServlet extends HttpServlet {
     // single Administrator object
     private Instructor instr;
 
-    // single logger wrapper object
-    private LoggerWrapper wrapper;
-
     private static final long serialVersionUID = 1L;
 
     /**
@@ -36,7 +32,6 @@ public class InstructorServlet extends HttpServlet {
      */
     public InstructorServlet() {
 	super();
-	wrapper = LoggerWrapper.getInstance();
     }
 
     /**
@@ -52,10 +47,14 @@ public class InstructorServlet extends HttpServlet {
 	} else {
 	    instr.setNetID(user.getNetID());
 	}
-	request.getSession().setAttribute("requests", instr.getRequests());
+	request.getSession().setAttribute("crequests",
+		instr.getClassExamRequests());
+	request.getSession().setAttribute("nrequests",
+		instr.getNonClassRequests());
 	request.getSession().setAttribute("courses", instr.getCourses());
+	request.getSession().setAttribute("termlist", instr.getTerms());
 	request.getSession().setAttribute("login", true);
-	wrapper.logger.info("Redirect to Instructor homepage");
+	LoggerWrapper.logger.info("Redirect to Instructor homepage");
 	response.sendRedirect("Instructor.jsp");
     }
 
@@ -66,13 +65,15 @@ public class InstructorServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request,
 	    HttpServletResponse response) throws ServletException, IOException {
 	// TODO Auto-generated method stub
-	if (request.getSession().getAttribute("action") == null){
+	if (request.getSession().getAttribute("login") == null) {
 	    doGet(request, response);
+	    return;
 	}
-	else if (request.getSession().getAttribute("action") != null) {
-	    wrapper.logger.info("Processing New Request");
+	if (request.getSession().getAttribute("action") != null) {
+	    LoggerWrapper.logger.info("Processing New Request");
 	    instr.newRequest(request.getParameter("Rtype"),
 		    request.getParameter("Rclass"),
+		    request.getParameter("Rterm"),
 		    request.getParameter("Rname"),
 		    request.getParameter("Rduration"),
 		    request.getParameter("Rsmon"),
@@ -80,10 +81,16 @@ public class InstructorServlet extends HttpServlet {
 		    request.getParameter("Rstime"),
 		    request.getParameter("Remon"),
 		    request.getParameter("Reday"),
-		    request.getParameter("Retime"));
+		    request.getParameter("Retime"),
+		    request.getParameter("Rlist"));
+	    request.getSession().setAttribute("crequests",
+		    instr.getClassExamRequests());
+	    request.getSession().setAttribute("nrequests",
+		    instr.getNonClassRequests());
+	    request.getSession().setAttribute("courses", instr.getCourses());
 	    response.sendRedirect("Close.jsp");
 	} else {
-	    wrapper.logger.info("Unsupported Case");
+	    LoggerWrapper.logger.info("Unsupported Case");
 	}
     }
 
