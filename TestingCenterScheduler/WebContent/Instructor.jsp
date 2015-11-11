@@ -97,31 +97,34 @@
 					<div class="col-sm-12">
 						<div class="list-group">
 							<a class="list-group-item active">Current and Upcoming Exams</a>
-							<a href="#" class="list-group-item">
+							
 							<c:forEach items="${crequests}" var="requests">
 								<c:if test="${requests.status ne 'COMPLETED'}">
 									<c:if test="${requests.status ne 'DENIED'}">
+									<a href="#" class="list-group-item">
 										<b>ClassID:</b>	${requests.course.classID}
 										<b>Test Name:</b> ${requests.examName}
 										<b>Start Date:</b> ${requests.timeStart} <b>End Date:</b> ${requests.timeEnd}
 										<b>Duration:</b> ${requests.testDuration} <b>RequestID:</b>
 										${requests.examIndex} <b>Status:</b> ${requests.status}
+									</a>
 									</c:if>
 								</c:if>
 							</c:forEach>
-							</a>
 							<a href="#" class="list-group-item">
 							<c:forEach items="${nrequests}" var="requests">
 								<c:if test="${requests.status ne 'COMPLETED'}">
 									<c:if test="${requests.status ne 'DENIED'}">
+										<a href="#" class="list-group-item">
 										<b>ClassID:</b>	Non-Class Exam
 										<b>Test Name:</b> ${requests.examName}
 										<b>Start Date:</b> ${requests.timeStart} <b>End Date:</b> ${requests.timeEnd}
 										<b>Duration:</b> ${requests.testDuration} <b>RequestID:</b>
 										${requests.examIndex} <b>Status:</b> ${requests.status}
+										</a>
 									</c:if>
 								</c:if>
-							</c:forEach></a>
+							</c:forEach>
 						</div>
 					</div>
 				</div>

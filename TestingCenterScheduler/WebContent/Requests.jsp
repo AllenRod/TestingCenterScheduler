@@ -83,14 +83,14 @@
                         </h1>
                         <ol class="breadcrumb">
                             <li class="active">
-                                <a href="Instructor.html"> Home</a> > Requests
+                                <a href="Instructor.jsp"> Home</a> > Requests
                             </li>
                         </ol>
                     </div>
                 </div>
                 <!-- /.row -->
 				<div class="row">
-					<a href="#" class="btn btn-default" style="margin-bottom:10px;" onclick = "newRequest()">
+					<a href="NewRequest.jsp" class="btn btn-default" style="margin-bottom:10px;">
 						New Request
 					</a>
 					<table class ="table">
@@ -183,10 +183,6 @@
     <script src="js/bootstrap.min.js"></script>
 
     <script type ="text/javascript">
-                function newRequest(){
-                    var myWindow = window.open("", "New Request", "width=500, height=500");
-                    myWindow.location.replace("NewRequest.jsp");
-                }
                 function editRequest(ele){
                     var myWindow = window.open("", "Edit Employee", "width=500, height=500");
                     myWindow.location.replace("");
