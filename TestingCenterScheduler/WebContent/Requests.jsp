@@ -90,6 +90,28 @@
                 </div>
                 <!-- /.row -->
 				<div class="row">
+				<c:choose>
+				    <c:when test="${returnVal == 'Data import succeeds'}">
+				        <div class="row">
+							<div class="col-lg-12">
+								<div class="alert alert-success">
+									Request Successfully Processed
+								</div>
+							</div>
+						</div>
+				    </c:when>
+				    <c:when test="${not empty returnVal}">
+				        <div class="row">
+							<div class="col-lg-12">
+								<div class="alert alert-danger">
+									${returnVal}
+								</div>
+							</div>
+						</div>
+				    </c:when>
+				    <c:otherwise>
+				    </c:otherwise>
+				</c:choose>
 					<a href="NewRequest.jsp" class="btn btn-default" style="margin-bottom:10px;">
 						New Request
 					</a>

@@ -2,6 +2,7 @@ package servlets;
 
 import java.io.IOException;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -71,7 +72,8 @@ public class InstructorServlet extends HttpServlet {
 	}
 	if (request.getSession().getAttribute("action") != null) {
 	    LoggerWrapper.logger.info("Processing New Request");
-	    instr.newRequest(request.getParameter("Rtype"),
+	    String s;
+	    s = instr.newRequest(request.getParameter("Rtype"),
 		    request.getParameter("Rclass"),
 		    request.getParameter("Rterm"),
 		    request.getParameter("Rname"),
@@ -88,7 +90,11 @@ public class InstructorServlet extends HttpServlet {
 	    request.getSession().setAttribute("nrequests",
 		    instr.getNonClassRequests());
 	    request.getSession().setAttribute("courses", instr.getCourses());
-	    response.sendRedirect("Close.jsp");
+	    request.setAttribute("returnVal", s);
+	    RequestDispatcher rd = request
+				.getRequestDispatcher("Requests.jsp");
+	    rd.forward(request, response);
+	    //response.sendRedirect("Requests.jsp");
 	} else {
 	    LoggerWrapper.logger.info("Unsupported Case");
 	}

@@ -1,18 +1,27 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
+<!DOCTYPE html>
+<html lang="en">
+
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-	<title>Import .csv files</title>
-	
-	<!-- Bootstrap Core CSS -->
-	<link href="css/bootstrap.min.css" rel="stylesheet">
-	
-	<!-- Custom CSS -->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="author" content="">
+
+<title>Import .csv Files</title>
+
+<!-- Bootstrap Core CSS -->
+<link href="css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Custom CSS -->
 <link href="css/core.css" rel="stylesheet">
+
 </head>
+
 <body>
 	<div id="wrapper">
 
@@ -102,38 +111,32 @@
 				</c:choose>
 				<c:remove var="returnVal" scope="session" />
 				
-				<form action="LoadCSV" method="POST">
+				<form class="form-horizontal" action="LoadCSV" method="POST">
 				
-					<div class="row">
-						<div class="col-md-6">
-							<p>Choose a term</p>
-							<select class="form-control" name="termVal">				
+					<div class="form-group">
+							<label for="termVal">Choose a term: </label>
+							<select class="form-control input-sm" name="termVal">				
 								<c:forEach items="${termlist}" var="term"> 
 	    							<option value="${term.termID}">${term.termID} ${term.termSeason}_${term.termYear}</option>
 								</c:forEach>
 							</select> 
-						</div>
 					</div>
 				
-					<div class = "row">
-						<div class="col-md-6">
-						<p>
-						CSV Type: 
-						<select name="table" class="form-control">
+					<div class="form-group">
+						<label for="table">CSV Type: </label>
+						<select name="table" class="form-control input-sm">
 							<option value = "roster" selected> Roster</option>
 							<option value = "user" > User</option>
 							<option value = "class" > Class</option>
 						</select>
-						</p>
-						</div>
 					</div>
-					<p>
-					Choose your .csv file <br>
-					<input type="file" name="file" size="50" onClick="enableButton()" required>
-					</p>
-					<div>
-						<input class="btn btn-primary" id = "submit" type="submit" value="Send" onClick="this.disabled=true; this.value='Uploading...';">
+					
+					<div class="form-group">
+						<label for="file">Choose your .csv file </label>
+						<input type="file" name="file" size="50" onClick="enableButton()" required>
 					</div>
+
+					<input class="btn btn-primary" id = "submit" type="submit" value="Send" onClick="this.disabled=true; this.value='Uploading...';">
 				</form>
 			</div>
 		</div>
@@ -144,5 +147,12 @@
             document.getElementById("submit").value = "Send";
         }
     </script>
+    
+    	<!-- jQuery -->
+	<script src="js/jquery.js"></script>
+
+	<!-- Bootstrap Core JavaScript -->
+	<script src="js/bootstrap.min.js"></script>
+	
 </body>
 </html>

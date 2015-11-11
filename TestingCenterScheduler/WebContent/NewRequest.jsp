@@ -138,27 +138,23 @@
 								style="width: 100px">
 								<c:forEach begin="0" end="23" var="val">
 									<option>${val}:00</option>
-									<option>${val}:15</option>
 									<option>${val}:30</option>
-									<option>${val}:45</option>
 								</c:forEach>
 							</select>
 						</div>
 						<br>
 						<div class="form-group">
 							<label for="Remon">End Time: </label> <input type="number"
-								class="form-control input-sm" id="Remon" name="Rsmon" min="1"
+								class="form-control input-sm" id="Remon" name="Remon" min="1"
 								max="12" placeholder="Month" style="width: 100px;" required>
 							<input type="number" class="form-control input-sm" id="Reday"
-								name="Rsday" min="1" max="31" placeholder="Day"
+								name="Reday" min="1" max="31" placeholder="Day"
 								style="width: 100px;" required>
 
 							</select> <select name="Retime" class="form-control input-sm" style="width: 100px">
 								<c:forEach begin="0" end="23" var="val">
 									<option>${val}:00</option>
-									<option>${val}:15</option>
 									<option>${val}:30</option>
-									<option>${val}:45</option>
 								</c:forEach>
 							</select>
 						</div>
