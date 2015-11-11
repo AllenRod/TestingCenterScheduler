@@ -172,10 +172,10 @@
 						</div>
 						<br>
 						<c:set var="action" value="newRequest" scope="session" />
-						<a href="Requests.jsp" class="btn btn-lg btn-dark"
+						<a href="Requests.jsp" class="btn btn-default"
 							style="background: #DDD; color: #980100;">Cancel</a>
 						<input type="submit" value="Submit Request"
-							class="btn btn-lg btn-dark"
+							class="btn btn-default"
 							style="background: #980100; color: #FFF;">
 					</form>
 				</div>
