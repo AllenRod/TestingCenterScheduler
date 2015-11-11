@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -107,6 +108,106 @@
 					  </c:if>
 					</c:forEach>
 				</c:if>
+				
+                <c:set var="dateTimeParts" value="${fn:split(request.timeStart, ' ')}" />
+                <c:set var="smonth" value="${dateTimeParts[1]}" />
+                <c:set var="sday" value="${dateTimeParts[2]}" />
+                
+                <c:choose>             
+	                <c:when test="${smonth eq 'Jan'}">
+	                	<c:set var="smonth" value="1" />
+	                </c:when>
+	                <c:when test="${smonth eq 'Feb'}">
+	                	<c:set var="smonth" value="2" />
+	                </c:when>
+	                <c:when test="${smonth eq 'Mar'}">
+	                	<c:set var="smonth" value="3" />
+	                </c:when>
+	                <c:when test="${smonth eq 'Apr'}">
+	                	<c:set var="smonth" value="4" />
+	                </c:when>
+	                <c:when test="${smonth eq 'May'}">
+	                	<c:set var="smonth" value="5" />
+	                </c:when>
+	                <c:when test="${smonth eq 'Jun'}">
+	                	<c:set var="smonth" value="6" />
+	                </c:when>
+	                <c:when test="${smonth eq 'Jul'}">
+	                	<c:set var="smonth" value="7" />
+	                </c:when>
+	                <c:when test="${smonth eq 'Aug'}">
+	                	<c:set var="smonth" value="8" />
+	                </c:when>
+	                <c:when test="${smonth eq 'Sep'}">
+	                	<c:set var="smonth" value="9" />
+	                </c:when>
+	                <c:when test="${smonth eq 'Oct'}">
+	                	<c:set var="smonth" value="10" />
+	                </c:when>
+	                <c:when test="${smonth eq 'Nov'}">
+	                	<c:set var="smonth" value="11" />
+	                </c:when>
+	                <c:when test="${smonth eq 'Dec'}">
+	                	<c:set var="smonth" value="12" />
+	                </c:when>
+	            </c:choose>
+                
+				<c:set var="time" value="${dateTimeParts[3]}" />
+                <c:set var="timeParts" value="${fn:split(time, ':')}" />
+                <c:set var="shour" value="${timeParts[0]}" />
+                <c:set var="smin" value="${timeParts[1]}" />
+                
+                <c:set var="dateTimeParts" value="${fn:split(request.timeEnd, ' ')}" />
+                <c:set var="emonth" value="${dateTimeParts[1]}" />
+                <c:set var="eday" value="${dateTimeParts[2]}" />
+                
+                <c:choose>             
+	                <c:when test="${emonth eq 'Jan'}">
+	                	<c:set var="emonth" value="1" />
+	                </c:when>
+	                <c:when test="${emonth eq 'Feb'}">
+	                	<c:set var="emonth" value="2" />
+	                </c:when>
+	                <c:when test="${emonth eq 'Mar'}">
+	                	<c:set var="emonth" value="3" />
+	                </c:when>
+	                <c:when test="${emonth eq 'Apr'}">
+	                	<c:set var="emonth" value="4" />
+	                </c:when>
+	                <c:when test="${emonth eq 'May'}">
+	                	<c:set var="emonth" value="5" />
+	                </c:when>
+	                <c:when test="${emonth eq 'Jun'}">
+	                	<c:set var="emonth" value="6" />
+	                </c:when>
+	                <c:when test="${emonth eq 'Jul'}">
+	                	<c:set var="emonth" value="7" />
+	                </c:when>
+	                <c:when test="${emonth eq 'Aug'}">
+	                	<c:set var="emonth" value="8" />
+	                </c:when>
+	                <c:when test="${emonth eq 'Sep'}">
+	                	<c:set var="emonth" value="9" />
+	                </c:when>
+	                <c:when test="${emonth eq 'Oct'}">
+	                	<c:set var="emonth" value="10" />
+	                </c:when>
+	                <c:when test="${emonth eq 'Nov'}">
+	                	<c:set var="emonth" value="11" />
+	                </c:when>
+	                <c:when test="${emonth eq 'Dec'}">
+	                	<c:set var="emonth" value="12" />
+	                </c:when>
+	            </c:choose>
+                
+				<c:set var="time" value="${dateTimeParts[3]}" />
+                <c:set var="timeParts" value="${fn:split(time, ':')}" />
+                <c:set var="ehour" value="${timeParts[0]}" />
+                <c:set var="emin" value="${timeParts[1]}" />
+                
+                <c:if test="${isADHOC eq true}">
+                	<c:set var="studentList" value="${fn:split(request.rosterList,' ')}"/>
+                </c:if>
                 
 				<div class="div-spacing">
 					<form class="form-inline" action="InstructorHome" method="POST">
@@ -161,17 +262,31 @@
 						<div class="form-group">
 							<label for="Rsmon">Start Time: </label> <input type="number"
 								class="form-control input-sm" id="Rsmon" name="Rsmon" min="1"
-								max="12" placeholder="Month" style="width: 100px;" required>
+								max="12" placeholder="Month" style="width: 100px;" value="${smonth}" required>
 
 							<input type="number" class="form-control input-sm" id="Rsday"
 								name="Rsday" min="1" max="31" placeholder="Day"
-								style="width: 100px;" required>
+								style="width: 100px;" value="${sday}" required>
 
-							<select name="Rstime" class="form-control input-sm"
+							<select id="Rstime" name="Rstime" class="form-control input-sm"
 								style="width: 100px">
 								<c:forEach begin="0" end="23" var="val">
-									<option>${val}:00</option>
-									<option>${val}:30</option>
+						             <c:choose>             
+						                <c:when test="${val eq shour}">
+						                	<c:if test="${smin eq '30'}">
+						                		<option>${val}:00</option>
+												<option selected>${val}:30</option>
+						                	</c:if>
+						                	<c:if test="${smin eq '00'}">
+						                		<option selected>${val}:00</option>
+												<option>${val}:30</option>
+						                	</c:if>
+						                </c:when>
+						                <c:otherwise>
+						                	<option>${val}:00</option>
+											<option>${val}:30</option>
+						                </c:otherwise>
+						            </c:choose>
 								</c:forEach>
 							</select>
 						</div>
@@ -179,15 +294,30 @@
 						<div class="form-group">
 							<label for="Remon">End Time: </label> <input type="number"
 								class="form-control input-sm" id="Remon" name="Remon" min="1"
-								max="12" placeholder="Month" style="width: 100px;" required>
+								max="12" placeholder="Month" style="width: 100px;" value="${emonth}"required>
+								
 							<input type="number" class="form-control input-sm" id="Reday"
 								name="Reday" min="1" max="31" placeholder="Day"
-								style="width: 100px;" required>
+								style="width: 100px;" value="${eday}"required>
 
 							</select> <select name="Retime" class="form-control input-sm" style="width: 100px">
 								<c:forEach begin="0" end="23" var="val">
-									<option>${val}:00</option>
-									<option>${val}:30</option>
+									<c:choose>             
+						                <c:when test="${val eq ehour}">
+						                	<c:if test="${emin eq '30'}">
+						                		<option>${val}:00</option>
+												<option selected>${val}:30</option>
+						                	</c:if>
+						                	<c:if test="${emin eq '00'}">
+						                		<option selected>${val}:00</option>
+												<option>${val}:30</option>
+						                	</c:if>
+						                </c:when>
+						                <c:otherwise>
+						                	<option>${val}:00</option>
+											<option>${val}:30</option>
+						                </c:otherwise>
+						            </c:choose>
 								</c:forEach>
 							</select>
 						</div>
@@ -197,7 +327,10 @@
 								exam Only):</label>
 							<br>
 							<c:if test="${isADHOC eq true}">
-									<textarea id="Rlist" name="Rlist" class="form-control" rows="3">
+									<textarea id="Rlist" name="Rlist" class="form-control" rows="3>
+									<c:forEach var="student" items="${studentList}">
+									<c:out value="${student}"/>
+									</c:forEach>
 									</textarea>
 							</c:if>
 							<c:if test="${isADHOC eq false}">
@@ -225,17 +358,17 @@
 		</div>
 	</div>
 				
-				<!-- /.container-fluid -->
+	<!-- /.container-fluid -->
 
-				<!-- jQuery -->
-				<script src="js/jquery.js"></script>
+	<!-- jQuery -->
+	<script src="js/jquery.js"></script>
 
-				<!-- Bootstrap Core JavaScript -->
-				<script src="js/bootstrap.min.js"></script>
+	<!-- Bootstrap Core JavaScript -->
+	<script src="js/bootstrap.min.js"></script>
 
-				<script>
+	<script>
 
-				</script>
+	</script>
 </body>
 
 </html>
