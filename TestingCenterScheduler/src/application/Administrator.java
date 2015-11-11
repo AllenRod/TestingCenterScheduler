@@ -106,7 +106,7 @@ public class Administrator {
 	 * 
 	 * @param netid
 	 *            the net ID of the student to be checked in
-	 * @return if the student was succesffuly checked in
+	 * @return if the student was successfully checked in
 	 */
 	public boolean checkInStudent(String netid) {
 		return false;
@@ -144,7 +144,7 @@ public class Administrator {
 			int setAsideSeats, String closedDate, String reserveTime,
 			int gapTime, int reminderInterval) {
 		TestCenterInfo info = new TestCenterInfo();
-		info.setTerm(dbManager.getTerm(term));
+		info.setTerm(dbManager.getTermByID(term));
 		info.setOpenHours(openHours);
 		info.setSeats(seats);
 		info.setSetAsideSeats(setAsideSeats);
