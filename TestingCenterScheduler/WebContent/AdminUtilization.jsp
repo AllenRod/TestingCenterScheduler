@@ -89,60 +89,45 @@
 						</ol>
 					</div>
 				</div>
-		
-				<form action="AdministratorHome" method="POST" >
-				
-					<div class="row">
-						<div class="col-md-6">
-							<p>Choose a term</p>
-							<select class="form-control" name="termVal">				
-								<c:forEach items="${termlist}" var="term"> 
-	    							<option value="${term.termID}">${term.termID} ${term.termSeason}_${term.termYear}</option>
-								</c:forEach>
-							</select> 
-						</div>
+			<div class="div-spacing">
+				<form class="form-inline" action="AdministratorHome" method="POST" >
+					
+					<div class="form-group">
+						<label for="termVal">Choose a term: </label> <select
+							class="form-control" id="termVal" name="termVal">
+							<c:forEach items="${termlist}" var="term">
+								<option value="${term.termID}">${term.termID}
+									${term.termSeason}_${term.termYear}</option>
+							</c:forEach>
+						</select>
 					</div>
-				
-					<div class="row">
-						<div class = "col-md-6">
-							<p>Start Date</p>
-	
-							<select name="startmon" class="form-control" style="width:100px">
-									<c:forEach begin="1" end="12" var="val">
-										<option> ${val}</option>
-									</c:forEach>
-								</select>
-								<p>/</p>
-								<select name="startday" class="form-control" style="width:100px">
-									<c:forEach begin="1" end="31" var="val">
-										<option> ${val}</option>
-									</c:forEach>
-								</select>
-							</div>
-						</div>
-				
-						<div class="row">
-							<div class = "col-md-6">
-								<p>End Date</p>
-		
-								<select name="endmon" class="form-control" style="width:100px">
-										<c:forEach begin="1" end="12" var="val">
-											<option> ${val}</option>
-										</c:forEach>
-									</select>
-									<p>/</p>
-									<select name="endday" class="form-control" style="width:100px">
-										<c:forEach begin="1" end="31" var="val">
-											<option> ${val}</option>
-										</c:forEach>
-									</select>
-								</div>
-							</div>
-						
-					<div>
-						<input type="submit" class="btn btn-primary" name="utilization" value="Submit"/>
+					<br>
+					
+					<div class="form-group">
+							<label for="startmon">Start Date: </label> <input type="number"
+								class="form-control input-sm" id="startmon" name="startmon" min="1"
+								max="12" placeholder="Month" style="width: 100px;" required>
+
+							<input type="number" class="form-control input-sm" id="startday"
+								name="startday" min="1" max="31" placeholder="Day"
+								style="width: 100px;" required>
+								
 					</div>
+					<br>
+					<div class="form-group">
+							<label for="endmon">End Date: </label> <input type="number"
+								class="form-control input-sm" id="endmon" name="endmon" min="1"
+								max="12" placeholder="Month" style="width: 100px;" required>
+
+							<input type="number" class="form-control input-sm" id="endday"
+								name="endday" min="1" max="31" placeholder="Day"
+								style="width: 100px;" required>
+								
+					</div>
+					<br>
+					<input type="submit" class="btn btn-primary" name="utilization" value="Submit"/>
 				</form>
+				</div>
 			</div>
 		</div>
 	</div>

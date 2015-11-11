@@ -112,10 +112,12 @@
 						<tr>
 							<th>Open Hours:</th>
 							<td>
-							<table class="info-table"  style="width:70%">
+							<table class="info-table"  style="width:100%">
 								<tr>
 									<th>Monday:</th>
-									<td><select name="mono" class="form-control" style="width:100px">
+									<td>
+									<div class="form-inline">
+									<select name="mono" class="form-control" style="width:100px">
 											<c:forEach begin="0" end="23" var="val">
 											    <option> ${val}:00</option>
 											    <option> ${val}:30</option>
@@ -130,6 +132,7 @@
 											</c:forEach>
 											<option selected>Closed</option>
 										</select>
+										</div>
 									</td>
 								</tr>
 								<tr>
