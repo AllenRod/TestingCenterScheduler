@@ -217,6 +217,7 @@ public class Administrator {
 		Calendar endDate = Calendar.getInstance();
 		endDate.set(year, Integer.parseInt(endMonth) - 1,
 				Integer.parseInt(endDay), 0, 0, 0);
+		Calendar dateHolder = null;
 		if (startDate.after(endDate)) {
 			return null;
 		}
@@ -228,8 +229,9 @@ public class Administrator {
 			if (singleUTI == -1) {
 				String s = "Closed";
 			} else {
-				String s = Integer.toString(d.getMonth()) + "/"
-						+ Integer.toString(d.getDay()) + ": "
+				dateHolder.setTime(d);
+				String s = Integer.toString(dateHolder.get(Calendar.MONTH)) + "/"
+						+ Integer.toString(dateHolder.get(Calendar.DAY_OF_MONTH)) + ": "
 						+ Double.toString(singleUTI);
 				utiList.add(s);
 			}

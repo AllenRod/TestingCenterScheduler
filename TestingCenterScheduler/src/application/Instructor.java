@@ -140,7 +140,7 @@ public class Instructor {
 				r.setCourse(dbManager.I_findCourse(course, termID));
 				// Test
 				RequestManager mag = new RequestManager();
-				mag.requestSeatHour(r);
+				mag.requestReserveSeatHour(r);
 				s = dbManager.loadData(r);
 			} else if (examType.equals("AD_HOC")) {
 				NonClassRequest r = new NonClassRequest();

@@ -27,13 +27,13 @@ public class RequestManager {
 	}
 
 	/**
-	 * Calculate the total seat hour of the given request
+	 * Calculate the total reserved seat hour for the given request
 	 * 
 	 * @param request
 	 *            Given request
-	 * @return Total seat hour
+	 * @return Total reserve seat hour
 	 */
-	public int requestSeatHour(Request request) {
+	public int requestReserveSeatHour(Request request) {
 		int stuNum = 0;
 		int gapTime = 0;
 		if (request instanceof ClassExamRequest) {
@@ -54,6 +54,12 @@ public class RequestManager {
 		return stuNum * (gapTime + request.getTestDuration());
 	}
 
+	/**
+	 * Document this jesse
+	 * @param t
+	 * @param d
+	 * @return
+	 */
 	public double calculateUtilizationDay(Term t, Date d) {
 		double uti = dbManager.calculateUtilization(t, d);
 		return uti;

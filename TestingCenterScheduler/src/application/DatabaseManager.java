@@ -401,8 +401,8 @@ public class DatabaseManager {
 		Date d2 = c.getTime();
 		Query q1 = em
 				.createQuery("SELECT a FROM Appointment a WHERE :d <= a.timeStart AND  a.timeStart <= :d2");
-		q1.setParameter("d", d);
-		q1.setParameter("d2", d2);
+		q1.setParameter("d", d, TemporalType.DATE);
+		q1.setParameter("d2", d2, TemporalType.DATE);
 		List<Appointment> appList = q1.getResultList();
 		int durationSum = 0;
 		TestCenterInfo tci = em.find(TestCenterInfo.class, t);
@@ -410,7 +410,8 @@ public class DatabaseManager {
 			durationSum += a.getRequest().getTestDuration() + tci.getGapTime();
 		}
 		int openHourDuration = 0;
-		int dayVal = d.getDay();
+		c.setTime(d);
+		int dayVal = c.get(Calendar.DAY_OF_WEEK);
 		openHourDuration = OpenHoursParser.getHoursDifference(
 				tci.getOpenHours(), dayVal);
 		if (openHourDuration == -1) {
