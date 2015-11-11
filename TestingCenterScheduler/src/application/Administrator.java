@@ -210,7 +210,7 @@ public class Administrator {
 	 */
 	public List<String> viewUtilization(String term, String startMonth,
 			String startDay, String endMonth, String endDay) {
-		int year = dbManager.getTerm(term).getTermYear();
+		int year = dbManager.getTermByID(term).getTermYear();
 		Calendar startDate = Calendar.getInstance();
 		startDate.set(year, Integer.parseInt(startMonth) - 1,
 				Integer.parseInt(startDay), 0, 0, 0);
@@ -224,7 +224,7 @@ public class Administrator {
 		for (Date d = startDate.getTime(); !startDate.after(endDate); startDate
 				.add(Calendar.DATE, 1), d = startDate.getTime()) {
 			double singleUTI = reqManager.calculateUtilizationDay(
-					dbManager.getTerm(term), d);
+					dbManager.getTermByID(term), d);
 			if (singleUTI == -1) {
 				String s = "Closed";
 			} else {
