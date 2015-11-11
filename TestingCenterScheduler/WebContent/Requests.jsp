@@ -126,7 +126,7 @@
 								<th>Status</th>
 							</tr>
 							<c:forEach items="${crequests}" var="requests">
-							<tr class="success">
+							<tr class="success" onClick="editRequest(this);" id = "<c:out value="${requests.examIndex}"/>">
 								<td><font color="blue">
 										${requests.course.classID}</font></td>
 								<td>${requests.examName}</td>
@@ -151,7 +151,7 @@
 							</tr>
 							</c:forEach>
 							<c:forEach items="${nrequests}" var="requests">   
-							<tr class="info">
+							<tr class="info" onClick="editRequest(this);" id="<c:out value="${requests.examIndex}"/>">
 								<td><font color="blue">
 										Non-Class Exam</font></td>
 								<td>${requests.examName}</td>
@@ -198,18 +198,18 @@
     </div>
     <!-- /#wrapper -->
 
+    <script type ="text/javascript">
+                function editRequest(ele){
+        			window.location = '/TestingCenterScheduler/EditRequest.jsp?RequestID='+ele.id;
+        		}
+    </script>
+    
     <!-- jQuery -->
     <script src="js/jquery.js"></script>
 
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
 
-    <script type ="text/javascript">
-                function editRequest(ele){
-                    var myWindow = window.open("", "Edit Employee", "width=500, height=500");
-                    myWindow.location.replace("");
-                }
-    </script>
 
 </body>
 

@@ -2,8 +2,8 @@ AllenRod:
 - RequestManager
 
 McNuggets:
-- Fix CenterHours.jsp format
-- Finish Instructor use cases
+- Instructor Edit Request (Front end: 90% done)
+- Instructor Edit Request (Back end: 0% done)
 
 Guy From Breaking Bad:
 - Student(?)

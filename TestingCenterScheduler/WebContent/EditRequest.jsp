@@ -74,55 +74,88 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <h1 class="page-header">
-                            New Request
+                            Edit Request
                         </h1>
                         <ol class="breadcrumb">
                             <li class="active">
-                                <a href="Instructor.jsp"> Home</a> > <a href="Requests.jsp"> Requests</a> > New Request 
+                                <a href="Instructor.jsp"> Home</a> > <a href="Requests.jsp"> Requests</a> > Edit Request 
                             </li>
                         </ol>
                     </div>
                 </div>
                 <!-- /.row -->
+                
+                <c:set var="isADHOC" value="false" />
+					<c:forEach var="requests" items="${nrequests}">
+					  <c:if test="${requests.examIndex eq param.RequestID}">
+					    <c:set var="isADHOC" value="true" />
+					  </c:if>
+					</c:forEach>
+                
+                <c:if test="${isADHOC eq true}">
+					<c:forEach var="requests" items="${nrequests}">
+					  <c:if test="${requests.examIndex eq param.RequestID}">
+					    <c:set var="request" value="${requests}" scope="page"/>
+					  </c:if>
+					</c:forEach>
+				</c:if>
+                
+                <c:if test="${isADHOC eq false}">
+					<c:forEach var="requests" items="${crequests}">
+					  <c:if test="${requests.examIndex eq param.RequestID}">
+					    <c:set var="request" value="${requests}" scope="page"/>
+					  </c:if>
+					</c:forEach>
+				</c:if>
+                
 				<div class="div-spacing">
 					<form class="form-inline" action="InstructorHome" method="POST">
 						<div class="form-group">
 							<label for="Rtype">Request Type:</label> <select
-								class="form-control" id="Rtype" name="Rtype">
-								<option value="CLASS" selected>CLASS</option>
-								<option value="AD_HOC">AD_HOC</option>
+								class="form-control" id="Rtype" name="Rtype" disabled>
+								<c:if test="${isADHOC eq true}">
+									<option value="AD_HOC" selected>AD_HOC</option>
+								</c:if>
+								<c:if test="${isADHOC eq false}">
+					    			<option value="CLASS" selected>CLASS</option>
+					  			</c:if>
 							</select>
 						</div>
 						<br>
 						<div class="form-group">
 							<label for="Rclass">ClassID: </label> <select
-								class="form-control" id="Rclass" name="Rclass">
-								<c:forEach items="${courses}" var="courses">
-									<option value="${courses.classID}">${courses.subject}${courses.catalogNum}-${courses.section}_${courses.term.termID}</option>
-								</c:forEach>
+								class="form-control" id="Rclass" name="Rclass" disabled>
+								<c:if test="${isADHOC eq true}">
+									<option selected>Non-Class Exam</option>
+								</c:if>
+								<c:if test="${isADHOC eq false}">
+					    			<option value="${request.course.classID}" selected>${request.course.classID}</option>
+					  			</c:if>
 							</select>
 						</div>
 						<br>
 						<div class="form-group">
 							<label for="Rterm">Term: </label> <select
-								class="form-control input-sm" id="Rterm" name="Rterm">
-								<c:forEach items="${termlist}" var="term">
-									<option value="${term.termID}">${term.termID}
-										${term.termSeason}_${term.termYear}</option>
-								</c:forEach>
+								class="form-control input-sm" id="Rterm" name="Rterm" disabled>
+								<c:if test="${isADHOC eq true}">
+									<option selected>No Term</option>
+								</c:if>
+								<c:if test="${isADHOC eq false}">
+					    			<option value="${request.term.termID}" selected>${request.term.termID}</option>
+					  			</c:if>
 							</select>
 						</div>
 						<br>
 						<div class="form-group">
 							<label for="Rname">Exam Name: </label> <input type="text"
 								class="form-control input-sm" id="Rname" name="Rname"
-								placeholder="Exam Name">
+								placeholder="Exam Name" value = "${request.examName}">
 						</div>
 						<br>
 						<div class="form-group">
 							<label for="Rduration">Test Duration: </label> <input
 								type="number" class="form-control input-sm" id="Rduration"
-								name="Rduration" min="1" placeholder="Duration" required>
+								name="Rduration" min="1" placeholder="Duration" value = "${request.testDuration}" required>
 						</div>
 						<br>
 						<div class="form-group">
@@ -163,16 +196,29 @@
 							<label for="Rlist">Student List (non-Stony Brook course
 								exam Only):</label>
 							<br>
-							<textarea id="Rlist" name="Rlist" class="form-control" rows="3"
+							<c:if test="${isADHOC eq true}">
+									<textarea id="Rlist" name="Rlist" class="form-control" rows="3">
+									</textarea>
+							</c:if>
+							<c:if test="${isADHOC eq false}">
+					    			<textarea id="Rlist" name="Rlist" class="form-control" rows="3"
 								disabled></textarea>
+					  		</c:if>
 						</div>
 						<br>
 						<c:set var="action" value="newRequest" scope="session" />
 						<a href="Requests.jsp" class="btn btn-default"
 							style="background: #DDD; color: #980100;">Cancel</a>
-						<input type="submit" value="Submit Request"
+						<c:if test="${request.status ne 'pending'}">
+						<input type="submit" value="This request cannot be changed"
+							class="btn btn-default"
+							style="background: #980100; color: #FFF;" disabled>
+						</c:if>
+						<c:if test="${request.status eq 'pending'}">
+						<input type="submit" value="Edit"
 							class="btn btn-default"
 							style="background: #980100; color: #FFF;">
+						</c:if>
 					</form>
 				</div>
 			</div>
@@ -188,22 +234,7 @@
 				<script src="js/bootstrap.min.js"></script>
 
 				<script>
-					$(function() {
-						$('#Rtype').change(function() {
-							var type = $('#Rtype').find(":selected").val();
-							if (type == "AD_HOC") {
-								$('#Rclass').prop('disabled', true);
-								$('#Rterm').prop('disabled', true);
-								$('#Rname').prop('required', true);
-								$('#Rlist').prop('disabled', false);
-							} else {
-								$('#Rclass').prop('disabled', false);
-								$('#Rterm').prop('disabled', false);
-								$('#Rname').prop('required', false);
-								$('#Rlist').prop('disabled', true);
-							}
-						});
-					});
+
 				</script>
 </body>
 

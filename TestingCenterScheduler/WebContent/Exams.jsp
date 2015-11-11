@@ -108,7 +108,22 @@
 								<th>Students Taken</th>
 								<th>Status</th>
 							</tr>
-							<c:forEach items="${requests}" var="requests">    
+							<c:forEach items="${nrequests}" var="requests">    
+	    						<c:if test="${requests.status ne 'denied'}">
+		    						<c:if test="${requests.status ne 'pending'}">
+			    						<tr class="success">
+											<td><font color="blue">Non-Class Exam</font></td>
+											<td>${requests.examName}</td>
+											<td>${requests.timeStart}</td>
+											<td>${requests.timeEnd}</td>
+											<td>${requests.testDuration}</td>
+											<td>${fn:length(requests.appointment)}</td>
+											<td><font color="green">${requests.status}</font></th>
+										</tr>
+									</c:if>
+								</c:if>
+							</c:forEach>
+							<c:forEach items="${crequests}" var="requests">    
 	    						<c:if test="${requests.status ne 'denied'}">
 		    						<c:if test="${requests.status ne 'pending'}">
 			    						<tr class="success">
