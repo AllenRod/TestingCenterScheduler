@@ -1,8 +1,11 @@
 package application;
 
+import java.util.Date;
+
+import entity.ClassExamRequest;
 import entity.NonClassRequest;
 import entity.Request;
-import entity.ClassExamRequest;
+import entity.Term;
 
 /**
  * Manage request schedulability and utilization.
@@ -49,6 +52,11 @@ public class RequestManager {
 		System.out.println("Num = " + stuNum + "; Gap Time = " + gapTime
 				+ "; Sum = " + stuNum * (gapTime + request.getTestDuration()));
 		return stuNum * (gapTime + request.getTestDuration());
+	}
+
+	public double calculateUtilizationDay(Term t, Date d) {
+		double uti = dbManager.calculateUtilization(t, d);
+		return uti;
 	}
 
 }

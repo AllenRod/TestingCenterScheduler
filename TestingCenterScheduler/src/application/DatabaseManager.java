@@ -1,6 +1,10 @@
 package application;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -8,12 +12,11 @@ import javax.persistence.Persistence;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 
+import entity.Appointment;
 import entity.Course;
 import entity.Request;
-import entity.Roster;
 import entity.Term;
 import entity.TestCenterInfo;
-import entity.User;
 import entity.UserAccount;
 
 /**
@@ -356,6 +359,42 @@ public class DatabaseManager {
 	}
 
 	/**
+	 * Calculates the utilization for a given day
+	 * 
+	 * @param t
+	 *            the term that day is in
+	 * @param d
+	 *            the date to find the utilization of
+	 * @return the utilization of the given day
+	 */
+	@SuppressWarnings("deprecation")
+	public double calculateUtilization(Term t, Date d) {
+		createEntityManager();
+		Calendar c = Calendar.getInstance();
+		c.setTime(d);
+		c.add(Calendar.DATE, 1);
+		Date d2 = c.getTime();
+		Query q1 = em
+				.createQuery("SELECT a FROM Appointment a WHERE :d <= a.timeStart AND  a.timeStart <= :d2");
+		q1.setParameter("d", d);
+		q1.setParameter("d2", d2);
+		List<Appointment> appList = q1.getResultList();
+		int durationSum = 0;
+		TestCenterInfo tci = em.find(TestCenterInfo.class, t);
+		for (Appointment a : appList) {
+			durationSum += a.getRequest().getTestDuration() + tci.getGapTime();
+		}
+		int openHourDuration = 0;
+		int dayVal = d.getDay();
+		openHourDuration = OpenHoursParser.getHoursDifference(
+				tci.getOpenHours(), dayVal);
+		if (openHourDuration == -1) {
+			return -1;
+		}
+		return (double) durationSum / (tci.getSeats() * openHourDuration);
+
+	}
+	/**
 	 * Queries DB and returns a list of Term
 	 * 
 	 * @return List<Term> List of all term
@@ -412,8 +451,9 @@ public class DatabaseManager {
 	public int R_getStudentNum(Course course) {
 		createEntityManager();
 		try {
-			Query q = em.createQuery("SELECT COUNT(r.user) FROM Roster r WHERE r.course = :cou " + 
-					" AND r.term = :cterm");
+			Query q = em
+					.createQuery("SELECT COUNT(r.user) FROM Roster r WHERE r.course = :cou "
+							+ " AND r.term = :cterm");
 			q.setParameter("cou", course.getClassID());
 			q.setParameter("cterm", course.getTerm());
 			Long r = (Long) q.getSingleResult();
@@ -426,7 +466,7 @@ public class DatabaseManager {
 			closeEntityManager();
 		}
 	}
-	
+
 	/**
 	 * Get the gap time from TestCenterInfo with the given term
 	 * 
@@ -437,9 +477,10 @@ public class DatabaseManager {
 	public int R_getGapTime(Term term) {
 		createEntityManager();
 		try {
-			Query q = em.createQuery("SELECT t.gapTime FROM TestCenterInfo t WHERE t.term = :tterm");
+			Query q = em
+					.createQuery("SELECT t.gapTime FROM TestCenterInfo t WHERE t.term = :tterm");
 			q.setParameter("tterm", term);
-			int r = (int)q.getSingleResult();
+			int r = (int) q.getSingleResult();
 			return r;
 		} catch (PersistenceException error) {
 			LoggerWrapper.logger.info("There is an error in R_getGapTime:\n"

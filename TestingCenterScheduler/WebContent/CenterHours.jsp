@@ -60,7 +60,8 @@
 			<!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
 			<div class="collapse navbar-collapse navbar-ex1-collapse">
 				<ul class="nav navbar-nav side-nav">
-					<li><a href="Admin.jsp" style="color: #fff;">Testing Center Usage Report</a></li>
+					<li><a href="Admin.jsp" style="color: #fff;">Home</a></li>
+					<li><a href="AdminUtilization.jsp" style="color: #fff;">Testing Center Usage Report</a></li>
 					<li><a href="#" style="color: #fff;" >Testing Center Information</a></li>
 					<li><a href="ImportData.jsp" style="color: #fff;">Import Data</a></li>
 					<li><a href="#" style="color: #fff;">View All Requests</a></li>
