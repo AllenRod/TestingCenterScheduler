@@ -46,7 +46,7 @@ public class CSVLoader {
 		}
 		File file = new File(fileLoc);
 		Scanner sc;
-		Term term = dbManager.getTerm(termID);
+		Term term = dbManager.getTermByID(termID);
 		if (term == null) {
 			return "Term not found";
 		}

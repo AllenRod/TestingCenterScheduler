@@ -7,6 +7,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
+import javax.persistence.TemporalType;
 
 import entity.Course;
 import entity.Request;
@@ -76,7 +77,7 @@ public class DatabaseManager {
 	 *            Given term id
 	 * @return Term with the given term id
 	 */
-	public Term getTerm(String termID) {
+	public Term getTermByID(String termID) {
 		createEntityManager();
 		Query q = em.createQuery("SELECT t FROM Term t WHERE t.termID = :tid");
 		q.setParameter("tid", termID);
@@ -86,7 +87,31 @@ public class DatabaseManager {
 			LoggerWrapper.logger.info("Term " + term.getTerm() + " is found");
 			return term;
 		} catch (Exception error) {
-			LoggerWrapper.logger.warning("Error in finding term");
+			LoggerWrapper.logger.warning("Error in finding term by id");
+			return null;
+		} finally {
+			closeEntityManager();
+		}
+	}
+	
+	/**
+	 * Get the term by the given date
+	 * 
+	 * @param date
+	 *            Given date
+	 * @return Term where the given date belong
+	 */
+	public Term getTermByDate(Date date) {
+		createEntityManager();
+		Query q = em.createQuery("SELECT t FROM Term t WHERE t.startDate <= :td AND t.endDate >= :td");
+		q.setParameter("td", date, TemporalType.DATE);
+		Term term = null;
+		try {
+			term = (Term) q.getSingleResult();
+			LoggerWrapper.logger.info("Term " + term.getTerm() + " is found");
+			return term;
+		} catch (Exception error) {
+			LoggerWrapper.logger.warning("Error in finding term by date");
 			return null;
 		} finally {
 			closeEntityManager();
@@ -102,7 +127,7 @@ public class DatabaseManager {
 	 */
 	public boolean delTable(String tableName, String termID) {
 		try {
-			Term term = this.getTerm(termID);
+			Term term = this.getTermByID(termID);
 			createTransactionalEntityManager();
 			// em.createNativeQuery("SET FOREIGN_KEY_CHECKS = 0;").executeUpdate();
 			em.createQuery(
@@ -193,7 +218,7 @@ public class DatabaseManager {
 	 * @return Course with the courseID, instructor netID and termID
 	 */
 	public Course I_findCourse(String courseID, String termID) {
-		Term term = getTerm(termID);
+		Term term = getTermByID(termID);
 		createEntityManager();
 		Query q = em
 				.createQuery("SELECT c FROM Course c WHERE c.classID = :cID "

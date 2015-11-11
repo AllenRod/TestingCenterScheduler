@@ -1,7 +1,10 @@
 package servlets;
 
 import java.io.IOException;
-import java.util.List;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -12,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import application.DatabaseManager;
 import application.LoggerWrapper;
-import entity.Course;
+import entity.Term;
 import entity.UserAccount;
 
 /**
@@ -61,6 +64,12 @@ public class Authenticator extends HttpServlet {
 	    String password = request.getParameter("password");
 	    LoggerWrapper.logger.info("User log in using netID " + userName);
 	    UserAccount user = dbManager.getUser(userName, password);
+	    // Test to get current term by current date
+		Calendar curC = Calendar.getInstance();
+		Date date = curC.getTime();
+		Term currentTerm = dbManager.getTermByDate(date);
+		//System.out.println(currentTerm.getTermSeason() + "_" + currentTerm.getTermYear());
+		// End test
 	    if (user != null) {
 		request.getSession().setAttribute("user", user);
 		String role = user.getRole();
