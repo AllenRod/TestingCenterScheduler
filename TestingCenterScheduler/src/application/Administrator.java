@@ -1,6 +1,7 @@
 package application;
 
-import java.io.File;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -20,6 +21,9 @@ public class Administrator {
 	// netID of the administrator
 	private String netID;
 
+	// Request manager
+	private RequestManager reqManager;
+
 	/**
 	 * Constructor for class Administrator
 	 * 
@@ -29,6 +33,7 @@ public class Administrator {
 	public Administrator(String netID) {
 		this.netID = netID;
 		dbManager = DatabaseManager.getSingleton();
+		reqManager = new RequestManager();
 	}
 
 	/**
@@ -101,7 +106,7 @@ public class Administrator {
 	 * 
 	 * @param netid
 	 *            the net ID of the student to be checked in
-	 * @return if the student was succesffuly checked in
+	 * @return if the student was successfully checked in
 	 */
 	public boolean checkInStudent(String netid) {
 		return false;
@@ -112,13 +117,6 @@ public class Administrator {
 	 */
 	public Report generateReport() {
 		return null;
-	}
-
-	/**
-	 * Displays utilization info of the testing center for the given range
-	 */
-	public void displayUtilizationInfo() {
-
 	}
 
 	/**
@@ -146,7 +144,7 @@ public class Administrator {
 			int setAsideSeats, String closedDate, String reserveTime,
 			int gapTime, int reminderInterval) {
 		TestCenterInfo info = new TestCenterInfo();
-		info.setTerm(dbManager.getTerm(term));
+		info.setTerm(dbManager.getTermByID(term));
 		info.setOpenHours(openHours);
 		info.setSeats(seats);
 		info.setSetAsideSeats(setAsideSeats);
@@ -185,12 +183,57 @@ public class Administrator {
 	public List<TestCenterInfo> getTCInfo() {
 		return dbManager.A_getTCInfo();
 	}
-	
+
 	/**
 	 * Get all existing terms
-	 * @return	List of existing terms
+	 * 
+	 * @return List of existing terms
 	 */
 	public List<Term> getTerms() {
 		return dbManager.getTerm();
+	}
+
+	/**
+	 * Returns a list of the utilization for the date range
+	 * 
+	 * @param term
+	 *            term the range is in
+	 * @param startMonth
+	 *            month of the start date
+	 * @param startDay
+	 *            day of start date
+	 * @param endMonth
+	 *            month of end date
+	 * @param endDay
+	 *            day of end date
+	 * @return list of utilization
+	 */
+	public List<String> viewUtilization(String term, String startMonth,
+			String startDay, String endMonth, String endDay) {
+		int year = dbManager.getTermByID(term).getTermYear();
+		Calendar startDate = Calendar.getInstance();
+		startDate.set(year, Integer.parseInt(startMonth) - 1,
+				Integer.parseInt(startDay), 0, 0, 0);
+		Calendar endDate = Calendar.getInstance();
+		endDate.set(year, Integer.parseInt(endMonth) - 1,
+				Integer.parseInt(endDay), 0, 0, 0);
+		if (startDate.after(endDate)) {
+			return null;
+		}
+		List<String> utiList = new ArrayList<String>();
+		for (Date d = startDate.getTime(); !startDate.after(endDate); startDate
+				.add(Calendar.DATE, 1), d = startDate.getTime()) {
+			double singleUTI = reqManager.calculateUtilizationDay(
+					dbManager.getTermByID(term), d);
+			if (singleUTI == -1) {
+				String s = "Closed";
+			} else {
+				String s = Integer.toString(d.getMonth()) + "/"
+						+ Integer.toString(d.getDay()) + ": "
+						+ Double.toString(singleUTI);
+				utiList.add(s);
+			}
+		}
+		return utiList;
 	}
 }

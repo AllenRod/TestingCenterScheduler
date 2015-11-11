@@ -3,6 +3,7 @@ package entity;
 import java.io.Serializable;
 import java.lang.String;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.*;
@@ -21,6 +22,14 @@ public class Term implements Serializable {
 	private String termSeason;
 
 	private int termYear;
+	
+	@Column(columnDefinition = "DATE")
+	@Temporal(TemporalType.DATE)
+	private Date startDate;
+	
+	@Column(columnDefinition = "DATE")
+	@Temporal(TemporalType.DATE)
+	private Date endDate;
 	
 	@OneToMany(mappedBy = "term", cascade=CascadeType.ALL, fetch=FetchType.LAZY)
     private List<Roster> roster = new ArrayList<>();
@@ -59,6 +68,22 @@ public class Term implements Serializable {
 
 	public void setTermYear(int termYear) {
 		this.termYear = termYear;
+	}
+
+	public Date getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
+	}
+
+	public Date getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
 	}
 
 	public List<Roster> getRoster() {

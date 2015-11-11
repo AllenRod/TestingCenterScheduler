@@ -1,19 +1,31 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
+    pageEncoding="ISO-8859-1"%><!DOCTYPE html>
+<html lang="en">
+
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-	<title>Import .csv files</title>
-	
-	<!-- Bootstrap Core CSS -->
-	<link href="css/bootstrap.min.css" rel="stylesheet">
-	
-	<!-- Custom CSS -->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="author" content="">
+
+<title>Admin Home</title>
+
+<!-- Bootstrap Core CSS -->
+<link href="css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Morris Charts CSS -->
+<link href="css/plugins/morris.css" rel="stylesheet">
+
+<!-- Custom CSS -->
 <link href="css/core.css" rel="stylesheet">
+
 </head>
+
 <body>
+
 	<div id="wrapper">
 
 		<!-- Navigation -->
@@ -27,13 +39,13 @@
 						class="icon-bar"></span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="Admin.jsp" style="color: #fff;">Testing
+				<a class="navbar-brand" href="Admin.html" style="color: #fff;">Testing
 					Center</a>
 			</div>
 			<!-- Top Menu Items -->
 			<ul class="nav navbar-right top-nav">
 				<li class="dropdown"><a href="#" class="dropdown-toggle"
-					data-toggle="dropdown">
+					data-toggle="dropdown"><i class="fa fa-user"></i>
 						${user.firstName} ${user.lastName}<b class="caret"></b></a>
 					<ul class="dropdown-menu">
 						<li><a href="#">Settings</a>
@@ -70,39 +82,15 @@
 				<div class="row">
 					<div class="col-lg-12">
 						<h1 class="page-header">
-							Import Data <small>Importing CSV files</small>
+							Utilization <small>View for a data range</small>
 						</h1>
 						<ol class="breadcrumb">
-							<li class="active"> <a href= "Admin.jsp">Home</a> > Import Data</li>
+							<li class="active"> <a href= "Admin.jsp">Home</a> > Test Center Usage Report</li>
 						</ol>
 					</div>
 				</div>
-				
-				<c:choose>
-				    <c:when test="${returnVal == 'All data imports succeed'}">
-				        <div class="row">
-							<div class="col-lg-12">
-								<div class="alert alert-success">
-									${returnVal}
-								</div>
-							</div>
-						</div>
-				    </c:when>
-				    <c:when test="${not empty returnVal}">
-				        <div class="row">
-							<div class="col-lg-12">
-								<div class="alert alert-danger">
-									${returnVal}
-								</div>
-							</div>
-						</div>
-				    </c:when>
-				    <c:otherwise>
-				    </c:otherwise>
-				</c:choose>
-				<c:remove var="returnVal" scope="session" />
-				
-				<form action="LoadCSV" method="POST">
+		
+				<form action="AdministratorHome" method="POST" >
 				
 					<div class="row">
 						<div class="col-md-6">
@@ -115,34 +103,63 @@
 						</div>
 					</div>
 				
-					<div class = "row">
-						<div class="col-md-6">
-						<p>
-						CSV Type: 
-						<select name="table" class="form-control">
-							<option value = "roster" selected> Roster</option>
-							<option value = "user" > User</option>
-							<option value = "class" > Class</option>
-						</select>
-						</p>
+					<div class="row">
+						<div class = "col-md-6">
+							<p>Start Date</p>
+	
+							<select name="startmon" class="form-control" style="width:100px">
+									<c:forEach begin="1" end="12" var="val">
+										<option> ${val}</option>
+									</c:forEach>
+								</select>
+								<p>/</p>
+								<select name="startday" class="form-control" style="width:100px">
+									<c:forEach begin="1" end="31" var="val">
+										<option> ${val}</option>
+									</c:forEach>
+								</select>
+							</div>
 						</div>
-					</div>
-					<p>
-					Choose your .csv file <br>
-					<input type="file" name="file" size="50" onClick="enableButton()" required>
-					</p>
+				
+						<div class="row">
+							<div class = "col-md-6">
+								<p>End Date</p>
+		
+								<select name="endmon" class="form-control" style="width:100px">
+										<c:forEach begin="1" end="12" var="val">
+											<option> ${val}</option>
+										</c:forEach>
+									</select>
+									<p>/</p>
+									<select name="endday" class="form-control" style="width:100px">
+										<c:forEach begin="1" end="31" var="val">
+											<option> ${val}</option>
+										</c:forEach>
+									</select>
+								</div>
+							</div>
+						
 					<div>
-						<input class="btn btn-primary" id = "submit" type="submit" value="Send" onClick="this.disabled=true; this.value='Uploading...';">
+						<input type="submit" class="btn btn-primary" name="utilization" value="Submit"/>
 					</div>
 				</form>
 			</div>
 		</div>
 	</div>
+
 	<script>
         function enableButton() {
             document.getElementById("submit").disabled = false;
             document.getElementById("submit").value = "Send";
         }
     </script>
+
+	<!-- jQuery -->
+	<script src="js/jquery.js"></script>
+
+	<!-- Bootstrap Core JavaScript -->
+	<script src="js/bootstrap.min.js"></script>
+
 </body>
+
 </html>

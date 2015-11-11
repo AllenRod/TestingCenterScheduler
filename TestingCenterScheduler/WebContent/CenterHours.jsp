@@ -60,7 +60,8 @@
 			<!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
 			<div class="collapse navbar-collapse navbar-ex1-collapse">
 				<ul class="nav navbar-nav side-nav">
-					<li><a href="Admin.jsp" style="color: #fff;">Testing Center Usage Report</a></li>
+					<li><a href="Admin.jsp" style="color: #fff;">Home</a></li>
+					<li><a href="AdminUtilization.jsp" style="color: #fff;">Testing Center Usage Report</a></li>
 					<li><a href="#" style="color: #fff;" >Testing Center Information</a></li>
 					<li><a href="ImportData.jsp" style="color: #fff;">Import Data</a></li>
 					<li><a href="#" style="color: #fff;">View All Requests</a></li>
@@ -253,18 +254,18 @@
 							<td>
 								<select class="form-control" id="gaptime" name="gaptime" style="width:100px">
 									<c:forEach begin="0" end="30" var="val">
-										<option>${val}</option>
+										<option ${info.gapTime == val ? 'selected' : '' }>${val}</option>
 									</c:forEach>
 								</select> min
 							</td>
 						</tr>
 						<tr>
 							<th>Closing Dates:</th>
-							<td><input type="text" class="form-control" id="closing" name="closing" value="${info.closedDate}" required/></td>
+							<td><input type="text" class="form-control" id="closing" name="closing" value="${info.closedDate}"/></td>
 						</tr>
 						<tr>
 							<th>Reserve Time:</th>
-							<td><input type="text" class="form-control" id="reserve" name="reserve" value="${info.reserveTime}" required/></td>
+							<td><input type="text" class="form-control" id="reserve" name="reserve" value="${info.reserveTime}"/></td>
 						</tr>
 						<tr>
 							<th>Reminder Interval:</th>
