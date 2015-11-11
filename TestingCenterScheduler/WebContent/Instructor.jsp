@@ -111,7 +111,7 @@
 									</c:if>
 								</c:if>
 							</c:forEach>
-							<a href="#" class="list-group-item">
+
 							<c:forEach items="${nrequests}" var="requests">
 								<c:if test="${requests.status ne 'COMPLETED'}">
 									<c:if test="${requests.status ne 'DENIED'}">
