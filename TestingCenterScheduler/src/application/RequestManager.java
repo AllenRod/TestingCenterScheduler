@@ -5,7 +5,6 @@ import java.util.Date;
 import entity.ClassExamRequest;
 import entity.NonClassRequest;
 import entity.Request;
-import entity.Term;
 
 /**
  * Manage request schedulability and utilization.
@@ -56,12 +55,13 @@ public class RequestManager {
 
 	/**
 	 * Document this jesse
+	 * 
 	 * @param t
 	 * @param d
 	 * @return
 	 */
-	public double calculateUtilizationDay(Term t, Date d) {
-		double uti = dbManager.calculateUtilization(t, d);
+	public double calculateUtilizationDay(String term, Date d) {
+		double uti = dbManager.calculateUtilization(term, d);
 		return uti;
 	}
 

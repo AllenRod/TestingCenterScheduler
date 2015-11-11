@@ -124,6 +124,20 @@
 					<br>
 					<input type="submit" class="btn btn-primary" name="utilization" value="Submit"/>
 				</form>
+				<c:choose>
+					<c:when test="${not empty returnVal}">
+						<div class="row">
+							<div class="col-lg-12">
+								<c:forEach items="${returnVal}" var="uti"> 
+									${uti}
+								</c:forEach>
+							</div>
+						</div>
+					</c:when>
+					 <c:otherwise>
+				     </c:otherwise>
+				</c:choose>
+				<c:remove var="returnVal" scope="session" />
 				</div>
 			</div>
 		</div>

@@ -217,24 +217,29 @@ public class Administrator {
 		Calendar endDate = Calendar.getInstance();
 		endDate.set(year, Integer.parseInt(endMonth) - 1,
 				Integer.parseInt(endDay), 0, 0, 0);
-		Calendar dateHolder = null;
+		Calendar dateHolder = Calendar.getInstance();
 		if (startDate.after(endDate)) {
 			return null;
 		}
 		List<String> utiList = new ArrayList<String>();
 		for (Date d = startDate.getTime(); !startDate.after(endDate); startDate
 				.add(Calendar.DATE, 1), d = startDate.getTime()) {
-			double singleUTI = reqManager.calculateUtilizationDay(
-					dbManager.getTermByID(term), d);
+			dateHolder.setTime(d);
+			double singleUTI = reqManager.calculateUtilizationDay(term, d);
+			String s = "";
 			if (singleUTI == -1) {
-				String s = "Closed";
+				s = Integer.toString(dateHolder.get(Calendar.MONTH))
+						+ "/"
+						+ Integer.toString(dateHolder
+								.get(Calendar.DAY_OF_MONTH)) + ": Closed";
 			} else {
-				dateHolder.setTime(d);
-				String s = Integer.toString(dateHolder.get(Calendar.MONTH)) + "/"
-						+ Integer.toString(dateHolder.get(Calendar.DAY_OF_MONTH)) + ": "
+				s = Integer.toString(dateHolder.get(Calendar.MONTH))
+						+ "/"
+						+ Integer.toString(dateHolder
+								.get(Calendar.DAY_OF_MONTH)) + ": "
 						+ Double.toString(singleUTI);
-				utiList.add(s);
 			}
+			utiList.add(s);
 		}
 		return utiList;
 	}

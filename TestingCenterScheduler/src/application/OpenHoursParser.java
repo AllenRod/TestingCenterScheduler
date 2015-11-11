@@ -37,9 +37,9 @@ public class OpenHoursParser {
 
 		// convert to mins
 		int t1 = Integer.parseInt(startTime[0]) * 60
-				+ Integer.parseInt(startTime[0]);
-		int t2 = Integer.parseInt(startTime[1]) * 60
 				+ Integer.parseInt(startTime[1]);
+		int t2 = Integer.parseInt(endTime[0]) * 60
+				+ Integer.parseInt(endTime[1]);
 
 		diff = t2 - t1;
 

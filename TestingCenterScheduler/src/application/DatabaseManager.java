@@ -96,7 +96,7 @@ public class DatabaseManager {
 			closeEntityManager();
 		}
 	}
-	
+
 	/**
 	 * Get the term by the given date
 	 * 
@@ -106,7 +106,8 @@ public class DatabaseManager {
 	 */
 	public Term getTermByDate(Date date) {
 		createEntityManager();
-		Query q = em.createQuery("SELECT t FROM Term t WHERE t.startDate <= :td AND t.endDate >= :td");
+		Query q = em
+				.createQuery("SELECT t FROM Term t WHERE t.startDate <= :td AND t.endDate >= :td");
 		q.setParameter("td", date, TemporalType.DATE);
 		Term term = null;
 		try {
@@ -392,8 +393,7 @@ public class DatabaseManager {
 	 *            the date to find the utilization of
 	 * @return the utilization of the given day
 	 */
-	@SuppressWarnings("deprecation")
-	public double calculateUtilization(Term t, Date d) {
+	public double calculateUtilization(String t, Date d) {
 		createEntityManager();
 		Calendar c = Calendar.getInstance();
 		c.setTime(d);
@@ -417,7 +417,9 @@ public class DatabaseManager {
 		if (openHourDuration == -1) {
 			return -1;
 		}
-		return (double) durationSum / (tci.getSeats() * openHourDuration);
+		int seatNum = tci.getSeats();
+		closeEntityManager();
+		return (double) durationSum / (seatNum * openHourDuration);
 
 	}
 	/**

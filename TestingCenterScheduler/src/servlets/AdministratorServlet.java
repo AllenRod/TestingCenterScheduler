@@ -1,7 +1,9 @@
 package servlets;
 
 import java.io.IOException;
+import java.util.List;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -100,14 +102,21 @@ public class AdministratorServlet extends HttpServlet {
 			if (request.getParameter("utilization") != null) {
 				LoggerWrapper.logger.info("Admin " + admin.getNetID()
 						+ "viewing utilization");
-				String term = request.getParameter("term");
+				String term = request.getParameter("termVal");
 				String startMonth = request.getParameter("startmon");
 				String startDay = request.getParameter("startday");
 				String endMonth = request.getParameter("endmon");
 				String endDay = request.getParameter("endday");
-				admin.viewUtilization(term, startMonth, startDay, endMonth,
-						endDay);
+				LoggerWrapper.logger.info(term + " : " + startMonth + "/"
+						+ startDay + "-" + endMonth + "/" + endDay);
+				List<String> result = admin.viewUtilization(term, startMonth,
+						startDay, endMonth, endDay);
 				// add displaying code here
+				request.setAttribute("returnVal", result);
+				RequestDispatcher rd = request
+						.getRequestDispatcher("AdminUtilization.jsp");
+				rd.forward(request, response);
+
 			}
 		} catch (Exception error) {
 			LoggerWrapper.logger
