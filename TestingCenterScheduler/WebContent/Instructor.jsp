@@ -96,7 +96,7 @@
 					<!-- /.col-sm-4 -->
 					<div class="col-sm-12">
 						<div class="list-group">
-							<a class="list-group-item active">Current and Upcoming Exams</a>
+							<a class="list-group-item active">Current and Upcoming Stony Brook Exams</a>
 							
 							<c:forEach items="${crequests}" var="requests">
 								<c:if test="${requests.status ne 'COMPLETED'}">
@@ -111,7 +111,16 @@
 									</c:if>
 								</c:if>
 							</c:forEach>
-							<a href="#" class="list-group-item">
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<!-- /.col-sm-4 -->
+					<div class="col-sm-12">
+						<div class="list-group">
+							<a class="list-group-item active">Current and Upcoming non-Stony Brook Exams</a>
+
 							<c:forEach items="${nrequests}" var="requests">
 								<c:if test="${requests.status ne 'COMPLETED'}">
 									<c:if test="${requests.status ne 'DENIED'}">
