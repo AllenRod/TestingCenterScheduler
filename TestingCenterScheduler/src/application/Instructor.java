@@ -116,7 +116,7 @@ public class Instructor {
 			DateFormat formatter = new SimpleDateFormat("yyyy");
 			Calendar curC = Calendar.getInstance();
 			String year = formatter.format(curC.getTime());
-			formatter = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss");
+			formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			Date requestDate = curC.getTime();
 			String timeStartstr = year + "-" + sMonth + "-" + sDay + " "
 					+ sTime + ":00";
@@ -167,5 +167,38 @@ public class Instructor {
 	 */
 	public List<Term> getTerms() {
 		return dbManager.getTerm();
+	}
+	/**
+	 * Edits existing request from instructor's input
+	 * 
+	 * @param examType
+	 *            Type of exam
+	 * @param course
+	 *            Course of exam. If not for a course set null
+	 * @param examName
+	 *            Name of exam
+	 * @param testDuration
+	 *            Duration of exam
+	 * @param sMonth
+	 *            Start month
+	 * @param sDay
+	 *            Start day
+	 * @param sTime
+	 *            Start time
+	 * @param eMonth
+	 *            End month
+	 * @param eDay
+	 *            End day
+	 * @param eTime
+	 *            End time
+	 * @param roster
+	 *            Roster list of students. If exam for a course set null
+	 * @return Result from making new request
+	 */
+	public String editRequest(String examType, String course, String termID, String examName,
+			String testDuration, String sMonth, String sDay, String sTime,
+			String eMonth, String eDay, String eTime, String roster) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

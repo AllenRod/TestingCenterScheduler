@@ -70,10 +70,11 @@ public class InstructorServlet extends HttpServlet {
 	    doGet(request, response);
 	    return;
 	}
-	if (request.getSession().getAttribute("action") != null) {
+	if (request.getSession().getAttribute("action").equals("newRequest")) {
 	    LoggerWrapper.logger.info("Processing New Request");
 	    String s;
-	    s = instr.newRequest(request.getParameter("Rtype"),
+	    s = instr.newRequest(
+	    	request.getParameter("Rtype"),
 		    request.getParameter("Rclass"),
 		    request.getParameter("Rterm"),
 		    request.getParameter("Rname"),
@@ -95,7 +96,34 @@ public class InstructorServlet extends HttpServlet {
 				.getRequestDispatcher("Requests.jsp");
 	    rd.forward(request, response);
 	    //response.sendRedirect("Requests.jsp");
-	} else {
+	} 
+	else if (request.getSession().getAttribute("action").equals("editRequest")) {
+	    LoggerWrapper.logger.info("Processing edit Request");
+	    String s;
+	    s = instr.editRequest(request.getParameter("Rtype"),
+		    request.getParameter("Rclass"),
+		    request.getParameter("Rterm"),
+		    request.getParameter("Rname"),
+		    request.getParameter("Rduration"),
+		    request.getParameter("Rsmon"),
+		    request.getParameter("Rsday"),
+		    request.getParameter("Rstime"),
+		    request.getParameter("Remon"),
+		    request.getParameter("Reday"),
+		    request.getParameter("Retime"),
+		    request.getParameter("Rlist"));
+	    request.getSession().setAttribute("crequests",
+		    instr.getClassExamRequests());
+	    request.getSession().setAttribute("nrequests",
+		    instr.getNonClassRequests());
+	    request.getSession().setAttribute("courses", instr.getCourses());
+	    request.setAttribute("returnVal", s);
+	    RequestDispatcher rd = request
+				.getRequestDispatcher("Requests.jsp");
+	    rd.forward(request, response);
+	    //response.sendRedirect("Requests.jsp");
+	} 
+	else {
 	    LoggerWrapper.logger.info("Unsupported Case");
 	}
     }

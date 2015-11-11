@@ -194,12 +194,10 @@
 							if (type == "AD_HOC") {
 								$('#Rclass').prop('disabled', true);
 								$('#Rterm').prop('disabled', true);
-								$('#Rname').prop('required', true);
 								$('#Rlist').prop('disabled', false);
 							} else {
 								$('#Rclass').prop('disabled', false);
 								$('#Rterm').prop('disabled', false);
-								$('#Rname').prop('required', false);
 								$('#Rlist').prop('disabled', true);
 							}
 						});

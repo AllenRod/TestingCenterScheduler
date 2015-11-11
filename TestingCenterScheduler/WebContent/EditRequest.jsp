@@ -206,7 +206,7 @@
 					  		</c:if>
 						</div>
 						<br>
-						<c:set var="action" value="newRequest" scope="session" />
+						<c:set var="action" value="editRequest" scope="session" />
 						<a href="Requests.jsp" class="btn btn-default"
 							style="background: #DDD; color: #980100;">Cancel</a>
 						<c:if test="${request.status ne 'pending'}">
