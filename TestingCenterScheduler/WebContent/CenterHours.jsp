@@ -117,7 +117,9 @@
 									<th>Monday:</th>
 									<td>
 									<div class="form-inline">
-									<select name="mono" class="form-control" style="width:100px">
+										<div class="form-group">
+										<label class="sr-only" for="mono"></label>
+										<select name="mono" class="form-control" style="width:100px">
 											<c:forEach begin="0" end="23" var="val">
 											    <option> ${val}:00</option>
 											    <option> ${val}:30</option>
@@ -125,6 +127,7 @@
 											<option selected>Closed</option>
 										</select>
 										 to 
+										 <label class="sr-only" for="monc"></label>
 										<select name="monc" class="form-control" style="width:100px">
 											<c:forEach begin="0" end="23" var="val">
 											    <option> ${val}:00</option>
@@ -133,11 +136,16 @@
 											<option selected>Closed</option>
 										</select>
 										</div>
+									</div>
 									</td>
 								</tr>
 								<tr>
 									<th>Tuesday:</th>
-									<td><select name="tueo" class="form-control" style="width:100px">
+									<td>
+									<div class="form-inline">
+										<div class="form-group">
+										<label class="sr-only" for="tueo"></label>
+										<select name="tueo" class="form-control" style="width:100px">
 											<c:forEach begin="0" end="23" var="val">
 											    <option> ${val}:00</option>
 											    <option> ${val}:30</option>
@@ -145,6 +153,7 @@
 											<option selected>Closed</option>
 										</select>
 										 to 
+										 <label class="sr-only" for="tuec"></label>
 										<select name="tuec" class="form-control" style="width:100px">
 											<c:forEach begin="0" end="23" var="val">
 											    <option> ${val}:00</option>
@@ -152,11 +161,17 @@
 											</c:forEach>
 											<option selected>Closed</option>
 										</select>
+										</div>
+									</div>
 									</td>
 								</tr>
 								<tr>
 									<th>Wednesday:</th>
-									<td><select name="wedo" class="form-control" style="width:100px">
+									<td>
+									<div class="form-inline">
+										<div class="form-group">
+										<label class="sr-only" for="wedo"></label>
+										<select name="wedo" class="form-control" style="width:100px">
 											<c:forEach begin="0" end="23" var="val">
 											    <option> ${val}:00</option>
 											    <option> ${val}:30</option>
@@ -164,6 +179,7 @@
 											<option selected>Closed</option>
 										</select>
 										 to 
+										 <label class="sr-only" for="wedc"></label>
 										<select name="wedc" class="form-control" style="width:100px">
 											<c:forEach begin="0" end="23" var="val">
 											    <option> ${val}:00</option>
@@ -171,11 +187,17 @@
 											</c:forEach>
 											<option selected>Closed</option>
 										</select>
+										</div>
+									</div>
 									</td>
 								</tr>
 								<tr>
 									<th>Thursday:</th>
-									<td><select name="thuo" class="form-control" style="width:100px">
+									<td>
+									<div class="form-inline">
+										<div class="form-group">
+										<label class="sr-only" for="thuo"></label>
+										<select name="thuo" class="form-control" style="width:100px">
 											<c:forEach begin="0" end="23" var="val">
 											    <option> ${val}:00</option>
 											    <option> ${val}:30</option>
@@ -183,6 +205,7 @@
 											<option selected>Closed</option>
 										</select>
 										 to 
+										 <label class="sr-only" for="thuc"></label>
 										<select name="thuc" class="form-control" style="width:100px">
 											<c:forEach begin="0" end="23" var="val">
 											    <option> ${val}:00</option>
@@ -190,11 +213,17 @@
 											</c:forEach>
 											<option selected>Closed</option>
 										</select>
+										</div>
+									</div>
 									</td>
 								</tr>
 								<tr>
 									<th>Friday:</th>
-									<td><select name="frio" class="form-control" style="width:100px">
+									<td>
+									<div class="form-inline">
+										<div class="form-group">
+										<label class="sr-only" for="frio"></label>
+										<select name="frio" class="form-control" style="width:100px">
 											<c:forEach begin="0" end="23" var="val">
 											    <option> ${val}:00</option>
 											    <option> ${val}:30</option>
@@ -202,6 +231,7 @@
 											<option selected>Closed</option>
 										</select>
 										 to 
+										 <label class="sr-only" for="fric"></label>
 										<select name="fric" class="form-control" style="width:100px">
 											<c:forEach begin="0" end="23" var="val">
 											    <option> ${val}:00</option>
@@ -209,11 +239,17 @@
 											</c:forEach>
 											<option selected>Closed</option>
 										</select>
+										</div>
+									</div>
 									</td>
 								</tr>
 								<tr>
 									<th>Saturday:</th>
-									<td><select name="sato" class="form-control" style="width:100px">
+									<td>
+									<div class="form-inline">
+										<div class="form-group">
+										<label class="sr-only" for="sato"></label>
+										<select name="sato" class="form-control" style="width:100px">
 											<c:forEach begin="0" end="23" var="val">
 											    <option> ${val}:00</option>
 											    <option> ${val}:30</option>
@@ -221,6 +257,7 @@
 											<option selected>Closed</option>
 										</select>
 										 to 
+										<label class="sr-only" for="satc"></label>
 										<select name="satc" class="form-control" style="width:100px">
 											<c:forEach begin="0" end="23" var="val">
 											    <option> ${val}:00</option>
@@ -228,11 +265,17 @@
 											</c:forEach>
 											<option selected>Closed</option>
 										</select>
+										</div>
+									</div>
 									</td>
 								</tr>
 								<tr>
 									<th>Sunday:</th>
-									<td><select name="suno" class="form-control" style="width:100px">
+									<td>
+									<div class="form-inline">
+										<div class="form-group">
+										<label class="sr-only" for="suno"></label>
+										<select name="suno" class="form-control" style="width:100px">
 											<c:forEach begin="0" end="23" var="val">
 											    <option> ${val}:00</option>
 											    <option> ${val}:30</option>
@@ -240,6 +283,7 @@
 											<option selected>Closed</option>
 										</select>
 										 to 
+										<label class="sr-only" for="sunc"></label>
 										<select name="sunc" class="form-control" style="width:100px">
 											<c:forEach begin="0" end="23" var="val">
 											    <option> ${val}:00</option>
@@ -247,6 +291,8 @@
 											</c:forEach>
 											<option selected>Closed</option>
 										</select>
+										</div>
+									</div>
 									</td>
 								</tr>
 							</table>
@@ -255,11 +301,11 @@
 						<tr>
 							<th>Gap Time:</th>
 							<td>
-								<select class="form-control" id="gaptime" name="gaptime" style="width:100px">
-									<c:forEach begin="0" end="30" var="val">
-										<option ${info.gapTime == val ? 'selected' : '' }>${val}</option>
-									</c:forEach>
-								</select> min
+								<div class="form-group">
+									<label class="sr-only" for="gaptime">Gap Time:</label> <input
+										type="number" class="form-control input-sm" id="gaptime"
+										name="gaptime" min = "0" placeholder="Minutes" required>
+								</div>
 							</td>
 						</tr>
 						<tr>
@@ -286,7 +332,7 @@
 					<input type="submit" class="btn btn-primary" name="edit" value="Submit"/>
 					</form>
 				</div>
-				</div>
+			</div>
 				
 			</c:forEach>
 			<div class="row formTable" id="newForm">
@@ -300,10 +346,14 @@
 						<tr>
 							<th>Open Hours:</th>
 							<td>
-							<table class="info-table"  style="width:70%">
+							<table class="info-table"  style="width:100%">
 								<tr>
 									<th>Monday:</th>
-									<td><select name="mono" class="form-control" style="width:100px">
+									<td>
+									<div class="form-inline">
+										<div class="form-group">
+										<label class="sr-only" for="mono"></label>
+										<select name="mono" class="form-control" style="width:100px">
 											<c:forEach begin="0" end="23" var="val">
 											    <option> ${val}:00</option>
 											    <option> ${val}:30</option>
@@ -311,6 +361,7 @@
 											<option selected>Closed</option>
 										</select>
 										 to 
+										 <label class="sr-only" for="monc"></label>
 										<select name="monc" class="form-control" style="width:100px">
 											<c:forEach begin="0" end="23" var="val">
 											    <option> ${val}:00</option>
@@ -318,11 +369,17 @@
 											</c:forEach>
 											<option selected>Closed</option>
 										</select>
+										</div>
+									</div>
 									</td>
 								</tr>
 								<tr>
 									<th>Tuesday:</th>
-									<td><select name="tueo" class="form-control" style="width:100px">
+									<td>
+									<div class="form-inline">
+										<div class="form-group">
+										<label class="sr-only" for="tueo"></label>
+										<select name="tueo" class="form-control" style="width:100px">
 											<c:forEach begin="0" end="23" var="val">
 											    <option> ${val}:00</option>
 											    <option> ${val}:30</option>
@@ -330,6 +387,7 @@
 											<option selected>Closed</option>
 										</select>
 										 to 
+										 <label class="sr-only" for="tuec"></label>
 										<select name="tuec" class="form-control" style="width:100px">
 											<c:forEach begin="0" end="23" var="val">
 											    <option> ${val}:00</option>
@@ -337,11 +395,17 @@
 											</c:forEach>
 											<option selected>Closed</option>
 										</select>
+										</div>
+									</div>
 									</td>
 								</tr>
 								<tr>
 									<th>Wednesday:</th>
-									<td><select name="wedo" class="form-control" style="width:100px">
+									<td>
+									<div class="form-inline">
+										<div class="form-group">
+										<label class="sr-only" for="wedo"></label>
+										<select name="wedo" class="form-control" style="width:100px">
 											<c:forEach begin="0" end="23" var="val">
 											    <option> ${val}:00</option>
 											    <option> ${val}:30</option>
@@ -349,6 +413,7 @@
 											<option selected>Closed</option>
 										</select>
 										 to 
+										 <label class="sr-only" for="wedc"></label>
 										<select name="wedc" class="form-control" style="width:100px">
 											<c:forEach begin="0" end="23" var="val">
 											    <option> ${val}:00</option>
@@ -356,11 +421,17 @@
 											</c:forEach>
 											<option selected>Closed</option>
 										</select>
+										</div>
+									</div>
 									</td>
 								</tr>
 								<tr>
 									<th>Thursday:</th>
-									<td><select name="thuo" class="form-control" style="width:100px">
+									<td>
+									<div class="form-inline">
+										<div class="form-group">
+										<label class="sr-only" for="thuo"></label>
+										<select name="thuo" class="form-control" style="width:100px">
 											<c:forEach begin="0" end="23" var="val">
 											    <option> ${val}:00</option>
 											    <option> ${val}:30</option>
@@ -368,6 +439,7 @@
 											<option selected>Closed</option>
 										</select>
 										 to 
+										 <label class="sr-only" for="thuc"></label>
 										<select name="thuc" class="form-control" style="width:100px">
 											<c:forEach begin="0" end="23" var="val">
 											    <option> ${val}:00</option>
@@ -375,11 +447,17 @@
 											</c:forEach>
 											<option selected>Closed</option>
 										</select>
+										</div>
+									</div>
 									</td>
 								</tr>
 								<tr>
 									<th>Friday:</th>
-									<td><select name="frio" class="form-control" style="width:100px">
+									<td>
+									<div class="form-inline">
+										<div class="form-group">
+										<label class="sr-only" for="frio"></label>
+										<select name="frio" class="form-control" style="width:100px">
 											<c:forEach begin="0" end="23" var="val">
 											    <option> ${val}:00</option>
 											    <option> ${val}:30</option>
@@ -387,6 +465,7 @@
 											<option selected>Closed</option>
 										</select>
 										 to 
+										 <label class="sr-only" for="fric"></label>
 										<select name="fric" class="form-control" style="width:100px">
 											<c:forEach begin="0" end="23" var="val">
 											    <option> ${val}:00</option>
@@ -394,11 +473,17 @@
 											</c:forEach>
 											<option selected>Closed</option>
 										</select>
+										</div>
+									</div>
 									</td>
 								</tr>
 								<tr>
 									<th>Saturday:</th>
-									<td><select name="sato" class="form-control" style="width:100px">
+									<td>
+									<div class="form-inline">
+										<div class="form-group">
+										<label class="sr-only" for="sato"></label>
+										<select name="sato" class="form-control" style="width:100px">
 											<c:forEach begin="0" end="23" var="val">
 											    <option> ${val}:00</option>
 											    <option> ${val}:30</option>
@@ -406,6 +491,7 @@
 											<option selected>Closed</option>
 										</select>
 										 to 
+										<label class="sr-only" for="satc"></label>
 										<select name="satc" class="form-control" style="width:100px">
 											<c:forEach begin="0" end="23" var="val">
 											    <option> ${val}:00</option>
@@ -413,11 +499,17 @@
 											</c:forEach>
 											<option selected>Closed</option>
 										</select>
+										</div>
+									</div>
 									</td>
 								</tr>
 								<tr>
 									<th>Sunday:</th>
-									<td><select name="suno" class="form-control" style="width:100px">
+									<td>
+									<div class="form-inline">
+										<div class="form-group">
+										<label class="sr-only" for="suno"></label>
+										<select name="suno" class="form-control" style="width:100px">
 											<c:forEach begin="0" end="23" var="val">
 											    <option> ${val}:00</option>
 											    <option> ${val}:30</option>
@@ -425,6 +517,7 @@
 											<option selected>Closed</option>
 										</select>
 										 to 
+										<label class="sr-only" for="sunc"></label>
 										<select name="sunc" class="form-control" style="width:100px">
 											<c:forEach begin="0" end="23" var="val">
 											    <option> ${val}:00</option>
@@ -432,6 +525,8 @@
 											</c:forEach>
 											<option selected>Closed</option>
 										</select>
+										</div>
+									</div>
 									</td>
 								</tr>
 							</table>
@@ -440,11 +535,11 @@
 						<tr>
 							<th>Gap Time:</th>
 							<td>
-								<select class="form-control" id="gaptime" name="gaptime" style="width:100px">
-									<c:forEach begin="0" end="30" var="val">
-										<option>${val}</option>
-									</c:forEach>
-								</select> min
+								<div class="form-group">
+									<label class="sr-only" for="gaptime">Gap Time:</label> <input
+										type="number" class="form-control input-sm" id="gaptime"
+										name="gaptime" min = "0" placeholder="Minutes" required>
+								</div>
 							</td>
 						</tr>
 						<tr>

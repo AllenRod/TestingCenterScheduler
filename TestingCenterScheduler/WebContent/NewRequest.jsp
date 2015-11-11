@@ -122,7 +122,7 @@
 						<div class="form-group">
 							<label for="Rduration">Test Duration: </label> <input
 								type="number" class="form-control input-sm" id="Rduration"
-								name="Rduration" placeholder="Duration" required>
+								name="Rduration" min="1" placeholder="Duration" required>
 						</div>
 						<br>
 						<div class="form-group">
