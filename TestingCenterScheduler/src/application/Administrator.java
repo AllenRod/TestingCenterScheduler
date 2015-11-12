@@ -228,12 +228,12 @@ public class Administrator {
 			double singleUTI = reqManager.calculateUtilizationDay(term, d);
 			String s = "";
 			if (singleUTI == -1) {
-				s = Integer.toString(dateHolder.get(Calendar.MONTH))
+				s = Integer.toString(dateHolder.get(Calendar.MONTH) + 1)
 						+ "/"
 						+ Integer.toString(dateHolder
 								.get(Calendar.DAY_OF_MONTH)) + ": Closed";
 			} else {
-				s = Integer.toString(dateHolder.get(Calendar.MONTH))
+				s = Integer.toString(dateHolder.get(Calendar.MONTH) + 1)
 						+ "/"
 						+ Integer.toString(dateHolder
 								.get(Calendar.DAY_OF_MONTH)) + ": "
