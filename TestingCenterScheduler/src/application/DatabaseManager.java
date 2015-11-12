@@ -260,7 +260,7 @@ public class DatabaseManager {
 				q.executeUpdate();
 			}
 			closeTransactionalEntityManager();
-			return "Update succeed";
+			return "Update Success";
 		} catch (Exception error) {
 			closeEntityManager();
 			LoggerWrapper.logger.warning("Error in I_editRequest:"
@@ -284,7 +284,7 @@ public class DatabaseManager {
 					.setParameter("rid", Integer.parseInt(RID)).executeUpdate();
 			em.createNativeQuery("SET FOREIGN_KEY_CHECKS = 1;").executeUpdate();
 			closeTransactionalEntityManager();
-			return "Delete succeed";
+			return "Delete Success";
 		} catch (Exception error) {
 			closeEntityManager();
 			LoggerWrapper.logger.warning("Error in I_deleteRequest:"

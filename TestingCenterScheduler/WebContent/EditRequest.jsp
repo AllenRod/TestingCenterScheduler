@@ -328,11 +328,10 @@
 								exam Only):</label>
 							<br>
 							<c:if test="${isADHOC eq true}">
-									<textarea id="Rlist" name="Rlist" class="form-control" rows="3"><c:out value="${request.rosterList}"/></textarea>
+									<textarea id="Rlist" name="Rlist" class="form-control" rows="7" cols="50"><c:out value="${request.rosterList}"/></textarea>
 							</c:if>
 							<c:if test="${isADHOC eq false}">
-					    			<textarea id="Rlist" name="Rlist" class="form-control" rows="3"
-								disabled></textarea>
+					    			<textarea id="Rlist" name="Rlist" class="form-control" rows="7" cols="50" disabled></textarea>
 					  		</c:if>
 						</div>
 						<br>

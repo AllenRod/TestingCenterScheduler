@@ -84,6 +84,8 @@ public class InstructorServlet extends HttpServlet {
 					request.getParameter("Reday"),
 					request.getParameter("Retime"),
 					request.getParameter("Rlist"));
+			if (s.equals("Data import succeeds"))
+				s = "New Request Success";
 			request.getSession().setAttribute("crequests",
 					instr.getClassExamRequests());
 			request.getSession().setAttribute("nrequests",

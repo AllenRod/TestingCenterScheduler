@@ -163,8 +163,7 @@
 							<label for="Rlist">Student List (non-Stony Brook course
 								exam Only):</label>
 							<br>
-							<textarea id="Rlist" name="Rlist" class="form-control" rows="3"
-								disabled></textarea>
+							<textarea id="Rlist" name="Rlist" class="form-control" rows="7" cols="50" disabled></textarea>
 						</div>
 						<br>
 						<c:set var="action" value="newRequest" scope="session" />

@@ -204,5 +204,7 @@ ul.alert-dropdown {
 
 .div-spacing form div textarea {
     resize: none;
+    width: auto;
+    height: auto;
 	margin: 5px;
 }

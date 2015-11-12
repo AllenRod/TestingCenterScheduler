@@ -91,11 +91,11 @@
                 <!-- /.row -->
 				<div class="row">
 				<c:choose>
-				    <c:when test="${returnVal == 'Data import succeeds'}">
+				    <c:when test="${returnVal == 'New Request Success' || returnVal == 'Update Success' || returnVal == 'Delete Success'}">
 				        <div class="row">
 							<div class="col-lg-12">
 								<div class="alert alert-success">
-									Request Successfully Processed
+									${returnVal}
 								</div>
 							</div>
 						</div>
