@@ -11,7 +11,7 @@
 <meta name="description" content="">
 <meta name="author" content="">
 
-<title>Admin Home</title>
+<title>Admin Utilization</title>
 
 <!-- Bootstrap Core CSS -->
 <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -65,7 +65,7 @@
 					<li><a href="AdminUtilization.jsp" style="color: #fff;">Testing Center Usage Report</a></li>
 					<li><a href="CenterHours.jsp" style="color: #fff;">Testing Center Information</a></li>
 					<li><a href="ImportData.jsp" style="color: #fff;">Import Data</a></li>
-					<li><a href="#" style="color: #fff;">View All Requests</a></li>
+					<li><a href="AdminRequests.jsp" style="color: #fff;">View All Requests</a></li>
 					<li><a href="#" style="color: #fff;">View All Appointments</a></li>
 				</ul>
 			</div>
