@@ -157,7 +157,7 @@
                 <c:set var="shour" value="${timeParts[0]}" />
                 <c:set var="smin" value="${timeParts[1]}" />
                 
-                <c:set var="dateTimeParts" value="${fn:split(request.timeEnd, ';')}" />
+                <c:set var="dateTimeParts" value="${fn:split(request.timeEnd, ' ')}" />
                 <c:set var="emonth" value="${dateTimeParts[1]}" />
                 <c:set var="eday" value="${dateTimeParts[2]}" />
                 
@@ -294,11 +294,11 @@
 						<div class="form-group">
 							<label for="Remon">End Time: </label> <input type="number"
 								class="form-control input-sm" id="Remon" name="Remon" min="1"
-								max="12" placeholder="Month" style="width: 100px;" value="${emonth}"required>
+								max="12" placeholder="Month" style="width: 100px;" value="${emonth}" required>
 								
 							<input type="number" class="form-control input-sm" id="Reday"
 								name="Reday" min="1" max="31" placeholder="Day"
-								style="width: 100px;" value="${eday}"required>
+								style="width: 100px;" value="${eday}" required>
 
 							</select> <select name="Retime" class="form-control input-sm" style="width: 100px">
 								<c:forEach begin="0" end="23" var="val">
