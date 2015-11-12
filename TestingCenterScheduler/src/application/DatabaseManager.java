@@ -133,12 +133,12 @@ public class DatabaseManager {
 		try {
 			Term term = this.getTermByID(termID);
 			createTransactionalEntityManager();
-			// em.createNativeQuery("SET FOREIGN_KEY_CHECKS = 0;").executeUpdate();
+			em.createNativeQuery("SET FOREIGN_KEY_CHECKS = 0;").executeUpdate();
 			em.createQuery(
 					"DELETE FROM " + tableName
 							+ " tab WHERE tab.term = :termDel")
 					.setParameter("termDel", term).executeUpdate();
-			// em.createNativeQuery("SET FOREIGN_KEY_CHECKS = 1;").executeUpdate();
+			em.createNativeQuery("SET FOREIGN_KEY_CHECKS = 1;").executeUpdate();
 			LoggerWrapper.logger.info("Table " + tableName
 					+ " with data in term " + termID + " is deleted");
 			closeTransactionalEntityManager();
@@ -211,18 +211,97 @@ public class DatabaseManager {
 	}
 
 	/**
-	 * Find the course by the given courseID, instructor netID and termID
+	 * Update Request entity
+	 * 
+	 * @param RID
+	 *            Given request ID
+	 * @param type
+	 *            Type of request to be updated
+	 * @param examName
+	 *            Updated exam name
+	 * @param testDuration
+	 *            Updated exam duration
+	 * @param startTime
+	 *            Updated exam start time
+	 * @param endTime
+	 *            Updated exam end time
+	 * @param roster
+	 *            Updated roster list, for non class exam only
+	 * @return if the entity is updated
+	 */
+	public String I_editRequest(String RID, String type, String examName,
+			String testDuration, Date startTime, Date endTime, String roster) {
+		createTransactionalEntityManager();
+		try {
+			if (type.equals("CLASS")) {
+				Query q = em
+						.createQuery("UPDATE ClassExamRequest SET examName = :name, "
+								+ "testDuration = :dur, timeStart = :times, "
+								+ "timeEnd = :timee WHERE examIndex = :id");
+				q.setParameter("name", examName);
+				q.setParameter("dur", Integer.parseInt(testDuration));
+				q.setParameter("times", startTime, TemporalType.TIMESTAMP);
+				q.setParameter("timee", endTime, TemporalType.TIMESTAMP);
+				q.setParameter("id", Integer.parseInt(RID));
+				q.executeUpdate();
+			} else if (type.equals("AD_HOC")) {
+				Query q = em
+						.createQuery("UPDATE NonClassRequest SET examName = :name, "
+								+ "testDuration = :dur, timeStart = :times, "
+								+ "timeEnd = :timee, rosterList = :rlist WHERE examIndex = :id");
+				q.setParameter("name", examName);
+				q.setParameter("dur", Integer.parseInt(testDuration));
+				q.setParameter("times", startTime, TemporalType.TIMESTAMP);
+				q.setParameter("timee", endTime, TemporalType.TIMESTAMP);
+				q.setParameter("rlist", roster);
+				q.setParameter("id", Integer.parseInt(RID));
+				q.executeUpdate();
+			}
+			closeTransactionalEntityManager();
+			return "Update succeed";
+		} catch (Exception error) {
+			closeEntityManager();
+			LoggerWrapper.logger.warning("Error in I_editRequest:"
+					+ error.getClass() + ":" + error.getMessage());
+			return error.getClass() + ":" + error.getMessage();
+		}
+	}
+	
+	/**
+	 * Delete Request entity
+	 * 
+	 * @param RID
+	 *            Given request ID
+	 * @return if the entity is deleted
+	 */
+	public String I_deleteRequest(String RID) {
+		createTransactionalEntityManager();
+		try {
+			em.createNativeQuery("SET FOREIGN_KEY_CHECKS = 0;").executeUpdate();
+			em.createQuery(
+					"DELETE FROM Request r WHERE r.examIndex = :rid")
+					.setParameter("rid", Integer.parseInt(RID)).executeUpdate();
+			em.createNativeQuery("SET FOREIGN_KEY_CHECKS = 1;").executeUpdate();
+			closeTransactionalEntityManager();
+			return "Delete succeed";
+		} catch (Exception error) {
+			closeEntityManager();
+			LoggerWrapper.logger.warning("Error in I_deleteRequest:"
+					+ error.getClass() + ":" + error.getMessage());
+			return error.getClass() + ":" + error.getMessage();
+		}
+	}
+
+	/**
+	 * Find the course by the given courseID, instructor netID and term
 	 * 
 	 * @param courseID
 	 *            Given courseID
-	 * @param netID
-	 *            Given instructor netID
-	 * @param termID
-	 *            Given termID
-	 * @return Course with the courseID, instructor netID and termID
+	 * @param term
+	 *            Given term
+	 * @return Course with the courseID and term
 	 */
-	public Course I_findCourse(String courseID, String termID) {
-		Term term = getTermByID(termID);
+	public Course I_findCourse(String courseID, Term term) {
 		createEntityManager();
 		Query q = em
 				.createQuery("SELECT c FROM Course c WHERE c.classID = :cID "
@@ -238,7 +317,7 @@ public class DatabaseManager {
 			}
 			LoggerWrapper.logger.info("Get course with course " + courseID
 					+ ", instruction netID " + rs.getInstructorNetID()
-					+ " and termID " + termID);
+					+ " and termID " + term.getTermID());
 			return rs;
 		} catch (PersistenceException error) {
 			LoggerWrapper.logger.info("There is an error in I_findCourse:\n"
@@ -422,6 +501,7 @@ public class DatabaseManager {
 		return (double) durationSum / (seatNum * openHourDuration);
 
 	}
+
 	/**
 	 * Queries DB and returns a list of Term
 	 * 
@@ -518,7 +598,7 @@ public class DatabaseManager {
 			closeEntityManager();
 		}
 	}
-	
+
 	/**
 	 * Return a singleton of DatabaseManager
 	 * 

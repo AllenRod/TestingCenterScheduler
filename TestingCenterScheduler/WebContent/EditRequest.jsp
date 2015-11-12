@@ -112,6 +112,7 @@
                 <c:set var="dateTimeParts" value="${fn:split(request.timeStart, ' ')}" />
                 <c:set var="smonth" value="${dateTimeParts[1]}" />
                 <c:set var="sday" value="${dateTimeParts[2]}" />
+                <c:set var="syear" value="${dateTimeParts[5]}" />
                 
                 <c:choose>             
 	                <c:when test="${smonth eq 'Jan'}">
@@ -204,19 +205,16 @@
                 <c:set var="timeParts" value="${fn:split(time, ':')}" />
                 <c:set var="ehour" value="${timeParts[0]}" />
                 <c:set var="emin" value="${timeParts[1]}" />
-                
-                <c:if test="${isADHOC eq true}">
-                	<c:set var="studentList" value="${fn:split(request.rosterList,';')}"/>
-                </c:if>
-                
+                                
 				<div class="div-spacing">
 					<form class="form-inline" action="InstructorHome" method="POST">
 					
 						<input type="hidden" name="RID" value="${param.RequestID}">
+						<input type="hidden" name="Ryear" value="${syear}">
 						
 						<div class="form-group">
 							<label for="Rtype">Request Type:</label> <select
-								class="form-control" id="Rtype" name="Rtype" disabled>
+								class="form-control" id="Rtype" name="Rtype" readonly>
 								<c:if test="${isADHOC eq true}">
 									<option value="AD_HOC" selected>AD_HOC</option>
 								</c:if>
@@ -228,7 +226,7 @@
 						<br>
 						<div class="form-group">
 							<label for="Rclass">ClassID: </label> <select
-								class="form-control" id="Rclass" name="Rclass" disabled>
+								class="form-control" id="Rclass" name="Rclass" readonly>
 								<c:if test="${isADHOC eq true}">
 									<option selected>Non-Class Exam</option>
 								</c:if>
@@ -240,7 +238,7 @@
 						<br>
 						<div class="form-group">
 							<label for="Rterm">Term: </label> <select
-								class="form-control input-sm" id="Rterm" name="Rterm" disabled>
+								class="form-control input-sm" id="Rterm" name="Rterm" readonly>
 								<c:if test="${isADHOC eq true}">
 									<option selected>No Term</option>
 								</c:if>
@@ -330,7 +328,7 @@
 								exam Only):</label>
 							<br>
 							<c:if test="${isADHOC eq true}">
-									<textarea id="Rlist" name="Rlist" class="form-control" rows="3"><c:forEach var="student" items="${studentList}"><c:out value="${student}"/></c:forEach></textarea>
+									<textarea id="Rlist" name="Rlist" class="form-control" rows="3"><c:out value="${request.rosterList}"/></textarea>
 							</c:if>
 							<c:if test="${isADHOC eq false}">
 					    			<textarea id="Rlist" name="Rlist" class="form-control" rows="3"

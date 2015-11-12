@@ -56,12 +56,20 @@ public class RequestManager {
 				+ "; Sum = " + stuNum * (gapTime + request.getTestDuration()));
 		return stuNum * (gapTime + request.getTestDuration());
 	}
-
+	
 	/**
-	 * Document this jesse
+	 * Calculate the total available seat hour for the given request
+	 * @param request		Given request
+	 * @return				Total available seat hour for the request
+	 */
+	public int requestAvailableSeatHour(Request request) {
+		return 0;
+	}
+
+	/** Document this Jesse
 	 * 
 	 * @param t
-	 * @param d
+	 * @param d  NOPEEE
 	 * @return
 	 */
 	public double calculateUtilizationDay(String term, Date d) {
@@ -82,3 +90,14 @@ public class RequestManager {
 	}
 	
 }
+
+
+/********************************************************************
+ ***TTTTTTTTTT*EEEEEEEEEE*******AAAA*******MM***********MM*FFFFFFFFFF
+ *******TT*****EE**************AA**AA******MMM*********MMM*FF********
+ *******TT*****EE*************AA****AA*****MMMM*******MMMM*FF*FFFFF**
+ *******TT*****EEEEEEEEEE****AAAAAAAAAA****MM*MM*****MM*MM*FFF****FF*
+ *******TT*****EE***********AA********AA***MM**MM***MM**MM*********FF
+ *******TT*****EE**********AA**********AA**MM***MM*MM***MM*FF******FF
+ *******TT*****EEEEEEEEEE*AA************AA*MM****MMM****MM**FFFFFFFF*
+ ********************************************************************/

@@ -23,7 +23,7 @@ public class Instructor {
 
 	// netID of the Instructor
 	private String netID;
-	
+
 	// request manager object
 	private RequestManager reqManager;
 
@@ -112,15 +112,17 @@ public class Instructor {
 	 *            Roster list of students. If exam for a course set null
 	 * @return Result from making new request
 	 */
-	public String newRequest(String examType, String course, String termID, String examName,
-			String testDuration, String sMonth, String sDay, String sTime,
-			String eMonth, String eDay, String eTime, String roster) {
+	public String newRequest(String examType, String course, String termID,
+			String examName, String testDuration, String sMonth, String sDay,
+			String sTime, String eMonth, String eDay, String eTime,
+			String roster) {
 		try {
 			String s = "";
-			DateFormat formatter = new SimpleDateFormat("yyyy");
+			Term term = dbManager.getTermByID(termID);
 			Calendar curC = Calendar.getInstance();
-			String year = formatter.format(curC.getTime());
-			formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			String year = Integer.toString(term.getTermYear());
+			SimpleDateFormat formatter = new SimpleDateFormat(
+					"yyyy-MM-dd HH:mm:ss");
 			Date requestDate = curC.getTime();
 			String timeStartstr = year + "-" + sMonth + "-" + sDay + " "
 					+ sTime + ":00";
@@ -137,13 +139,15 @@ public class Instructor {
 				r.setStatus("pending");
 				r.setTimeEnd(timeEnd);
 				r.setTimeStart(timeStart);
-				Course c = dbManager.I_findCourse(course, termID);
+				Course c = dbManager.I_findCourse(course, term);
 				if (c == null) {
 					return "Conflict between classID and termID, please check your input again";
 				}
-				r.setCourse(dbManager.I_findCourse(course, termID));
+				r.setCourse(c);
 				// Test
 				reqManager.requestReserveSeatHour(r);
+				System.out.println(r.getExamName() + " " + r.getInstructorNetID() + " " 
+						+ r.getTestDuration() + " " + r.getTimeEnd() + " " + r.getTimeStart());
 				s = dbManager.loadData(r);
 			} else if (examType.equals("AD_HOC")) {
 				NonClassRequest r = new NonClassRequest();
@@ -156,8 +160,10 @@ public class Instructor {
 				r.setTimeStart(timeStart);
 				r.setRosterList(roster);
 				// Test
-				RequestManager mag = new RequestManager();
 				reqManager.requestReserveSeatHour(r);
+				System.out.println(r.getExamName() + " " + r.getInstructorNetID() + " " 
+						+ r.getTestDuration() + " " + r.getTimeEnd() + " " + r.getTimeStart() 
+						+ " " + r.getRosterList());
 				s = dbManager.loadData(r);
 			}
 			return s;
@@ -166,19 +172,22 @@ public class Instructor {
 			return error.getClass() + ":" + error.getMessage();
 		}
 	}
-	
+
 	/**
 	 * Get all existing terms
-	 * @return	List of existing terms
+	 * 
+	 * @return List of existing terms
 	 */
 	public List<Term> getTerms() {
 		return dbManager.getTerm();
 	}
+
 	/**
 	 * Edits existing request from instructor's input
 	 * 
 	 * @param RID
-	 * 			Request ID of Exam
+	 *            Request ID of Exam
+	 * @param type
 	 * @param examName
 	 *            Name of exam
 	 * @param testDuration
@@ -199,22 +208,40 @@ public class Instructor {
 	 *            Roster list of students. If exam for a course set null
 	 * @return Result from making new request
 	 */
-	public String editRequest(String RID, String examName,
+	public String editRequest(String RID, String year, String type, String examName,
 			String testDuration, String sMonth, String sDay, String sTime,
 			String eMonth, String eDay, String eTime, String roster) {
-		// TODO Auto-generated method stub
-		
-		return null;
+		try {
+			String s = "";
+			SimpleDateFormat formatter = new SimpleDateFormat(
+					"yyyy-MM-dd HH:mm:ss");
+			String timeStartstr = year + "-" + sMonth + "-" + sDay + " "
+					+ sTime + ":00";
+			String timeEndstr = year + "-" + eMonth + "-" + eDay + " " + eTime
+					+ ":00";
+			Date timeStart = (Date) formatter.parse(timeStartstr);
+			Date timeEnd = (Date) formatter.parse(timeEndstr);
+			if (type.equals("CLASS")) {
+				s = dbManager.I_editRequest(RID, type, examName, testDuration, timeStart, timeEnd, "");
+			} else if (type.equals("AD_HOC")) {
+				s = dbManager.I_editRequest(RID, type, examName, testDuration, timeStart, timeEnd, roster);
+			}
+			return s;
+		} catch (ParseException error) {
+			System.out.println(error.getClass() + ":" + error.getMessage());
+			return error.getClass() + ":" + error.getMessage();
+		}
 	}
+
 	/**
 	 * Edits existing request from instructor's input
 	 * 
 	 * @param RID
-	 * 			Request ID of Exam
+	 *            Request ID of Exam
 	 * 
 	 * @return Result from making new request
 	 */
 	public String deleteRequest(String RID) {
-		return null;
+		return dbManager.I_deleteRequest(RID);
 	}
 }

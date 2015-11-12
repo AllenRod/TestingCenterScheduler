@@ -54,6 +54,7 @@ public class CSVLoader {
 			sc = new Scanner(file);
 			String header = sc.nextLine();
 			String[] headerVal = header.split(",");
+			boolean del = true;
 			if (table.toLowerCase().equals("class")) {
 				/**if (!headerVal[0].toLowerCase().equals("classid")
 						|| !headerVal[1].toLowerCase().equals("subject")
@@ -66,7 +67,7 @@ public class CSVLoader {
 				} else {
 					dbManager.delTable("Course", termID);
 				}**/
-				dbManager.delTable("Course", termID);
+				del = dbManager.delTable("Course", termID);
 			} else if (table.toLowerCase().equals("roster")) {
 				/**if (!headerVal[0].toLowerCase().equals("netid")
 						|| !headerVal[1].toLowerCase().equals("classid")) {
@@ -75,7 +76,7 @@ public class CSVLoader {
 				} else {
 					dbManager.delTable("Roster", termID);
 				}**/
-				dbManager.delTable("Roster", termID);
+				del = dbManager.delTable("Roster", termID);
 			} else if (table.toLowerCase().equals("user")) {
 				/**if (!headerVal[0].toLowerCase().equals("firstname")
 						|| !headerVal[1].toLowerCase().equals("lastname")
@@ -86,10 +87,14 @@ public class CSVLoader {
 				} else {
 					dbManager.delTable("User", termID);
 				}**/
-				dbManager.delTable("User", termID);
+				del = dbManager.delTable("User", termID);
 			} else {
 				sc.close();
 				return "Wrong CSV format";
+			}
+			if (!del) {
+				sc.close();
+				return "Error in deleting past data";
 			}
 			while (sc.hasNext()) {
 				String line = sc.nextLine();

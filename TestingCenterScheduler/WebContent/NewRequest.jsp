@@ -193,11 +193,9 @@
 							var type = $('#Rtype').find(":selected").val();
 							if (type == "AD_HOC") {
 								$('#Rclass').prop('disabled', true);
-								$('#Rterm').prop('disabled', true);
 								$('#Rlist').prop('disabled', false);
 							} else {
 								$('#Rclass').prop('disabled', false);
-								$('#Rterm').prop('disabled', false);
 								$('#Rlist').prop('disabled', true);
 							}
 						});
