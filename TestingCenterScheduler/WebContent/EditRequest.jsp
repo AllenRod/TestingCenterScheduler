@@ -327,7 +327,7 @@
 								exam Only):</label>
 							<br>
 							<c:if test="${isADHOC eq true}">
-									<textarea id="Rlist" name="Rlist" class="form-control" rows="3>
+									<textarea id="Rlist" name="Rlist" class="form-control" rows="3"> 
 									<c:forEach var="student" items="${studentList}">
 									<c:out value="${student}"/>
 									</c:forEach>
