@@ -23,6 +23,9 @@ public class Instructor {
 
 	// netID of the Instructor
 	private String netID;
+	
+	// request manager object
+	private RequestManager reqManager;
 
 	/**
 	 * Constructor for class Instructor
@@ -33,6 +36,7 @@ public class Instructor {
 	public Instructor(String netID) {
 		this.netID = netID;
 		dbManager = DatabaseManager.getSingleton();
+		reqManager = RequestManager.getSingleton();
 	}
 
 	/**
@@ -139,8 +143,7 @@ public class Instructor {
 				}
 				r.setCourse(dbManager.I_findCourse(course, termID));
 				// Test
-				RequestManager mag = new RequestManager();
-				mag.requestReserveSeatHour(r);
+				reqManager.requestReserveSeatHour(r);
 				s = dbManager.loadData(r);
 			} else if (examType.equals("AD_HOC")) {
 				NonClassRequest r = new NonClassRequest();
@@ -152,6 +155,9 @@ public class Instructor {
 				r.setTimeEnd(timeEnd);
 				r.setTimeStart(timeStart);
 				r.setRosterList(roster);
+				// Test
+				RequestManager mag = new RequestManager();
+				reqManager.requestReserveSeatHour(r);
 				s = dbManager.loadData(r);
 			}
 			return s;

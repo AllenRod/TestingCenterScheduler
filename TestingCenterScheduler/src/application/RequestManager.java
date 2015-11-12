@@ -5,6 +5,7 @@ import java.util.Date;
 import entity.ClassExamRequest;
 import entity.NonClassRequest;
 import entity.Request;
+import entity.Term;
 
 /**
  * Manage request schedulability and utilization.
@@ -35,6 +36,7 @@ public class RequestManager {
 	public int requestReserveSeatHour(Request request) {
 		int stuNum = 0;
 		int gapTime = 0;
+		Term term = null;
 		if (request instanceof ClassExamRequest) {
 			// class exam request
 			stuNum = dbManager.R_getStudentNum(((ClassExamRequest) request)
@@ -42,11 +44,13 @@ public class RequestManager {
 			if ((Integer) stuNum == null) {
 				stuNum = 0;
 			}
-			gapTime = dbManager.R_getGapTime(((ClassExamRequest) request)
-					.getCourse().getTerm());
+			term = ((ClassExamRequest)request).getCourse().getTerm();
+			gapTime = dbManager.R_getGapTime(term);
 		} else if (request instanceof NonClassRequest) {
 			// non class exam request
-
+			stuNum = ((NonClassRequest) request).getRosterList().split(";").length;
+			term = dbManager.getTermByDate(((NonClassRequest) request).getTimeStart());
+			gapTime = dbManager.R_getGapTime(term);
 		}
 		System.out.println("Num = " + stuNum + "; Gap Time = " + gapTime
 				+ "; Sum = " + stuNum * (gapTime + request.getTestDuration()));
@@ -65,4 +69,16 @@ public class RequestManager {
 		return uti;
 	}
 
+	/**
+	 * Return a singleton of RequestManager
+	 * 
+	 * @return a singleton of class RequestManager
+	 */
+	public static RequestManager getSingleton() {
+		if (requestManager == null) {
+			requestManager = new RequestManager();
+		}
+		return requestManager;
+	}
+	
 }
