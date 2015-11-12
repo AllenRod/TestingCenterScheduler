@@ -157,7 +157,7 @@
                 <c:set var="shour" value="${timeParts[0]}" />
                 <c:set var="smin" value="${timeParts[1]}" />
                 
-                <c:set var="dateTimeParts" value="${fn:split(request.timeEnd, ' ')}" />
+                <c:set var="dateTimeParts" value="${fn:split(request.timeEnd, ';')}" />
                 <c:set var="emonth" value="${dateTimeParts[1]}" />
                 <c:set var="eday" value="${dateTimeParts[2]}" />
                 
@@ -242,7 +242,7 @@
 									<option selected>No Term</option>
 								</c:if>
 								<c:if test="${isADHOC eq false}">
-					    			<option value="${request.term.termID}" selected>${request.term.termID}</option>
+					    			<option value="${request.course.term}" selected>${request.course.term}</option>
 					  			</c:if>
 							</select>
 						</div>
@@ -327,11 +327,7 @@
 								exam Only):</label>
 							<br>
 							<c:if test="${isADHOC eq true}">
-									<textarea id="Rlist" name="Rlist" class="form-control" rows="3>
-									<c:forEach var="student" items="${studentList}">
-									<c:out value="${student}"/>
-									</c:forEach>
-									</textarea>
+									<textarea id="Rlist" name="Rlist" class="form-control" rows="3><c:forEach var="student" items="${studentList}"><c:out value="${student}"/></c:forEach></textarea>
 							</c:if>
 							<c:if test="${isADHOC eq false}">
 					    			<textarea id="Rlist" name="Rlist" class="form-control" rows="3"
@@ -341,7 +337,7 @@
 						<br>
 						<c:set var="action" value="editRequest" scope="session" />
 						<a href="Requests.jsp" class="btn btn-default"
-							style="background: #DDD; color: #980100;">Cancel</a>
+							style="background: #DDD; color: #980100;"/>Cancel</a>
 						<c:if test="${request.status ne 'pending'}">
 						<input type="submit" value="This request cannot be changed"
 							class="btn btn-default"
