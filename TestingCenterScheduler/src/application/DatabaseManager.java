@@ -268,7 +268,7 @@ public class DatabaseManager {
 			return error.getClass() + ":" + error.getMessage();
 		}
 	}
-	
+
 	/**
 	 * Delete Request entity
 	 * 
@@ -280,8 +280,7 @@ public class DatabaseManager {
 		createTransactionalEntityManager();
 		try {
 			em.createNativeQuery("SET FOREIGN_KEY_CHECKS = 0;").executeUpdate();
-			em.createQuery(
-					"DELETE FROM Request r WHERE r.examIndex = :rid")
+			em.createQuery("DELETE FROM Request r WHERE r.examIndex = :rid")
 					.setParameter("rid", Integer.parseInt(RID)).executeUpdate();
 			em.createNativeQuery("SET FOREIGN_KEY_CHECKS = 1;").executeUpdate();
 			closeTransactionalEntityManager();
@@ -622,7 +621,14 @@ public class DatabaseManager {
 		}
 		closeEntityManager();
 		return returnList;
+	}
 
+	public List<Appointment> getAllAppointments() {
+		createEntityManager();
+		Query q1 = em.createQuery("SELECT a FROM Appointment a");
+		List<Appointment> aList = q1.getResultList();
+		closeEntityManager();
+		return aList;
 	}
 
 	/**

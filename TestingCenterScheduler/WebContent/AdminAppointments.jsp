@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -118,12 +119,12 @@
 								<th>Seat Number</th>
 								<th>Status</th>
 							</tr>
-							<c:forEach items="{appointments}" var="apps"> 
+							<c:forEach items="${appointments}" var="apps"> 
     						<tr class="success">
 								<td><font color="blue">${apps.request.course.classID}</font></td>
 								<td>${apps.request.examName}</td>
 								<td>${apps.request.instructorNetID}</td>
-								<td>${apps.user.firstName + apps.user.lastName}</td>
+								<td>${apps.user.firstName} ${apps.user.lastName}</td>
 								<td>${apps.user.netID}</td>
 								<td>${apps.request.examIndex}</td>
 								<td>${apps.timeStart}</td>

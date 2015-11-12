@@ -250,6 +250,6 @@ public class Administrator {
 	}
 
 	public List<Appointment> getAllAppointments() {
-		return null;
+		return dbManager.getAllAppointments();
 	}
 }

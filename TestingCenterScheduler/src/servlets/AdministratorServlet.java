@@ -57,8 +57,8 @@ public class AdministratorServlet extends HttpServlet {
 		request.getSession().setAttribute("nrequests",
 				admin.getRequests("AD HOC"));
 
-		// request.getSession().setAttribute("appointments",
-		// admin.getAllAppointments());
+		request.getSession().setAttribute("appointments",
+				admin.getAllAppointments());
 
 		response.sendRedirect("Admin.jsp");
 	}

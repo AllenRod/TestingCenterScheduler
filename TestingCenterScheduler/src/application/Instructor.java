@@ -1,6 +1,5 @@
 package application;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -130,6 +129,9 @@ public class Instructor {
 					+ ":00";
 			Date timeStart = (Date) formatter.parse(timeStartstr);
 			Date timeEnd = (Date) formatter.parse(timeEndstr);
+			if (timeStart.after(timeEnd)) {
+				return "Start date is after end date!";
+			}
 			if (examType.equals("CLASS")) {
 				ClassExamRequest r = new ClassExamRequest();
 				r.setExamName(dbManager.I_setClassExamName(course));
@@ -203,9 +205,10 @@ public class Instructor {
 	 *            Roster list of students. If exam for a course set null
 	 * @return Result from making new request
 	 */
-	public String editRequest(String RID, String year, String type, String examName,
-			String testDuration, String sMonth, String sDay, String sTime,
-			String eMonth, String eDay, String eTime, String roster) {
+	public String editRequest(String RID, String year, String type,
+			String examName, String testDuration, String sMonth, String sDay,
+			String sTime, String eMonth, String eDay, String eTime,
+			String roster) {
 		try {
 			String s = "";
 			SimpleDateFormat formatter = new SimpleDateFormat(
@@ -216,10 +219,15 @@ public class Instructor {
 					+ ":00";
 			Date timeStart = (Date) formatter.parse(timeStartstr);
 			Date timeEnd = (Date) formatter.parse(timeEndstr);
+			if (timeStart.after(timeEnd)) {
+				return "Start date is after end date!";
+			}
 			if (type.equals("CLASS")) {
-				s = dbManager.I_editRequest(RID, type, examName, testDuration, timeStart, timeEnd, "");
+				s = dbManager.I_editRequest(RID, type, examName, testDuration,
+						timeStart, timeEnd, "");
 			} else if (type.equals("AD_HOC")) {
-				s = dbManager.I_editRequest(RID, type, examName, testDuration, timeStart, timeEnd, roster);
+				s = dbManager.I_editRequest(RID, type, examName, testDuration,
+						timeStart, timeEnd, roster);
 			}
 			return s;
 		} catch (ParseException error) {

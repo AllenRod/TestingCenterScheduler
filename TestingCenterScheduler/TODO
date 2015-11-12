@@ -2,11 +2,12 @@ AllenRod:
 - RequestManager
 
 McNuggets:
-- Instructor Edit Request (Front end: 99% done)
-- Instructor Edit Request (Back end: 10% done)
+- Instructor: View Exam information
 
 Guy From Breaking Bad:
-- Student(?)
+- Fix utilization(?)
+- Add future utilization
+- Check for Superman appointments
 
-Derek:
-- Student(?)
+DereK:
+- Student(?!?) 
