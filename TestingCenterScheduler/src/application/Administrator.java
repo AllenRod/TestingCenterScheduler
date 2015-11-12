@@ -33,7 +33,7 @@ public class Administrator {
 	public Administrator(String netID) {
 		this.netID = netID;
 		dbManager = DatabaseManager.getSingleton();
-		reqManager = new RequestManager();
+		reqManager = RequestManager.getSingleton();
 	}
 
 	/**
