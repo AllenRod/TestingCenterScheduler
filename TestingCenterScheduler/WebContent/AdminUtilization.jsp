@@ -125,6 +125,15 @@
 					<input type="submit" class="btn btn-primary" name="utilization" value="Submit"/>
 				</form>
 				<c:choose>
+					<c:when test ="${returnVal == 'Start date is after end date!'}">
+						<div class="row">
+							<div class="col-lg-12">
+								<div class="alert alert-danger">
+									${returnVal}
+								</div>
+							</div>
+						</div>
+					</c:when>
 					<c:when test="${not empty returnVal}">
 						<div class="row">
 							<div class="col-lg-12">

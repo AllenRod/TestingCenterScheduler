@@ -190,8 +190,10 @@
 										<td>${requests.status}</font>
 									</c:otherwise>
 								</c:choose>
-							</tr>
+								
+							
 							<td><!--                TODO                             --></td>
+							</tr>
 							</c:forEach>
 					</table>
 				</div>
@@ -203,12 +205,6 @@
 
     </div>
     <!-- /#wrapper -->
-
-    <script type ="text/javascript">
-                function editRequest(ele){
-        			window.location = '/TestingCenterScheduler/EditRequest.jsp?RequestID='+ele.id;
-        		}
-    </script>
     
     <!-- jQuery -->
     <script src="js/jquery.js"></script>

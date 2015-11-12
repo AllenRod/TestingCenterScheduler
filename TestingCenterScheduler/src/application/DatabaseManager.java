@@ -14,7 +14,9 @@ import javax.persistence.Query;
 import javax.persistence.TemporalType;
 
 import entity.Appointment;
+import entity.ClassExamRequest;
 import entity.Course;
+import entity.NonClassRequest;
 import entity.Request;
 import entity.Term;
 import entity.TestCenterInfo;
@@ -518,7 +520,30 @@ public class DatabaseManager {
 			closeEntityManager();
 		}
 	}
-	
+
+	/**
+	 * Returns a list of request based on the type
+	 * 
+	 * @param type
+	 *            either CLASS or AD HOC
+	 * @return list of requests with given type
+	 */
+	public List<Request> getRequests(String type) {
+		createEntityManager();
+		Query q1 = em.createQuery("SELECT r FROM Request r");
+		List<Request> rList = q1.getResultList();
+		List<Request> returnList = new ArrayList<Request>();
+		for (Request r : rList) {
+			if (type.equals("CLASS") && r instanceof ClassExamRequest) {
+				returnList.add(r);
+			} else if (type.equals("AD HOC") && r instanceof NonClassRequest) {
+				returnList.add(r);
+			}
+		}
+		closeEntityManager();
+		return returnList;
+
+	}
 	/**
 	 * Return a singleton of DatabaseManager
 	 * 

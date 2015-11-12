@@ -5,6 +5,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import entity.Appointment;
 import entity.Request;
 import entity.Term;
 import entity.TestCenterInfo;
@@ -218,10 +219,10 @@ public class Administrator {
 		endDate.set(year, Integer.parseInt(endMonth) - 1,
 				Integer.parseInt(endDay), 0, 0, 0);
 		Calendar dateHolder = Calendar.getInstance();
-		if (startDate.after(endDate)) {
-			return null;
-		}
 		List<String> utiList = new ArrayList<String>();
+		if (startDate.after(endDate)) {
+			return utiList;
+		}
 		for (Date d = startDate.getTime(); !startDate.after(endDate); startDate
 				.add(Calendar.DATE, 1), d = startDate.getTime()) {
 			dateHolder.setTime(d);
@@ -242,5 +243,13 @@ public class Administrator {
 			utiList.add(s);
 		}
 		return utiList;
+	}
+
+	public List<Request> getRequests(String type) {
+		return dbManager.getRequests(type);
+	}
+
+	public List<Appointment> getAllAppointments() {
+		return null;
 	}
 }

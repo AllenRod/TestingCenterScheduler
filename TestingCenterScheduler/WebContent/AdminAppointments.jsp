@@ -111,23 +111,26 @@
 								<th>Class</th>
 								<th>Exam Name</th>
 								<th>Instructor</th>
-								<th>Student</th>
+								<th>Student Name</th>
+								<th>Student NetID</th>
 								<th>ExamID</th>
 								<th>Test Time</th>
 								<th>Seat Number</th>
 								<th>Status</th>
-							</tr><!--
-							<c:forEach items="${requests}" var="requests">    
-    						<tr class="success">
-								<td><font color="blue">${requests.course.classID}</font></td>
-								<td>${requests.examName}</td>
-								<td>${requests.timeStart}</td>
-								<td>${requests.timeEnd}</td>
-								<td>${requests.testDuration}</td>
-								<td>${requests.examIndex}</td>
-								<td><font color="green">${requests.status}</font></th>
 							</tr>
-							</c:forEach>-->
+							<c:forEach items="{appointments}" var="apps"> 
+    						<tr class="success">
+								<td><font color="blue">${apps.request.course.classID}</font></td>
+								<td>${apps.request.examName}</td>
+								<td>${apps.request.instructorNetID}</td>
+								<td>${apps.user.firstName + apps.user.lastName}</td>
+								<td>${apps.user.netID}</td>
+								<td>${apps.request.examIndex}</td>
+								<td>${apps.timeStart}</td>
+								<td>${apps.seatNum}</td>
+								<td>${apps.status}</td>
+							</tr>
+							</c:forEach>
 					</table>
 				</div>
 			</div>
