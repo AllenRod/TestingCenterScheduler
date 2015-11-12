@@ -327,7 +327,7 @@
 								exam Only):</label>
 							<br>
 							<c:if test="${isADHOC eq true}">
-									<textarea id="Rlist" name="Rlist" class="form-control" rows="3><c:forEach var="student" items="${studentList}"><c:out value="${student}"/></c:forEach></textarea>
+									<textarea id="Rlist" name="Rlist" class="form-control" rows="3"><c:forEach var="student" items="${studentList}"><c:out value="${student}"/></c:forEach></textarea>
 							</c:if>
 							<c:if test="${isADHOC eq false}">
 					    			<textarea id="Rlist" name="Rlist" class="form-control" rows="3"
@@ -337,7 +337,7 @@
 						<br>
 						<c:set var="action" value="editRequest" scope="session" />
 						<a href="Requests.jsp" class="btn btn-default"
-							style="background: #DDD; color: #980100;"/>Cancel</a>
+							style="background: #DDD; color: #980100;">Cancel</a>
 						<c:if test="${request.status ne 'pending'}">
 						<input type="submit" value="This request cannot be changed"
 							class="btn btn-default"
@@ -352,8 +352,7 @@
 				</div>
 			</div>
 		</div>
-	</div>
-				
+	</div>	
 	<!-- /.container-fluid -->
 
 	<!-- jQuery -->
