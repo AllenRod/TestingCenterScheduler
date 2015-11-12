@@ -206,7 +206,7 @@
                 <c:set var="emin" value="${timeParts[1]}" />
                 
                 <c:if test="${isADHOC eq true}">
-                	<c:set var="studentList" value="${fn:split(request.rosterList,' ')}"/>
+                	<c:set var="studentList" value="${fn:split(request.rosterList,';')}"/>
                 </c:if>
                 
 				<div class="div-spacing">
