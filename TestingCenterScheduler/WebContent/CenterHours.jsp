@@ -302,9 +302,9 @@
 							<th>Gap Time:</th>
 							<td>
 								<div class="form-group">
-									<label class="sr-only" for="gaptime1">Gap Time:</label> <input
-										type="number" class="form-control input-sm" id="gaptime1"
-										name="gaptime1" min = "0" max = "30" placeholder="Minutes" value = "${info.gapTime}" required>
+									<label class="sr-only" for="gaptime">Gap Time:</label> <input
+										type="number" class="form-control input-sm" id="gaptime"
+										name="gaptime" min = "0" max = "30" placeholder="Minutes" value = "${info.gapTime}" required>
 								</div>
 							</td>
 						</tr>
