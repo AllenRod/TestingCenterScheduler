@@ -83,7 +83,7 @@
 				<!-- /.row -->
 
 				<div class="row">
-					<a href="#" class="btn btn-default" style="margin-bottom:10px;" onclick = "newRequest()">
+					<a href="#" class="btn btn-default" style="margin-bottom:10px;" onclick = "newAppointment()">
 						New Appointment
 					</a>
 					<table class ="table">

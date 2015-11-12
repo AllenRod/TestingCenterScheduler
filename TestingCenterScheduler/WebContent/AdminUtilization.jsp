@@ -66,7 +66,7 @@
 					<li><a href="CenterHours.jsp" style="color: #fff;">Testing Center Information</a></li>
 					<li><a href="ImportData.jsp" style="color: #fff;">Import Data</a></li>
 					<li><a href="AdminRequests.jsp" style="color: #fff;">View All Requests</a></li>
-					<li><a href="#" style="color: #fff;">View All Appointments</a></li>
+					<li><a href="AdminAppointments.jsp" style="color: #fff;">View All Appointments</a></li>
 				</ul>
 			</div>
 			<!-- /.navbar-collapse -->
