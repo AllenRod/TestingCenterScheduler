@@ -44,12 +44,13 @@ public class RequestManager {
 			if ((Integer) stuNum == null) {
 				stuNum = 0;
 			}
-			term = ((ClassExamRequest)request).getCourse().getTerm();
+			term = ((ClassExamRequest) request).getCourse().getTerm();
 			gapTime = dbManager.R_getGapTime(term);
 		} else if (request instanceof NonClassRequest) {
 			// non class exam request
 			stuNum = ((NonClassRequest) request).getRosterList().split(";").length;
-			term = dbManager.getTermByDate(((NonClassRequest) request).getTimeStart());
+			term = dbManager.getTermByDate(((NonClassRequest) request)
+					.getTimeStart());
 			gapTime = dbManager.R_getGapTime(term);
 		}
 		System.out.println("Num = " + stuNum + "; Gap Time = " + gapTime
@@ -58,6 +59,7 @@ public class RequestManager {
 	}
 	
 	/**
+<<<<<<< HEAD
 	 * Calculate the total available seat hour for the given request
 	 * @param request		Given request
 	 * @return				Total available seat hour for the request
@@ -66,11 +68,16 @@ public class RequestManager {
 		return 0;
 	}
 
-	/** Document this Jesse
+	/** 
+	 * Calculate utilization for a given day in a given term
 	 * 
 	 * @param t
 	 * @param d  NOPEEE
 	 * @return
+	 *            the term the day is in
+	 * @param d
+	 *            the date for which to calculate the utilization
+	 * @return utilization for that day
 	 */
 	public double calculateUtilizationDay(String term, Date d) {
 		double uti = dbManager.calculateUtilization(term, d);
@@ -88,7 +95,7 @@ public class RequestManager {
 		}
 		return requestManager;
 	}
-	
+
 }
 
 

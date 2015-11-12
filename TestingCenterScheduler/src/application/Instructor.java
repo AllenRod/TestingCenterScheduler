@@ -146,8 +146,6 @@ public class Instructor {
 				r.setCourse(c);
 				// Test
 				reqManager.requestReserveSeatHour(r);
-				System.out.println(r.getExamName() + " " + r.getInstructorNetID() + " " 
-						+ r.getTestDuration() + " " + r.getTimeEnd() + " " + r.getTimeStart());
 				s = dbManager.loadData(r);
 			} else if (examType.equals("AD_HOC")) {
 				NonClassRequest r = new NonClassRequest();
@@ -161,9 +159,6 @@ public class Instructor {
 				r.setRosterList(roster);
 				// Test
 				reqManager.requestReserveSeatHour(r);
-				System.out.println(r.getExamName() + " " + r.getInstructorNetID() + " " 
-						+ r.getTestDuration() + " " + r.getTimeEnd() + " " + r.getTimeStart() 
-						+ " " + r.getRosterList());
 				s = dbManager.loadData(r);
 			}
 			return s;

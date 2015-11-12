@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import application.Administrator;
 import application.Instructor;
 import application.LoggerWrapper;
 import entity.UserAccount;

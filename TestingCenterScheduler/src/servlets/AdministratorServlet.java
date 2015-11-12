@@ -51,6 +51,15 @@ public class AdministratorServlet extends HttpServlet {
 		request.getSession().setAttribute("termlist", admin.getTerms());
 		request.getSession().setAttribute("login", true);
 		LoggerWrapper.logger.info("Redirectiong to Admin.jsp");
+
+		request.getSession().setAttribute("crequests",
+				admin.getRequests("CLASS"));
+		request.getSession().setAttribute("nrequests",
+				admin.getRequests("AD HOC"));
+
+		// request.getSession().setAttribute("appointments",
+		// admin.getAllAppointments());
+
 		response.sendRedirect("Admin.jsp");
 	}
 
@@ -112,7 +121,12 @@ public class AdministratorServlet extends HttpServlet {
 				List<String> result = admin.viewUtilization(term, startMonth,
 						startDay, endMonth, endDay);
 				// add displaying code here
-				request.setAttribute("returnVal", result);
+				if (result.size() == 0) {
+					request.setAttribute("returnVal",
+							"Start date is after end date!");
+				} else {
+					request.setAttribute("returnVal", result);
+				}
 				RequestDispatcher rd = request
 						.getRequestDispatcher("AdminUtilization.jsp");
 				rd.forward(request, response);
