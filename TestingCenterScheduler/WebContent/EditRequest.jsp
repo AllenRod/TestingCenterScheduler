@@ -211,6 +211,9 @@
                 
 				<div class="div-spacing">
 					<form class="form-inline" action="InstructorHome" method="POST">
+					
+						<input type="hidden" name="RID" value="${param.RequestID}">
+						
 						<div class="form-group">
 							<label for="Rtype">Request Type:</label> <select
 								class="form-control" id="Rtype" name="Rtype" disabled>
@@ -344,10 +347,13 @@
 							style="background: #980100; color: #FFF;" disabled>
 						</c:if>
 						<c:if test="${request.status eq 'pending'}">
-						<input type="submit" value="Edit"
+						<input type="submit" name = "editAction" value="Edit"
 							class="btn btn-default"
 							style="background: #980100; color: #FFF;">
 						</c:if>
+						<input type="submit" name = "editAction" value="Delete"
+							class="btn btn-default"
+							style="background: #980100; color: #FFF;">
 					</form>
 				</div>
 			</div>

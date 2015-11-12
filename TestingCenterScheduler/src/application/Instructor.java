@@ -171,10 +171,8 @@ public class Instructor {
 	/**
 	 * Edits existing request from instructor's input
 	 * 
-	 * @param examType
-	 *            Type of exam
-	 * @param course
-	 *            Course of exam. If not for a course set null
+	 * @param RID
+	 * 			Request ID of Exam
 	 * @param examName
 	 *            Name of exam
 	 * @param testDuration
@@ -195,10 +193,22 @@ public class Instructor {
 	 *            Roster list of students. If exam for a course set null
 	 * @return Result from making new request
 	 */
-	public String editRequest(String examType, String course, String termID, String examName,
+	public String editRequest(String RID, String examName,
 			String testDuration, String sMonth, String sDay, String sTime,
 			String eMonth, String eDay, String eTime, String roster) {
 		// TODO Auto-generated method stub
+		
+		return null;
+	}
+	/**
+	 * Edits existing request from instructor's input
+	 * 
+	 * @param RID
+	 * 			Request ID of Exam
+	 * 
+	 * @return Result from making new request
+	 */
+	public String deleteRequest(String RID) {
 		return null;
 	}
 }

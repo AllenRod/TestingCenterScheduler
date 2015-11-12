@@ -98,11 +98,14 @@ public class InstructorServlet extends HttpServlet {
 	    //response.sendRedirect("Requests.jsp");
 	} 
 	else if (request.getSession().getAttribute("action").equals("editRequest")) {
+	    String s = "";
+	    if(request.getParameter("editAction").equals("Delete")){
+			LoggerWrapper.logger.info("Processing delete Request");
+		    s = instr.deleteRequest(request.getParameter("RID"));
+		}
+	    else if(request.getParameter("editAction").equals("Edit")){
 	    LoggerWrapper.logger.info("Processing edit Request");
-	    String s;
-	    s = instr.editRequest(request.getParameter("Rtype"),
-		    request.getParameter("Rclass"),
-		    request.getParameter("Rterm"),
+	    s = instr.editRequest(request.getParameter("RID"),
 		    request.getParameter("Rname"),
 		    request.getParameter("Rduration"),
 		    request.getParameter("Rsmon"),
@@ -112,16 +115,18 @@ public class InstructorServlet extends HttpServlet {
 		    request.getParameter("Reday"),
 		    request.getParameter("Retime"),
 		    request.getParameter("Rlist"));
+	    }
+	    else{
+	    	LoggerWrapper.logger.info("Unsupported Edit Case");
+	    }
 	    request.getSession().setAttribute("crequests",
-		    instr.getClassExamRequests());
-	    request.getSession().setAttribute("nrequests",
-		    instr.getNonClassRequests());
-	    request.getSession().setAttribute("courses", instr.getCourses());
-	    request.setAttribute("returnVal", s);
-	    RequestDispatcher rd = request
-				.getRequestDispatcher("Requests.jsp");
-	    rd.forward(request, response);
-	    //response.sendRedirect("Requests.jsp");
+			    instr.getClassExamRequests());
+		request.getSession().setAttribute("nrequests",
+			    instr.getNonClassRequests());
+		request.getSession().setAttribute("courses", instr.getCourses());
+		request.setAttribute("returnVal", s);
+		RequestDispatcher rd = request.getRequestDispatcher("Requests.jsp");
+		rd.forward(request, response);
 	} 
 	else {
 	    LoggerWrapper.logger.info("Unsupported Case");

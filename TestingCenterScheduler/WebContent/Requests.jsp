@@ -175,18 +175,6 @@
 								</c:choose>
 							</tr>
 							</c:forEach>
-							<!--
-							<tr class="info">
-								
-							</tr>
-							<tr class="success">
-								
-							</tr>
-							
-							<tr class="warning">
-								
-							</tr>
-							  -->
 					</table>
 				</div>
 			</div>

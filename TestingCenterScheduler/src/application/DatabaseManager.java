@@ -285,7 +285,7 @@ public class DatabaseManager {
 	public List<Request> I_getClassExamRequests(String netID) {
 		createEntityManager();
 		Query a = em
-				.createQuery("SELECT r FROM ClassExamRequest r WHERE r.instructorNetID = :nID");
+				.createQuery("SELECT r FROM ClassExamRequest r WHERE r.instructorNetID = :nID ORDER BY r.examIndex DESC");
 		a.setParameter("nID", netID);
 		try {
 			List<Request> rs = a.getResultList();
@@ -313,7 +313,7 @@ public class DatabaseManager {
 	public List<Request> I_getNonClassRequests(String netID) {
 		createEntityManager();
 		Query a = em
-				.createQuery("SELECT r FROM NonClassRequest r WHERE r.instructorNetID = :nID");
+				.createQuery("SELECT r FROM NonClassRequest r WHERE r.instructorNetID = :nID ORDER BY r.examIndex DESC");
 		a.setParameter("nID", netID);
 		try {
 			List<Request> rs = a.getResultList();
@@ -518,7 +518,7 @@ public class DatabaseManager {
 			closeEntityManager();
 		}
 	}
-
+	
 	/**
 	 * Return a singleton of DatabaseManager
 	 * 
