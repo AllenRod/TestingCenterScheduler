@@ -242,7 +242,7 @@
 									<option selected>No Term</option>
 								</c:if>
 								<c:if test="${isADHOC eq false}">
-					    			<option value="${request.course.term}" selected>${request.course.term}</option>
+					    			<option value="${request.course.term.termID}" selected>${request.course.term.termID}</option>
 					  			</c:if>
 							</select>
 						</div>
