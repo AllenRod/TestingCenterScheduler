@@ -147,7 +147,7 @@ public class Instructor {
 				}
 				r.setCourse(c);
 				// Test
-				reqManager.requestReserveSeatHour(r);
+				reqManager.requestReserveSeatMin(r);
 				s = dbManager.loadData(r);
 			} else if (examType.equals("AD_HOC")) {
 				NonClassRequest r = new NonClassRequest();
@@ -160,7 +160,7 @@ public class Instructor {
 				r.setTimeStart(timeStart);
 				r.setRosterList(roster);
 				// Test
-				reqManager.requestReserveSeatHour(r);
+				reqManager.requestReserveSeatMin(r);
 				s = dbManager.loadData(r);
 			}
 			return s;

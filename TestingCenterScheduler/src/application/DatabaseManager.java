@@ -475,32 +475,43 @@ public class DatabaseManager {
 	 */
 	public double calculateUtilization(String t, Date d) {
 		createEntityManager();
-		Calendar c = Calendar.getInstance();
-		c.setTime(d);
-		c.add(Calendar.DATE, 1);
-		Date d2 = c.getTime();
-		Query q1 = em
-				.createQuery("SELECT a FROM Appointment a WHERE :d <= a.timeStart AND  a.timeStart <= :d2");
-		q1.setParameter("d", d, TemporalType.DATE);
-		q1.setParameter("d2", d2, TemporalType.DATE);
-		List<Appointment> appList = q1.getResultList();
-		int durationSum = 0;
-		TestCenterInfo tci = em.find(TestCenterInfo.class, t);
-		for (Appointment a : appList) {
-			durationSum += a.getRequest().getTestDuration() + tci.getGapTime();
-		}
-		int openHourDuration = 0;
-		c.setTime(d);
-		int dayVal = c.get(Calendar.DAY_OF_WEEK);
-		openHourDuration = OpenHoursParser.getHoursDifference(
-				tci.getOpenHours(), dayVal);
-		if (openHourDuration == -1) {
+		try {
+			Calendar c = Calendar.getInstance();
+			c.setTime(d);
+			c.add(Calendar.DATE, 1);
+			Date d2 = c.getTime();
+			Query q1 = em
+					.createQuery("SELECT a FROM Appointment a WHERE :d <= a.timeStart AND  a.timeStart <= :d2");
+			q1.setParameter("d", d, TemporalType.DATE);
+			q1.setParameter("d2", d2, TemporalType.DATE);
+			List<Appointment> appList = q1.getResultList();
+			int durationSum = 0;
+			TestCenterInfo tci = em.find(TestCenterInfo.class, t);
+			for (Appointment a : appList) {
+				durationSum += a.getRequest().getTestDuration()
+						+ tci.getGapTime();
+			}
+			// Need review
+			int i = (int) Math.ceil((double) durationSum / 30);
+			durationSum = i * 30;
+			int openHourDuration = 0;
+			c.setTime(d);
+			int dayVal = c.get(Calendar.DAY_OF_WEEK);
+			openHourDuration = OpenHoursParser.getHoursDifference(
+					tci.getOpenHours(), dayVal);
+			if (openHourDuration == -1) {
+				return -1;
+			}
+			int seatNum = tci.getSeats();
+			return (double) durationSum / (seatNum * openHourDuration);
+		} catch (Exception error) {
+			LoggerWrapper.logger
+					.info("There is an error in calculateUtilization:\n"
+							+ error.getClass() + ":" + error.getMessage());
 			return -1;
+		} finally {
+			closeEntityManager();
 		}
-		int seatNum = tci.getSeats();
-		closeEntityManager();
-		return (double) durationSum / (seatNum * openHourDuration);
-
 	}
 
 	/**
@@ -516,7 +527,7 @@ public class DatabaseManager {
 			LoggerWrapper.logger.info("Get all existing term");
 			return rs;
 		} catch (PersistenceException error) {
-			LoggerWrapper.logger.info("There is an error in A_getTerm:\n"
+			LoggerWrapper.logger.info("There is an error in getTerm:\n"
 					+ error.getClass() + ":" + error.getMessage());
 			return null;
 		} finally {
@@ -566,6 +577,8 @@ public class DatabaseManager {
 			q.setParameter("cou", course.getClassID());
 			q.setParameter("cterm", course.getTerm());
 			Long r = (Long) q.getSingleResult();
+			LoggerWrapper.logger.info("Getting number of student " + r
+					+ " in course " + course.getClassID());
 			return r.intValue();
 		} catch (PersistenceException error) {
 			LoggerWrapper.logger.info("There is an error in R_getStudentNum:\n"
@@ -577,24 +590,26 @@ public class DatabaseManager {
 	}
 
 	/**
-	 * Get the gap time from TestCenterInfo with the given term
+	 * Get the TestCenterInfo from the given term
 	 * 
 	 * @param term
 	 *            Given term
-	 * @return Gap time of the testing center in the given term
+	 * @return the testing center info in the given term
 	 */
-	public int R_getGapTime(Term term) {
+	public TestCenterInfo R_getTestCenterInfo(Term term) {
 		createEntityManager();
 		try {
 			Query q = em
-					.createQuery("SELECT t.gapTime FROM TestCenterInfo t WHERE t.term = :tterm");
+					.createQuery("SELECT t FROM TestCenterInfo t WHERE t.term = :tterm");
 			q.setParameter("tterm", term);
-			int r = (int) q.getSingleResult();
-			return r;
+			TestCenterInfo tci = (TestCenterInfo) q.getSingleResult();
+			LoggerWrapper.logger.info("Getting test center info in term "
+					+ term.getTermID());
+			return tci;
 		} catch (PersistenceException error) {
-			LoggerWrapper.logger.info("There is an error in R_getGapTime:\n"
+			LoggerWrapper.logger.info("There is an error in R_getTestCenterInfo:\n"
 					+ error.getClass() + ":" + error.getMessage());
-			return 0;
+			return null;
 		} finally {
 			closeEntityManager();
 		}
@@ -609,26 +624,50 @@ public class DatabaseManager {
 	 */
 	public List<Request> getRequests(String type) {
 		createEntityManager();
-		Query q1 = em.createQuery("SELECT r FROM Request r");
-		List<Request> rList = q1.getResultList();
-		List<Request> returnList = new ArrayList<Request>();
-		for (Request r : rList) {
-			if (type.equals("CLASS") && r instanceof ClassExamRequest) {
-				returnList.add(r);
-			} else if (type.equals("AD HOC") && r instanceof NonClassRequest) {
-				returnList.add(r);
+		try {
+			Query q1 = em.createQuery("SELECT r FROM Request r");
+			List<Request> rList = q1.getResultList();
+			List<Request> returnList = new ArrayList<Request>();
+			for (Request r : rList) {
+				if (type.equals("CLASS") && r instanceof ClassExamRequest) {
+					returnList.add(r);
+				} else if (type.equals("AD HOC")
+						&& r instanceof NonClassRequest) {
+					returnList.add(r);
+				}
 			}
+			LoggerWrapper.logger.info("Getting list of requests");
+			return returnList;
+		} catch (Exception error) {
+			LoggerWrapper.logger.info("There is an error in getRequests:\n"
+					+ error.getClass() + ":" + error.getMessage());
+			return null;
+		} finally {
+			closeEntityManager();
 		}
-		closeEntityManager();
-		return returnList;
 	}
 
+	/**
+	 * Get all existing appointments
+	 * 
+	 * @return all existing appointments
+	 */
 	public List<Appointment> getAllAppointments() {
 		createEntityManager();
-		Query q1 = em.createQuery("SELECT a FROM Appointment a");
-		List<Appointment> aList = q1.getResultList();
-		closeEntityManager();
-		return aList;
+		List<Appointment> aList = null;
+		try {
+			Query q1 = em.createQuery("SELECT a FROM Appointment a");
+			aList = q1.getResultList();
+			LoggerWrapper.logger.info("Getting list of appointments");
+			return aList;
+		} catch (Exception error) {
+			LoggerWrapper.logger
+					.info("There is an error in getAllApointments:\n"
+							+ error.getClass() + ":" + error.getMessage());
+			return null;
+		} finally {
+			closeEntityManager();
+		}
 	}
 
 	/**
@@ -651,7 +690,7 @@ public class DatabaseManager {
 		em = emf.createEntityManager();
 		// Begin transaction
 		em.getTransaction().begin();
-		LoggerWrapper.logger.info("Transaction begins");
+		// LoggerWrapper.logger.info("Transaction begins");
 	}
 
 	/**
@@ -662,7 +701,7 @@ public class DatabaseManager {
 		em.getTransaction().commit();
 		// Close this EntityManager
 		em.close();
-		LoggerWrapper.logger.info("Transaction commits");
+		// LoggerWrapper.logger.info("Transaction commits");
 	}
 
 	/**
@@ -671,7 +710,7 @@ public class DatabaseManager {
 	private void createEntityManager() {
 		// Create a new EntityManager
 		em = emf.createEntityManager();
-		LoggerWrapper.logger.info("Create entity manager");
+		// LoggerWrapper.logger.info("Create entity manager");
 	}
 
 	/**
@@ -680,6 +719,6 @@ public class DatabaseManager {
 	private void closeEntityManager() {
 		// Close this EntityManager
 		em.close();
-		LoggerWrapper.logger.info("Close entity manager");
+		// LoggerWrapper.logger.info("Close entity manager");
 	}
 }

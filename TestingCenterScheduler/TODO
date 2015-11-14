@@ -1,5 +1,6 @@
 AllenRod:
 - RequestManager
+- Take account of closing dates and reserve time
 
 McNuggets:
 - Instructor: View Exam information
