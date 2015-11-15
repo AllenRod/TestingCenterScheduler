@@ -465,77 +465,6 @@ public class DatabaseManager {
 	}
 
 	/**
-	 * Calculates the utilization for a given day
-	 * 
-	 * @param t
-	 *            the term that day is in
-	 * @param d
-	 *            the date to find the utilization of
-	 * @return the utilization of the given day
-	 */
-	public double calculateUtilization(String t, Date d) {
-		createEntityManager();
-		try {
-			Calendar c = Calendar.getInstance();
-			c.setTime(d);
-			c.add(Calendar.DATE, 1);
-			Date d2 = c.getTime();
-			Query q1 = em
-					.createQuery("SELECT a FROM Appointment a WHERE :d <= a.timeStart AND  a.timeStart <= :d2");
-			q1.setParameter("d", d, TemporalType.DATE);
-			q1.setParameter("d2", d2, TemporalType.DATE);
-			List<Appointment> appList = q1.getResultList();
-			int durationSum = 0;
-			TestCenterInfo tci = em.find(TestCenterInfo.class, t);
-			for (Appointment a : appList) {
-				durationSum += a.getRequest().getTestDuration()
-						+ tci.getGapTime();
-			}
-			// Need review
-			int i = (int) Math.ceil((double) durationSum / 30);
-			durationSum = i * 30;
-			int openHourDuration = 0;
-			c.setTime(d);
-			int dayVal = c.get(Calendar.DAY_OF_WEEK);
-			openHourDuration = OpenHoursParser.getHoursDifference(
-					tci.getOpenHours(), dayVal);
-			if (openHourDuration == -1) {
-				return -1;
-			}
-			int seatNum = tci.getSeats();
-			return (double) durationSum / (seatNum * openHourDuration);
-		} catch (Exception error) {
-			LoggerWrapper.logger
-					.info("There is an error in calculateUtilization:\n"
-							+ error.getClass() + ":" + error.getMessage());
-			return -1;
-		} finally {
-			closeEntityManager();
-		}
-	}
-
-	/**
-	 * Queries DB and returns a list of Term
-	 * 
-	 * @return List<Term> List of all term
-	 */
-	public List<Term> getTerm() {
-		createEntityManager();
-		Query a = em.createQuery("SELECT t FROM Term t");
-		try {
-			List<Term> rs = a.getResultList();
-			LoggerWrapper.logger.info("Get all existing term");
-			return rs;
-		} catch (PersistenceException error) {
-			LoggerWrapper.logger.info("There is an error in getTerm:\n"
-					+ error.getClass() + ":" + error.getMessage());
-			return null;
-		} finally {
-			closeEntityManager();
-		}
-	}
-
-	/**
 	 * Check if the test center info for a term already existed
 	 * 
 	 * @param term
@@ -592,23 +521,50 @@ public class DatabaseManager {
 	/**
 	 * Get the TestCenterInfo from the given term
 	 * 
-	 * @param term
-	 *            Given term
+	 * @param termID
+	 *            Given term ID
 	 * @return the testing center info in the given term
 	 */
-	public TestCenterInfo R_getTestCenterInfo(Term term) {
+	public TestCenterInfo R_getTestCenterInfo(String termID) {
 		createEntityManager();
 		try {
-			Query q = em
-					.createQuery("SELECT t FROM TestCenterInfo t WHERE t.term = :tterm");
-			q.setParameter("tterm", term);
-			TestCenterInfo tci = (TestCenterInfo) q.getSingleResult();
+			TestCenterInfo tci = em.find(TestCenterInfo.class, termID);
 			LoggerWrapper.logger.info("Getting test center info in term "
-					+ term.getTermID());
+					+ termID);
 			return tci;
 		} catch (PersistenceException error) {
 			LoggerWrapper.logger.info("There is an error in R_getTestCenterInfo:\n"
 					+ error.getClass() + ":" + error.getMessage());
+			return null;
+		} finally {
+			closeEntityManager();
+		}
+	}
+	
+	/**
+	 * Get list of appointment in the given date
+	 * 
+	 * @param d
+	 *            the date to find the appointment
+	 * @return the list of appointment in given date
+	 */
+	public List<Appointment> R_getAppointmentOnDate(Date d) {
+		createEntityManager();
+		try {
+			Calendar c = Calendar.getInstance();
+			c.setTime(d);
+			c.add(Calendar.DATE, 1);
+			Date d2 = c.getTime();
+			Query q = em
+				.createQuery("SELECT a FROM Appointment a WHERE :d <= a.timeStart AND  a.timeStart <= :d2");
+			q.setParameter("d", d, TemporalType.DATE);
+			q.setParameter("d2", d2, TemporalType.DATE);
+			List<Appointment> appList = q.getResultList();
+			return appList;
+		} catch (Exception error) {
+			LoggerWrapper.logger
+					.info("There is an error in R_getAppointmentOnDate:\n"
+							+ error.getClass() + ":" + error.getMessage());
 			return null;
 		} finally {
 			closeEntityManager();
@@ -670,6 +626,27 @@ public class DatabaseManager {
 		}
 	}
 
+	/**
+	 * Queries DB and returns a list of Term
+	 * 
+	 * @return List<Term> List of all term
+	 */
+	public List<Term> getTerm() {
+		createEntityManager();
+		Query a = em.createQuery("SELECT t FROM Term t");
+		try {
+			List<Term> rs = a.getResultList();
+			LoggerWrapper.logger.info("Get all existing term");
+			return rs;
+		} catch (PersistenceException error) {
+			LoggerWrapper.logger.info("There is an error in getTerm:\n"
+					+ error.getClass() + ":" + error.getMessage());
+			return null;
+		} finally {
+			closeEntityManager();
+		}
+	}
+	
 	/**
 	 * Return a singleton of DatabaseManager
 	 * 
