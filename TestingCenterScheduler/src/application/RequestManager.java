@@ -58,20 +58,41 @@ public class RequestManager {
 	 * @return Total available seat hour for the request
 	 */
 	public int requestTotalSeatMin(Request request) {
+		int total = 0;
+		int t = 0;
 		Term term = getTerm(request);
 		String openHours = (dbManager.R_getTestCenterInfo(term.getTermID()))
 				.getOpenHours();
-		Calendar c1 = Calendar.getInstance();
-		Calendar c2 = Calendar.getInstance();
+		Calendar cStart = Calendar.getInstance();
+		Calendar cEnd = Calendar.getInstance();
 		SimpleDateFormat timeFormatter = new SimpleDateFormat("HH:mm");
 		Date startTime = request.getTimeStart();
 		Date endTime = request.getTimeEnd();
-		c1.setTime(startTime);
-		c2.setTime(endTime);
-		int dayDiff = c2.get(Calendar.DAY_OF_YEAR)
-				- c1.get(Calendar.DAY_OF_YEAR);
-
-		return 0;
+		cStart.setTime(startTime);
+		t = OpenHoursParser.getHoursDifference_Start(openHours,
+				cStart.get(Calendar.DAY_OF_WEEK),
+				timeFormatter.format(startTime));
+		if (t >= 0) {
+			total += t;
+		}
+		cEnd.setTime(endTime);
+		t = OpenHoursParser.getHoursDifference_End(openHours,
+				cEnd.get(Calendar.DAY_OF_WEEK), timeFormatter.format(endTime));
+		if (t >= 0) {
+			total += t;
+		}
+		// Exclude start date and end date
+		cStart.add(Calendar.DATE, 1);
+		while (cStart.before(cEnd)) {
+			t = OpenHoursParser.getHoursDifference(openHours,
+					cStart.get(Calendar.DAY_OF_WEEK));
+			if (t >= 0) {
+				total += t;
+			}
+			cStart.add(Calendar.DATE, 1);
+		}
+		System.out.println("Total is " + total);
+		return total;
 	}
 
 	/**
