@@ -123,7 +123,6 @@ public class RequestManager {
 		c.setTime(d);
 		Calendar c2 = Calendar.getInstance();
 		int dayVal = c.get(Calendar.DAY_OF_WEEK);
-		System.out.println("For date: " + d.toString() + " dayVal " + dayVal);
 		openHourDuration = OpenHoursParser.getHoursDifference(
 				tci.getOpenHours(), dayVal);
 		if (openHourDuration == -1) {
