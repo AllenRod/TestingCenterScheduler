@@ -32,14 +32,35 @@ public class RequestManager {
 	}
 
 	/**
-	 * Calculate the total reserved seat min for the given request
+	 * Determine if a new request is schedulable
+	 * 
+	 * @param request
+	 *            Given new request
+	 * @return if the request is schedulable
+	 */
+	public boolean isSchedulable(Request request) {
+		// Required seat min for this new request
+		int newRequestReq = requestRequiredSeatMin(request, 0);
+		// Total available seat min for this new request
+		int totalAval = requestTotalSeatMin(request);
+		// Find all past requests in the range of this new request
+		List<Request> pastRequests = 
+				dbManager.R_getRequestBetween(request.getTimeStart(), request.getTimeEnd());
+		
+		return false;
+	}
+
+	/**
+	 * Calculate the total required seat min for the given request
 	 * 
 	 * @param request
 	 *            Given request
-	 * @return Total reserve seat min
+	 * @param appNum
+	 *            Numbers of appointments already made for the request
+	 * @return Total required seat min
 	 */
-	public int requestReserveSeatMin(Request request) {
-		int stuNum = getStudentNum(request);
+	private int requestRequiredSeatMin(Request request, int appNum) {
+		int stuNum = getStudentNum(request) - appNum;
 		int gapTime = (dbManager.R_getTestCenterInfo(getTerm(request)
 				.getTermID())).getGapTime();
 		int required = gapTime + request.getTestDuration();
@@ -57,7 +78,7 @@ public class RequestManager {
 	 *            Given request
 	 * @return Total available seat hour for the request
 	 */
-	public int requestTotalSeatMin(Request request) {
+	private int requestTotalSeatMin(Request request) {
 		int total = 0;
 		int t = 0;
 		Term term = getTerm(request);
@@ -153,6 +174,7 @@ public class RequestManager {
 				/ (seatNum * openHourDuration);
 		return totalUTI;
 	}
+
 	/**
 	 * Get the number of student taking the test from the request
 	 * 
