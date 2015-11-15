@@ -57,8 +57,10 @@ public class DatabaseManager {
 	public UserAccount getUser(String userName, String pw) {
 		createEntityManager();
 
-		TypedQuery<UserAccount> q = em.createQuery("SELECT u FROM UserAccount u WHERE "
-				+ "u.netID = :uid AND u.hashedPassword = :upw", UserAccount.class);
+		TypedQuery<UserAccount> q = em.createQuery(
+				"SELECT u FROM UserAccount u WHERE "
+						+ "u.netID = :uid AND u.hashedPassword = :upw",
+				UserAccount.class);
 		q.setParameter("uid", userName);
 		q.setParameter("upw", pw);
 		UserAccount result = null;
@@ -85,7 +87,8 @@ public class DatabaseManager {
 	 */
 	public Term getTermByID(String termID) {
 		createEntityManager();
-		TypedQuery<Term> q = em.createQuery("SELECT t FROM Term t WHERE t.termID = :tid", Term.class);
+		TypedQuery<Term> q = em.createQuery(
+				"SELECT t FROM Term t WHERE t.termID = :tid", Term.class);
 		q.setParameter("tid", termID);
 		Term term = null;
 		try {
@@ -109,9 +112,8 @@ public class DatabaseManager {
 	 */
 	public Term getTermByDate(Date date) {
 		createEntityManager();
-		TypedQuery<Term> q = em
-				.createQuery("SELECT t FROM Term t "
-						+ "WHERE t.startDate <= :td AND t.endDate >= :td", Term.class);
+		TypedQuery<Term> q = em.createQuery("SELECT t FROM Term t "
+				+ "WHERE t.startDate <= :td AND t.endDate >= :td", Term.class);
 		q.setParameter("td", date, TemporalType.DATE);
 		Term term = null;
 		try {
@@ -306,8 +308,8 @@ public class DatabaseManager {
 	 */
 	public Course I_findCourse(String courseID, Term term) {
 		createEntityManager();
-		TypedQuery<Course> q = em
-				.createQuery("SELECT c FROM Course c WHERE c.classID = :cID "
+		TypedQuery<Course> q = em.createQuery(
+				"SELECT c FROM Course c WHERE c.classID = :cID "
 						+ "AND c.term = :cTerm", Course.class);
 		q.setParameter("cID", courseID);
 		q.setParameter("cTerm", term);
@@ -340,8 +342,9 @@ public class DatabaseManager {
 	 */
 	public List<Course> I_getCourses(String netID) {
 		createEntityManager();
-		TypedQuery<Course> a = em
-				.createQuery("SELECT c FROM Course c WHERE c.instructorNetID = :nID", Course.class);
+		TypedQuery<Course> a = em.createQuery(
+				"SELECT c FROM Course c WHERE c.instructorNetID = :nID",
+				Course.class);
 		a.setParameter("nID", netID);
 		try {
 			List<Course> rs = a.getResultList();
@@ -366,9 +369,10 @@ public class DatabaseManager {
 	 */
 	public List<Request> I_getClassExamRequests(String netID) {
 		createEntityManager();
-		TypedQuery<Request> a = em
-				.createQuery("SELECT r FROM ClassExamRequest r WHERE "
-						+ "r.instructorNetID = :nID ORDER BY r.examIndex DESC", Request.class);
+		TypedQuery<Request> a = em.createQuery(
+				"SELECT r FROM ClassExamRequest r WHERE "
+						+ "r.instructorNetID = :nID ORDER BY r.examIndex DESC",
+				Request.class);
 		a.setParameter("nID", netID);
 		try {
 			List<Request> rs = a.getResultList();
@@ -395,9 +399,10 @@ public class DatabaseManager {
 	 */
 	public List<Request> I_getNonClassRequests(String netID) {
 		createEntityManager();
-		TypedQuery<Request> a = em
-				.createQuery("SELECT r FROM NonClassRequest r WHERE "
-						+ "r.instructorNetID = :nID ORDER BY r.examIndex DESC", Request.class);
+		TypedQuery<Request> a = em.createQuery(
+				"SELECT r FROM NonClassRequest r WHERE "
+						+ "r.instructorNetID = :nID ORDER BY r.examIndex DESC",
+				Request.class);
 		a.setParameter("nID", netID);
 		try {
 			List<Request> rs = a.getResultList();
@@ -423,12 +428,13 @@ public class DatabaseManager {
 	 */
 	public String I_setClassExamName(String classID) {
 		createEntityManager();
-		TypedQuery<Course> a = em
-				.createQuery("SELECT c FROM Course c WHERE c.classID = :cID", Course.class);
+		TypedQuery<Course> a = em.createQuery(
+				"SELECT c FROM Course c WHERE c.classID = :cID", Course.class);
 		a.setParameter("cID", classID);
 		try {
 			Course course = a.getSingleResult();
-			Query b = em.createQuery("SELECT COUNT(r.examIndex) FROM ClassExamRequest r WHERE r.course = :c");
+			Query b = em
+					.createQuery("SELECT COUNT(r.examIndex) FROM ClassExamRequest r WHERE r.course = :c");
 			b.setParameter("c", course);
 			long num = (long) b.getSingleResult();
 			num += 1;
@@ -454,8 +460,8 @@ public class DatabaseManager {
 	 */
 	public List<TestCenterInfo> A_getTCInfo() {
 		createEntityManager();
-		TypedQuery<TestCenterInfo> a = em.createQuery("SELECT t FROM TestCenterInfo t", 
-				TestCenterInfo.class);
+		TypedQuery<TestCenterInfo> a = em.createQuery(
+				"SELECT t FROM TestCenterInfo t", TestCenterInfo.class);
 		try {
 			List<TestCenterInfo> rs = a.getResultList();
 			LoggerWrapper.logger.info("Get all existing testing center info");
@@ -561,9 +567,10 @@ public class DatabaseManager {
 			c.setTime(d);
 			c.add(Calendar.DATE, 1);
 			Date d2 = c.getTime();
-			TypedQuery<Appointment> q = em
-					.createQuery("SELECT a FROM Appointment a WHERE "
-							+ ":d <= a.timeStart AND  a.timeStart <= :d2", Appointment.class);
+			TypedQuery<Appointment> q = em.createQuery(
+					"SELECT a FROM Appointment a WHERE "
+							+ ":d <= a.timeStart AND  a.timeStart <= :d2",
+					Appointment.class);
 			q.setParameter("d", d, TemporalType.DATE);
 			q.setParameter("d2", d2, TemporalType.DATE);
 			List<Appointment> appList = q.getResultList();
@@ -590,9 +597,10 @@ public class DatabaseManager {
 	public List<Request> R_getRequestBetween(Date tStart, Date tEnd) {
 		createEntityManager();
 		try {
-			TypedQuery<Request> q = em
-					.createQuery("SELECT r FROM Request r WHERE "
-							+ ":tS < r.timeEnd AND  r.timeEnd < :tE", Request.class);
+			TypedQuery<Request> q = em.createQuery(
+					"SELECT r FROM Request r WHERE "
+							+ ":tS < r.timeEnd AND  r.timeEnd < :tE",
+					Request.class);
 			q.setParameter("tS", tStart, TemporalType.TIMESTAMP);
 			q.setParameter("tE", tEnd, TemporalType.TIMESTAMP);
 			List<Request> appList = q.getResultList();
@@ -617,7 +625,8 @@ public class DatabaseManager {
 	public List<Request> getRequests(String type) {
 		createEntityManager();
 		try {
-			TypedQuery<Request> q1 = em.createQuery("SELECT r FROM Request r", Request.class);
+			TypedQuery<Request> q1 = em.createQuery("SELECT r FROM Request r",
+					Request.class);
 			List<Request> rList = q1.getResultList();
 			List<Request> returnList = new ArrayList<Request>();
 			for (Request r : rList) {
@@ -652,16 +661,50 @@ public class DatabaseManager {
 		List<Request> eList = null;
 		try {
 			TypedQuery<Request> q = em
-					.createQuery("SELECT r FROM Request r WHERE "
-							+ "r.status = :status AND r.timeStart <= :td AND r.timeEnd <= :td", Request.class);
+					.createQuery(
+							"SELECT r FROM Request r WHERE "
+									+ "r.status = :status AND r.timeStart <= :td AND r.timeEnd <= :td",
+							Request.class);
 			q.setParameter("status", Request.RequestStatus.APPROVED);
 			q.setParameter("td", d, TemporalType.DATE);
 			eList = q.getResultList();
-			LoggerWrapper.logger.info("Getting list of appointments");
+			LoggerWrapper.logger.info("Getting list of exams");
 			return eList;
 		} catch (Exception error) {
 			LoggerWrapper.logger
-					.info("There is an error in getAllApointments:\n"
+					.info("There is an error in getAllExamsByDate:\n"
+							+ error.getClass() + ":" + error.getMessage());
+			return null;
+		} finally {
+			closeEntityManager();
+		}
+	}
+
+	/**
+	 * Get list of exams in the given time range
+	 * 
+	 * @param tStart
+	 *            the starting time to find the exams
+	 * @param tEnd
+	 *            the ending time to find the exams
+	 * @return the list of exams in given time range
+	 */
+	public List<Request> getAllExamsBetween(Date tStart, Date tEnd) {
+		createEntityManager();
+		try {
+			TypedQuery<Request> q = em
+					.createQuery(
+							"SELECT r FROM Request r WHERE "
+									+ "r.status = :s AND :tS < r.timeEnd AND  r.timeEnd < :tE",
+							Request.class);
+			q.setParameter("s", Request.RequestStatus.APPROVED);
+			q.setParameter("tS", tStart, TemporalType.TIMESTAMP);
+			q.setParameter("tE", tEnd, TemporalType.TIMESTAMP);
+			List<Request> appList = q.getResultList();
+			return appList;
+		} catch (Exception error) {
+			LoggerWrapper.logger
+					.info("There is an error in getAllExamBetween:\n"
 							+ error.getClass() + ":" + error.getMessage());
 			return null;
 		} finally {
@@ -678,7 +721,8 @@ public class DatabaseManager {
 		createEntityManager();
 		List<Appointment> aList = null;
 		try {
-			TypedQuery<Appointment> q1 = em.createQuery("SELECT a FROM Appointment a", Appointment.class);
+			TypedQuery<Appointment> q1 = em.createQuery(
+					"SELECT a FROM Appointment a", Appointment.class);
 			aList = q1.getResultList();
 			LoggerWrapper.logger.info("Getting list of appointments");
 			return aList;

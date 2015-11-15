@@ -3,6 +3,7 @@ package application;
 public class Report {
 	private String header;
 
+	// this is where the information is added
 	private StringBuilder sb;
 
 	public Report(ReportType t, String startTermID, String endTermID) {
@@ -23,6 +24,12 @@ public class Report {
 		sb = new StringBuilder();
 	}
 
+	/**
+	 * Adds new information to the string
+	 * 
+	 * @param newInfo
+	 *            information to be added
+	 */
 	public void addToReport(String newInfo) {
 		sb.append(newInfo + "<br />");
 	}

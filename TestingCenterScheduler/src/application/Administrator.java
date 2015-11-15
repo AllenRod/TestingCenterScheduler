@@ -7,6 +7,8 @@ import java.util.List;
 
 import application.Report.ReportType;
 import entity.Appointment;
+import entity.ClassExamRequest;
+import entity.Course;
 import entity.Request;
 import entity.Term;
 import entity.TestCenterInfo;
@@ -115,7 +117,13 @@ public class Administrator {
 	}
 
 	/**
-	 * Generates a report for the given
+	 * Generates all 4 report types for a range of terms
+	 * 
+	 * @param startTermID
+	 *            the first termID in the range
+	 * @param endTermID
+	 *            the last termID in the range
+	 * @return a list of reports
 	 */
 	public List<Report> generateReport_All(String startTermID, String endTermID) {
 		List<Report> allReport = new ArrayList<Report>();
@@ -125,6 +133,16 @@ public class Administrator {
 		allReport.add(generateReport_TermRange(startTermID, endTermID));
 		return allReport;
 	}
+
+	/**
+	 * Generate report with information about the number of appointments each
+	 * day
+	 * 
+	 * @param termID
+	 *            the term for this report
+	 * @return a report with information about the number of appointments each
+	 *         day
+	 */
 	public Report generateReport_Day(String termID) {
 		Report r = new Report(ReportType.DAY, termID, termID);
 		Term t = dbManager.getTermByID(termID);
@@ -146,15 +164,60 @@ public class Administrator {
 		}
 		return r;
 	}
+
+	/**
+	 * Generates a report with information about the number of appointments each
+	 * week and associated courses
+	 * 
+	 * @param termID
+	 *            the term for this report
+	 * @return a report with information about the number of appointments each
+	 *         week and associated courses
+	 */
 	public Report generateReport_Week(String termID) {
-		Report r = new Report(ReportType.TERM_RANGE, termID, termID);
-		return r;
-	}
-	public Report generateReport_Term(String termID) {
-		Report r = new Report(ReportType.TERM, termID, termID);
+		Report r = new Report(ReportType.WEEK, termID, termID);
 		return r;
 	}
 
+	/**
+	 * Generates a report with the courses in this term
+	 * 
+	 * @param termID
+	 *            the term for this report
+	 * @return a report with the courses in this term
+	 */
+	public Report generateReport_Term(String termID) {
+		Report r = new Report(ReportType.TERM, termID, termID);
+		Term t = dbManager.getTermByID(termID);
+		Date termStart = t.getStartDate();
+		Date termEnd = t.getEndDate();
+		Calendar startDate = Calendar.getInstance();
+		startDate.setTime(termStart);
+		Calendar endDate = Calendar.getInstance();
+		endDate.setTime(termEnd);
+		List<Request> examList = dbManager.getAllExamsBetween(termStart,
+				termEnd);
+		for (Request e : examList) {
+			Course c = ((ClassExamRequest) e).getCourse();
+			r.addToReport(c.getClassID() + " " + c.getCatalogNum() + " "
+					+ c.getSubject() + "-" + c.getSection() + " "
+					+ c.getInstructorNetID());
+
+		}
+		return r;
+	}
+
+	/**
+	 * Generates a report with the total number of appointments in each term in
+	 * the range
+	 * 
+	 * @param startTermID
+	 *            the first term in the range
+	 * @param endTermID
+	 *            the last term in the range
+	 * @return a report with the total number of appointments in each term in
+	 *         the range
+	 */
 	private Report generateReport_TermRange(String startTermID, String endTermID) {
 		Report r = new Report(ReportType.TERM_RANGE, startTermID, endTermID);
 		return r;
