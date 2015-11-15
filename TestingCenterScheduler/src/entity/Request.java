@@ -2,6 +2,7 @@ package entity;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -124,14 +125,14 @@ public class Request implements Serializable {
 
 	public String getStatus() {
 		switch (status) {
-		case PENDING:
-			return "pending";
-		case APPROVED:
-			return "approved";
-		case DENIED:
-			return "denied";
-		case COMPLETED:
-			return "completed";
+			case PENDING :
+				return "pending";
+			case APPROVED :
+				return "approved";
+			case DENIED :
+				return "denied";
+			case COMPLETED :
+				return "completed";
 		}
 		return "";
 	}
@@ -142,17 +143,17 @@ public class Request implements Serializable {
 
 	public void setStatus(String status) {
 		switch (status.toLowerCase()) {
-		case "pending":
-			this.status = RequestStatus.PENDING;
-			break;
-		case "approved":
-			this.status = RequestStatus.APPROVED;
-			break;
-		case "denied":
-			this.status = RequestStatus.DENIED;
-			break;
-		case "completed":
-			this.status = RequestStatus.COMPLETED;
+			case "pending" :
+				this.status = RequestStatus.PENDING;
+				break;
+			case "approved" :
+				this.status = RequestStatus.APPROVED;
+				break;
+			case "denied" :
+				this.status = RequestStatus.DENIED;
+				break;
+			case "completed" :
+				this.status = RequestStatus.COMPLETED;
 		}
 	}
 
@@ -174,7 +175,35 @@ public class Request implements Serializable {
 		this.instructorNetID = instructorNetID;
 	}
 
-	enum RequestStatus {
+	/**
+	 * Gets the number of days in the date range of this request ignoring
+	 * start/end times
+	 * 
+	 * @return the number of days in the date range of this request ignoring
+	 *         start/end times
+	 */
+	public int getTestRangeLength() {
+		int numDays = 0;
+		// Set time to midnight
+		Calendar startDate = Calendar.getInstance();
+		startDate.set(Calendar.HOUR_OF_DAY, 0);
+		startDate.set(Calendar.MINUTE, 0);
+		startDate.set(Calendar.SECOND, 0);
+		startDate.set(Calendar.MILLISECOND, 0);
+		Calendar endDate = Calendar.getInstance();
+		endDate.set(Calendar.HOUR_OF_DAY, 0);
+		endDate.set(Calendar.MINUTE, 0);
+		endDate.set(Calendar.SECOND, 0);
+		endDate.set(Calendar.MILLISECOND, 0);
+		for (Date d = startDate.getTime(); !startDate.after(endDate); startDate
+				.add(Calendar.DATE, 1), d = startDate.getTime()) {
+			numDays++;
+		}
+		return numDays;
+
+	}
+
+	public enum RequestStatus {
 		PENDING, APPROVED, DENIED, COMPLETED
 	}
 }

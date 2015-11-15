@@ -533,14 +533,15 @@ public class DatabaseManager {
 					+ termID);
 			return tci;
 		} catch (PersistenceException error) {
-			LoggerWrapper.logger.info("There is an error in R_getTestCenterInfo:\n"
-					+ error.getClass() + ":" + error.getMessage());
+			LoggerWrapper.logger
+					.info("There is an error in R_getTestCenterInfo:\n"
+							+ error.getClass() + ":" + error.getMessage());
 			return null;
 		} finally {
 			closeEntityManager();
 		}
 	}
-	
+
 	/**
 	 * Get list of appointment in the given date
 	 * 
@@ -556,7 +557,7 @@ public class DatabaseManager {
 			c.add(Calendar.DATE, 1);
 			Date d2 = c.getTime();
 			Query q = em
-				.createQuery("SELECT a FROM Appointment a WHERE :d <= a.timeStart AND  a.timeStart <= :d2");
+					.createQuery("SELECT a FROM Appointment a WHERE :d <= a.timeStart AND  a.timeStart <= :d2");
 			q.setParameter("d", d, TemporalType.DATE);
 			q.setParameter("d2", d2, TemporalType.DATE);
 			List<Appointment> appList = q.getResultList();
@@ -597,6 +598,35 @@ public class DatabaseManager {
 		} catch (Exception error) {
 			LoggerWrapper.logger.info("There is an error in getRequests:\n"
 					+ error.getClass() + ":" + error.getMessage());
+			return null;
+		} finally {
+			closeEntityManager();
+		}
+	}
+
+	/**
+	 * Get all existing exams for a certain date
+	 * 
+	 * @param d
+	 *            the date to find exams for
+	 * 
+	 * @return all existing exams for a certain date
+	 */
+	public List<Request> getAllExamsByDate(Date d) {
+		createEntityManager();
+		List<Request> eList = null;
+		try {
+			Query q = em
+					.createQuery("SELECT r FROM Request r WHERE r.status = :status AND r.timeStart <= :td AND r.timeEnd <= :td");
+			q.setParameter("status", Request.RequestStatus.APPROVED);
+			q.setParameter("td", d, TemporalType.DATE);
+			eList = q.getResultList();
+			LoggerWrapper.logger.info("Getting list of appointments");
+			return eList;
+		} catch (Exception error) {
+			LoggerWrapper.logger
+					.info("There is an error in getAllApointments:\n"
+							+ error.getClass() + ":" + error.getMessage());
 			return null;
 		} finally {
 			closeEntityManager();
@@ -646,7 +676,7 @@ public class DatabaseManager {
 			closeEntityManager();
 		}
 	}
-	
+
 	/**
 	 * Return a singleton of DatabaseManager
 	 * 

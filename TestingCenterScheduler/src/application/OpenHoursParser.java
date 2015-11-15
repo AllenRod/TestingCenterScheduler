@@ -28,11 +28,12 @@ public class OpenHoursParser {
 		int diff = 0;
 		// split the list into each day
 		String[] sepHours = openHours.split(";");
-		// Sunday is 0 but in string is 6, all other days minus 1
-		if (dayValue == 0) {
+		// Sunday is 1 in Calendar.DAY_OF_WEEK but in our string is 6, all other
+		// days minus 2
+		if (dayValue == 1) {
 			dayValue = 6;
 		} else {
-			dayValue--;
+			dayValue -= 2;
 		}
 		// [0] is start time, [1] is end time
 		String[] dayHours = sepHours[dayValue].split("-");
@@ -67,15 +68,17 @@ public class OpenHoursParser {
 	 * @return the difference between the start time and closing hours on that
 	 *         given day in minutes
 	 */
-	public static int getHoursDifference_Start(String openHours, int dayValue, String RstartTime) {
+	public static int getHoursDifference_Start(String openHours, int dayValue,
+			String RstartTime) {
 		int diff = 0;
 		// split the list into each day
 		String[] sepHours = openHours.split(";");
-		// Sunday is 0 but in string is 6, all other days minus 1
-		if (dayValue == 0) {
+		// Sunday is 1 in Calendar.DAY_OF_WEEK but in our string is 6, all other
+		// days minus 2
+		if (dayValue == 1) {
 			dayValue = 6;
 		} else {
-			dayValue--;
+			dayValue -= 2;
 		}
 		// [0] is start time, [1] is end time
 		String[] dayHours = sepHours[dayValue].split("-");
@@ -92,9 +95,8 @@ public class OpenHoursParser {
 				+ Integer.parseInt(TCstartTime[1]);
 		int t2 = Integer.parseInt(TCendTime[0]) * 60
 				+ Integer.parseInt(TCendTime[1]);
-		int t3 = Integer.parseInt(Rstart[0]) * 60
-				+ Integer.parseInt(Rstart[1]);
-		
+		int t3 = Integer.parseInt(Rstart[0]) * 60 + Integer.parseInt(Rstart[1]);
+
 		if (t1 > t3) {
 			diff = t2 - t1;
 		} else {

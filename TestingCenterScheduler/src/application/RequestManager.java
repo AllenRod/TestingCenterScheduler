@@ -40,8 +40,8 @@ public class RequestManager {
 	 */
 	public int requestReserveSeatMin(Request request) {
 		int stuNum = getStudentNum(request);
-		int gapTime = (dbManager.R_getTestCenterInfo(getTerm(request).getTermID()))
-				.getGapTime();
+		int gapTime = (dbManager.R_getTestCenterInfo(getTerm(request)
+				.getTermID())).getGapTime();
 		int required = gapTime + request.getTestDuration();
 		int i = (int) Math.ceil((double) required / 30);
 		required = i * 30 * stuNum;
@@ -59,7 +59,8 @@ public class RequestManager {
 	 */
 	public int requestTotalSeatMin(Request request) {
 		Term term = getTerm(request);
-		String openHours = (dbManager.R_getTestCenterInfo(term.getTermID())).getOpenHours();
+		String openHours = (dbManager.R_getTestCenterInfo(term.getTermID()))
+				.getOpenHours();
 		Calendar c1 = Calendar.getInstance();
 		Calendar c2 = Calendar.getInstance();
 		SimpleDateFormat timeFormatter = new SimpleDateFormat("HH:mm");
@@ -83,33 +84,55 @@ public class RequestManager {
 	 * @return utilization for that day
 	 */
 	public double calculateUtilizationDay(String termID, Date d) {
-		// double uti = dbManager.calculateUtilization(term, d);
-		double uti = 0;
+		double currentDayUTI = 0;
 		int durationSum = 0;
 		TestCenterInfo tci = dbManager.R_getTestCenterInfo(termID);
 		List<Appointment> appList = dbManager.R_getAppointmentOnDate(d);
 		int gapTime = tci.getGapTime();
 		for (Appointment a : appList) {
-			durationSum += a.getRequest().getTestDuration() + gapTime;
+			int appLength = a.getRequest().getTestDuration() + gapTime;
+			// check if it needs to be rounded up
+			if (appLength % 30 != 0) {
+				appLength = ((appLength / 30) + 1) * 30;
+			}
+			durationSum += appLength;
 		}
-		/**
-		 * int i = (int) Math.ceil((double) durationSum / 30); durationSum = i *
-		 * 30;
-		 **/
 		int openHourDuration = 0;
 		Calendar c = Calendar.getInstance();
 		c.setTime(d);
+		Calendar c2 = Calendar.getInstance();
 		int dayVal = c.get(Calendar.DAY_OF_WEEK);
+		System.out.println("For date: " + d.toString() + " dayVal " + dayVal);
 		openHourDuration = OpenHoursParser.getHoursDifference(
 				tci.getOpenHours(), dayVal);
 		if (openHourDuration == -1) {
 			return -1;
 		}
 		int seatNum = tci.getSeats();
-		uti = (double) durationSum / (seatNum * openHourDuration);
-		return uti;
+		currentDayUTI = (double) durationSum / (seatNum * openHourDuration);
+		// past or current day
+		if (c.get(Calendar.YEAR) <= c2.get(Calendar.YEAR)
+				&& c.get(Calendar.MONTH) <= c2.get(Calendar.MONTH)
+				&& c.get(Calendar.DATE) <= c2.get(Calendar.DATE)) {
+			return currentDayUTI;
+		}
+		// future day
+		double totalUTI = currentDayUTI;
+		int expectedDurationSum = 0;
+		List<Request> exams = dbManager.getAllExamsByDate(d);
+		for (Request e : exams) {
+			int expectedDuration = e.getTestDuration() + gapTime;
+			int numStudentsForExam = 0;
+			numStudentsForExam = dbManager
+					.R_getStudentNum(((ClassExamRequest) e).getCourse());
+			expectedDuration *= numStudentsForExam - e.getAppointment().size();
+			expectedDuration /= e.getTestRangeLength();
+			expectedDurationSum += expectedDuration;
+		}
+		totalUTI = (double) currentDayUTI + expectedDurationSum
+				/ (seatNum * openHourDuration);
+		return totalUTI;
 	}
-
 	/**
 	 * Get the number of student taking the test from the request
 	 * 
