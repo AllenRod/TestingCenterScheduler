@@ -5,6 +5,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import application.Report.ReportType;
 import entity.Appointment;
 import entity.Request;
 import entity.Term;
@@ -116,8 +117,47 @@ public class Administrator {
 	/**
 	 * Generates a report for the given
 	 */
-	public Report generateReport() {
-		return null;
+	public List<Report> generateReport_All(String startTermID, String endTermID) {
+		List<Report> allReport = new ArrayList<Report>();
+		allReport.add(generateReport_Day(startTermID));
+		allReport.add(generateReport_Week(startTermID));
+		allReport.add(generateReport_Term(startTermID));
+		allReport.add(generateReport_TermRange(startTermID, endTermID));
+		return allReport;
+	}
+	public Report generateReport_Day(String termID) {
+		Report r = new Report(ReportType.DAY, termID, termID);
+		Term t = dbManager.getTermByID(termID);
+		Date termStart = t.getStartDate();
+		Date termEnd = t.getEndDate();
+		Calendar startDate = Calendar.getInstance();
+		startDate.setTime(termStart);
+		Calendar endDate = Calendar.getInstance();
+		endDate.setTime(termEnd);
+		Calendar dateHolder = Calendar.getInstance();
+		for (Date d = startDate.getTime(); !startDate.after(endDate); startDate
+				.add(Calendar.DATE, 1), d = startDate.getTime()) {
+			dateHolder.setTime(d);
+			int numApps = dbManager.R_getAppointmentOnDate(d).size();
+			r.addToReport(Integer.toString(dateHolder.get(Calendar.MONTH) + 1)
+					+ "/"
+					+ Integer.toString(dateHolder.get(Calendar.DAY_OF_MONTH))
+					+ ": " + Integer.toString(numApps));
+		}
+		return r;
+	}
+	public Report generateReport_Week(String termID) {
+		Report r = new Report(ReportType.TERM_RANGE, termID, termID);
+		return r;
+	}
+	public Report generateReport_Term(String termID) {
+		Report r = new Report(ReportType.TERM, termID, termID);
+		return r;
+	}
+
+	private Report generateReport_TermRange(String startTermID, String endTermID) {
+		Report r = new Report(ReportType.TERM_RANGE, startTermID, endTermID);
+		return r;
 	}
 
 	/**
@@ -232,13 +272,13 @@ public class Administrator {
 				s = Integer.toString(dateHolder.get(Calendar.MONTH) + 1)
 						+ "/"
 						+ Integer.toString(dateHolder
-								.get(Calendar.DAY_OF_MONTH)) + ": Closed";
+								.get(Calendar.DAY_OF_MONTH)) + ": Closed<br />";
 			} else {
 				s = Integer.toString(dateHolder.get(Calendar.MONTH) + 1)
 						+ "/"
 						+ Integer.toString(dateHolder
 								.get(Calendar.DAY_OF_MONTH)) + ": "
-						+ Double.toString(singleUTI);
+						+ Double.toString(singleUTI) + "<br />";
 			}
 			utiList.add(s);
 		}

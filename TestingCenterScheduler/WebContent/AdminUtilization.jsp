@@ -67,6 +67,7 @@
 					<li><a href="ImportData.jsp" style="color: #fff;">Import Data</a></li>
 					<li><a href="AdminRequests.jsp" style="color: #fff;">View All Requests</a></li>
 					<li><a href="AdminAppointments.jsp" style="color: #fff;">View All Appointments</a></li>
+					<li><a href="AdminReport.jsp" style="color: #fff;">Generate Reports</a></li>
 				</ul>
 			</div>
 			<!-- /.navbar-collapse -->
@@ -79,7 +80,7 @@
 				<div class="row">
 					<div class="col-lg-12">
 						<h1 class="page-header">
-							Utilization <small>View for a data range</small>
+							Utilization <small>View for a date range</small>
 						</h1>
 						<ol class="breadcrumb">
 							<li class="active"> <a href= "Admin.jsp">Home</a> > Test Center Usage Report</li>
@@ -138,7 +139,7 @@
 						<div class="row">
 							<div class="col-lg-12">
 								<c:forEach items="${returnVal}" var="uti"> 
-									${uti}
+									<li>${uti}</li>
 								</c:forEach>
 							</div>
 						</div>

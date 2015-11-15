@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import application.Administrator;
 import application.LoggerWrapper;
+import application.Report;
 import entity.UserAccount;
 
 /**
@@ -131,6 +132,18 @@ public class AdministratorServlet extends HttpServlet {
 						.getRequestDispatcher("AdminUtilization.jsp");
 				rd.forward(request, response);
 
+			}
+			if (request.getParameter("report") != null) {
+				LoggerWrapper.logger.info("Admin " + admin.getNetID()
+						+ " generating reports");
+				String startTerm = request.getParameter("termVal1");
+				String endTerm = request.getParameter("termVal2");
+				List<Report> reports = admin.generateReport_All(startTerm,
+						endTerm);
+				request.setAttribute("returnVal", reports);
+				RequestDispatcher rd = request
+						.getRequestDispatcher("Report.jsp");
+				rd.forward(request, response);
 			}
 		} catch (Exception error) {
 			LoggerWrapper.logger

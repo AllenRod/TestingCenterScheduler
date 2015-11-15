@@ -1,4 +1,6 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -10,7 +12,7 @@
 <meta name="description" content="">
 <meta name="author" content="">
 
-<title>Appointments Manager</title>
+<title>Generate Reports For a Term</title>
 
 <!-- Bootstrap Core CSS -->
 <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -23,7 +25,7 @@
 <body>
 	<div id="wrapper">
 
-		 <!-- Navigation -->
+		<!-- Navigation -->
 		<nav class="navbar navbar-inverse navbar-fixed-top navbar-custom"
 			role="navigation">
 			<!-- Brand and toggle get grouped for better mobile display -->
@@ -40,7 +42,7 @@
 			<!-- Top Menu Items -->
 			<ul class="nav navbar-right top-nav">
 				<li class="dropdown"><a href="#" class="dropdown-toggle"
-					data-toggle="dropdown"></i>
+					data-toggle="dropdown">
 						${user.firstName} ${user.lastName}<b class="caret"></b></a>
 					<ul class="dropdown-menu">
 						<li><a href="#">Settings</a>
@@ -70,7 +72,6 @@
 			</div>
 			<!-- /.navbar-collapse -->
 		</nav>
-
 		<div id="page-wrapper">
 
 			<div class="container-fluid">
@@ -79,77 +80,40 @@
 				<div class="row">
 					<div class="col-lg-12">
 						<h1 class="page-header">
-							Appointments <small>All Appointments</small>
+							Generate Reports <small>for a specific term</small>
 						</h1>
 						<ol class="breadcrumb">
-							<li class="active"> <a href= "Admin.jsp">Home</a> > Appointments</li>
+							<li class="active"> <a href= "Admin.jsp">Home</a> > Generate Reports</li>
 						</ol>
 					</div>
 				</div>
-				<!-- /.row -->
-
-				<div class="row">
-					<form class="form-inline">
-						<a href="#" class="btn btn-default" style="margin-bottom:10px;" onclick = "newAppointment()">
-							New Appointment
-						</a>
-						<div style="margin-bottom:10px; float:right;">
-							<select class="form-control">
-								<option>Student NetID</option>
-								<option>Class</option>
-								<option>Exam ID</option>
-								<option>Status</option>
-							</select>
-							<div class="input-group">
-					            <input type="text" class="form-control" placeholder="Search" name="srch-term" id="srch-term">
-					            <div class="input-group-btn">
-					                <button class="btn btn-default" type="submit">Search</button>
-					            </div>
-					        </div>
-				        </div>
-			        </form>
-					<table class ="table">
-							<tr>
-								<th>Class</th>
-								<th>Exam Name</th>
-								<th>Instructor</th>
-								<th>Student Name</th>
-								<th>Student NetID</th>
-								<th>ExamID</th>
-								<th>Test Time</th>
-								<th>Seat Number</th>
-								<th>Status</th>
-							</tr>
-							<c:forEach items="${appointments}" var="apps"> 
-    						<tr class="success">
-								<td><font color="blue">${apps.request.course.classID}</font></td>
-								<td>${apps.request.examName}</td>
-								<td>${apps.request.instructorNetID}</td>
-								<td>${apps.user.firstName} ${apps.user.lastName}</td>
-								<td>${apps.user.netID}</td>
-								<td>${apps.request.examIndex}</td>
-								<td>${apps.timeStart}</td>
-								<td>${apps.seatNum}</td>
-								<td>${apps.status}</td>
-							</tr>
-							</c:forEach>
-					</table>
-				</div>
+				<form class="form-horizontal" action="AdministratorHome" method="POST">
+					<div class="form-group">
+							<label for="termVal1">Choose a starting term: </label>
+							<select class="form-control input-sm" name="termVal1">				
+								<c:forEach items="${termlist}" var="term"> 
+	    							<option value="${term.termID}">${term.termID} ${term.termSeason}_${term.termYear}</option>
+								</c:forEach>
+							</select> 
+							<label for="termVal2">Choose a ending term: </label>
+							<select class="form-control input-sm" name="termVal2">				
+								<c:forEach items="${termlist}" var="term"> 
+	    							<option value="${term.termID}">${term.termID} ${term.termSeason}_${term.termYear}</option>
+								</c:forEach>
+							</select> 
+					</div>
+					<input type="submit" class="btn btn-primary" id = "submit" name = "report" value="Generate">
+				</form>
 			</div>
-			<!-- /.container-fluid -->
-
 		</div>
-		<!-- /#page-wrapper -->
 
-	</div>
-	<!-- /#wrapper -->
 
-	<!-- jQuery -->
+    
+    	<!-- jQuery -->
 	<script src="js/jquery.js"></script>
 
 	<!-- Bootstrap Core JavaScript -->
 	<script src="js/bootstrap.min.js"></script>
-
+	
 </body>
-
 </html>
