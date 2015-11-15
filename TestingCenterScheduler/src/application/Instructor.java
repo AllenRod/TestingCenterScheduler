@@ -148,6 +148,7 @@ public class Instructor {
 				r.setCourse(c);
 				// Test
 				reqManager.requestReserveSeatMin(r);
+				reqManager.requestTotalSeatMin(r);
 				s = dbManager.loadData(r);
 			} else if (examType.equals("AD_HOC")) {
 				NonClassRequest r = new NonClassRequest();

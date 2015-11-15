@@ -221,7 +221,7 @@ public class Administrator {
 		Calendar dateHolder = Calendar.getInstance();
 		List<String> utiList = new ArrayList<String>();
 		if (startDate.after(endDate)) {
-			return utiList;
+			return null;
 		}
 		for (Date d = startDate.getTime(); !startDate.after(endDate); startDate
 				.add(Calendar.DATE, 1), d = startDate.getTime()) {
