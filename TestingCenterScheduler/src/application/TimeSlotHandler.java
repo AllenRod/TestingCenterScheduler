@@ -16,9 +16,6 @@ public class TimeSlotHandler {
 	// Database manager object
 	private DatabaseManager dbManager;
 
-	// RequestManager object
-	private RequestManager reqManager;
-
 	// Date to handle the timeslot
 	private Date date;
 
@@ -37,7 +34,6 @@ public class TimeSlotHandler {
 	public TimeSlotHandler(Date date) {
 		this.date = date;
 		dbManager = DatabaseManager.getSingleton();
-		reqManager = RequestManager.getSingleton();
 		seatNum = dbManager.R_getTestCenterInfo(
 				dbManager.getTermByDate(date).getTermID()).getSeats();
 		for (int i = 1; i <= seatNum; i++) {
@@ -108,7 +104,7 @@ public class TimeSlotHandler {
 			// Get the duration of appointment(test)
 			int duration = app.getRequest().getTestDuration();
 			duration += dbManager.R_getTestCenterInfo(
-					reqManager.getTerm(app.getRequest()).getTermID())
+					dbManager.getTermByRequest(app.getRequest()).getTermID())
 					.getGapTime();
 			duration = (int)Math.ceil((double) duration / 30);
 			// Put the appointment in the range of time

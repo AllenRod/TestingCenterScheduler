@@ -127,6 +127,24 @@ public class DatabaseManager {
 			closeEntityManager();
 		}
 	}
+	
+	/**
+	 * Get the term when the request is taking place
+	 * 
+	 * @param request
+	 *            The given request
+	 * @return term when the request takes place
+	 */
+	public Term getTermByRequest(Request request) {
+		Term term = null;
+		if (request instanceof ClassExamRequest) {
+			term = ((ClassExamRequest) request).getCourse().getTerm();
+		} else if (request instanceof NonClassRequest) {
+			term = getTermByDate(((NonClassRequest) request)
+					.getTimeStart());
+		}
+		return term;
+	}
 
 	/**
 	 * Delete table by given table name and term ID

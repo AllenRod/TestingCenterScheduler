@@ -61,7 +61,7 @@ public class RequestManager {
 	 */
 	private int requestRequiredSeatMin(Request request, int appNum) {
 		int stuNum = getStudentNum(request) - appNum;
-		int gapTime = (dbManager.R_getTestCenterInfo(getTerm(request)
+		int gapTime = (dbManager.R_getTestCenterInfo(dbManager.getTermByRequest(request)
 				.getTermID())).getGapTime();
 		int required = gapTime + request.getTestDuration();
 		int i = (int) Math.ceil((double) required / 30);
@@ -81,7 +81,7 @@ public class RequestManager {
 	private int requestTotalSeatMin(Request request) {
 		int total = 0;
 		int t = 0;
-		Term term = getTerm(request);
+		Term term = dbManager.getTermByRequest(request);
 		String openHours = (dbManager.R_getTestCenterInfo(term.getTermID()))
 				.getOpenHours();
 		Calendar cStart = Calendar.getInstance();
@@ -196,24 +196,6 @@ public class RequestManager {
 			stuNum = ((NonClassRequest) request).getRosterList().split(";").length;
 		}
 		return stuNum;
-	}
-
-	/**
-	 * Get the term when the request is taking place
-	 * 
-	 * @param request
-	 *            The given request
-	 * @return term when the request takes place
-	 */
-	public Term getTerm(Request request) {
-		Term term = null;
-		if (request instanceof ClassExamRequest) {
-			term = ((ClassExamRequest) request).getCourse().getTerm();
-		} else if (request instanceof NonClassRequest) {
-			term = dbManager.getTermByDate(((NonClassRequest) request)
-					.getTimeStart());
-		}
-		return term;
 	}
 
 	/**
