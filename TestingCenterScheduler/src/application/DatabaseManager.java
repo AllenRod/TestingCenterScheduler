@@ -758,6 +758,37 @@ public class DatabaseManager {
 	}
 
 	/**
+	 * Queries DB and returns a list of term in given term range
+	 * 
+	 * @param startTermID
+	 *            the ID of the first term in range
+	 * 
+	 * @param endTermID
+	 *            the ID of the last term in the range
+	 * @return list of terms in range
+	 */
+	public List<Term> getTermByRange(String startTermID, String endTermID) {
+		createEntityManager();
+		TypedQuery<Term> q = em
+				.createQuery(
+						"SELECT t FROM Term t WHERE t.termID >= :start AND t.termID <= :end",
+						Term.class);
+		q.setParameter("start", startTermID);
+		q.setParameter("end", endTermID);
+		try {
+			List<Term> rs = q.getResultList();
+			LoggerWrapper.logger.info("Get all existing term in range");
+			return rs;
+		} catch (PersistenceException error) {
+			LoggerWrapper.logger.info("There is an error in getTermByRange:\n"
+					+ error.getClass() + ":" + error.getMessage());
+			return null;
+		} finally {
+			closeEntityManager();
+		}
+	}
+
+	/**
 	 * Return a singleton of DatabaseManager
 	 * 
 	 * @return a singleton of class DatabaseManager
