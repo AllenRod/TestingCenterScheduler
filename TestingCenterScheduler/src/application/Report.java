@@ -13,7 +13,7 @@ public class Report {
 		} else if (t.equals(ReportType.WEEK)) {
 			header = "Report Type: WEEK<br />Number of student appointments for each week in Term"
 					+ startTermID
-					+ " and course identifiers for student appointments";
+					+ " and course identifiers for associated courses";
 		} else if (t.equals(ReportType.TERM)) {
 			header = "Report Type: TERM<br />Courses that use the testing center in Term "
 					+ startTermID;

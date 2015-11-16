@@ -176,9 +176,53 @@ public class Administrator {
 	 */
 	public Report generateReport_Week(String termID) {
 		Report r = new Report(ReportType.WEEK, termID, termID);
+		Term t = dbManager.getTermByID(termID);
+		Date termStart = t.getStartDate();
+		Date termEnd = t.getEndDate();
+		Calendar startDate = Calendar.getInstance();
+		startDate.setTime(termStart);
+		Calendar endDate = Calendar.getInstance();
+		endDate.setTime(termEnd);
+		Calendar dateHolder = Calendar.getInstance();
+		String buffer1 = "";
+		String buffer2 = "";
+		int currentWeek = startDate.get(Calendar.WEEK_OF_YEAR);
+		int weekSum = 0;
+		List<Course> classList = new ArrayList<Course>();
+		for (Date d = startDate.getTime(); !startDate.after(endDate); startDate
+				.add(Calendar.DATE, 1), d = startDate.getTime()) {
+			dateHolder.setTime(d);
+			int numApps = dbManager.R_getAppointmentOnDate(d).size();
+			if (numApps > 0) {
+				List<Request> examList = dbManager.getAllExamsByDate(d);
+				for (Request e : examList) {
+					Course c = ((ClassExamRequest) e).getCourse();
+					if (!classList.contains(c)) {
+						classList.add(c);
+						buffer2 += c.getClassID() + " " + c.getCatalogNum()
+								+ " " + c.getSubject() + "-" + c.getSection()
+								+ " " + c.getInstructorNetID() + ", ";
+
+					}
+				}
+			}
+			// in new week, output info from other week
+			if (dateHolder.get(Calendar.WEEK_OF_YEAR) != currentWeek) {
+				currentWeek++;
+				dateHolder.add(Calendar.DATE, -7);
+				buffer1 = "Week of " + (dateHolder.get(Calendar.MONTH) + 1)
+						+ "/" + dateHolder.get(Calendar.DATE) + ": " + weekSum
+						+ " ";
+				r.addToReport(buffer1.concat(buffer2));
+				weekSum = 0;
+				buffer2 = "";
+			} else {
+				weekSum += numApps;
+			}
+		}
+
 		return r;
 	}
-
 	/**
 	 * Generates a report with the courses in this term
 	 * 
