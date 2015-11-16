@@ -1,6 +1,7 @@
 package servlets;
 
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -60,6 +61,12 @@ public class AdministratorServlet extends HttpServlet {
 
 		request.getSession().setAttribute("appointments",
 				admin.getAllAppointments());
+		
+		// Test for timeslot handler
+		java.util.Calendar c = java.util.Calendar.getInstance();
+		c.set(2015, Calendar.NOVEMBER, 11);
+		application.TimeSlotHandler handler = new application.TimeSlotHandler(c.getTime());
+		handler.getTimeSlot();
 
 		response.sendRedirect("Admin.jsp");
 	}

@@ -205,7 +205,7 @@ public class RequestManager {
 	 *            The given request
 	 * @return term when the request takes place
 	 */
-	private Term getTerm(Request request) {
+	public Term getTerm(Request request) {
 		Term term = null;
 		if (request instanceof ClassExamRequest) {
 			term = ((ClassExamRequest) request).getCourse().getTerm();
