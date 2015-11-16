@@ -264,6 +264,30 @@ public class Administrator {
 	 */
 	private Report generateReport_TermRange(String startTermID, String endTermID) {
 		Report r = new Report(ReportType.TERM_RANGE, startTermID, endTermID);
+		if (Integer.parseInt(startTermID) > Integer.parseInt(endTermID)) {
+			r.addToReport("Starting term is after end term");
+		} else {
+			List<Term> termList = dbManager.getTermByRange(startTermID,
+					endTermID);
+			for (Term t : termList) {
+				int totalApps = 0;
+				String s = "Term " + t.getTerm();
+				Date termStart = t.getStartDate();
+				Date termEnd = t.getEndDate();
+				Calendar startDate = Calendar.getInstance();
+				startDate.setTime(termStart);
+				Calendar endDate = Calendar.getInstance();
+				endDate.setTime(termEnd);
+				Calendar dateHolder = Calendar.getInstance();
+				for (Date d = startDate.getTime(); !startDate.after(endDate); startDate
+						.add(Calendar.DATE, 1), d = startDate.getTime()) {
+					dateHolder.setTime(d);
+					int numApps = dbManager.R_getAppointmentOnDate(d).size();
+					totalApps += numApps;
+				}
+				r.addToReport(s.concat(" " + Integer.toString(totalApps)));
+			}
+		}
 		return r;
 	}
 

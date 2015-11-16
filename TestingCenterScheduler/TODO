@@ -6,8 +6,41 @@ McNuggets:
 - Instructor: View Exam information
 
 Guy From Breaking Bad:
-- Generate reports
+- Fix editing testing center info, fix having all times as closed
 - Check for Superman appointments
+- Cancel/edit appointment
 
 DereK:
 - Student(?!?) 
+
+Requirements, % done , (what needs to be done in parenthesis)
+ADMIN
+Edit testing center info - 75 % (close times are default)
+Import data - 60 % (check for superfluous, import without breaking existing table)
+Display utilization - 75 % (calculations may be wrong lol, possibly change display)
+Approve/deny request - 25 % (need button, show utilization for requests)
+Make appointment for student - 0 % (everything)
+View appointment - 50 % (implement search bar)
+Cancel/edit appointment - 0 % (everything)
+Check in student - 0 % (everything, need button)
+Generate report - 75 % (possibly change display, more test cases, possibly save as .txt file)
+
+INSTRUCTOR
+Submit request - 50 % (need to show current utilization + utilization with request, check for schedulability)
+Cancel pending request - 75 % (need to delete only requests with pending status)
+View requests for current/future term - 75 % (need to show for only current term + future, not past)
+See appointment/attendance details - 0 % (everything)
+
+STUDENT
+Make appointment - 0 % (everything)
+Cancel appointment - 0 % (everything)
+See appointment - 0 % (everything)
+Email reminder - 0 % (everything)
+
+OTHER
+Authentication - 100 %
+Network security - 0 % (no idea)
+URL replay/other vulnerabilities - 0 % (no idea)
+Concurrency - 0 % (everything)
+
+User Manual 50 % (add a lot of use cases)
