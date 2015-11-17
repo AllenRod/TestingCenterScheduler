@@ -186,10 +186,10 @@
 										<div class="form-group">
 										<label class="sr-only" for="mono"></label>
 										<select name="mono" class="form-control" style="width:100px">
-											<option selected> ${monohr}:${monomin}</option>
+											<!--<option selected> ${monohr}:${monomin}</option>-->
 											<c:forEach begin="0" end="23" var="val">
-											    <option> ${val}:00</option>
-											    <option> ${val}:30</option>
+											    <option ${(monohr == val) && (monomin == "00") ? 'selected' : ''}> ${val}:00</option>
+											    <option ${(monohr == val) && (monomin == "30") ? 'selected' : ''}> ${val}:30</option>
 											</c:forEach>
 											<option >Closed</option>
 										</select>
