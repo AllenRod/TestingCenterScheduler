@@ -177,7 +177,7 @@ public class Instructor {
 	 * @return List of existing terms
 	 */
 	public List<Term> getTerms() {
-		return dbManager.getTerm();
+		return dbManager.getAllTerms();
 	}
 
 	/**

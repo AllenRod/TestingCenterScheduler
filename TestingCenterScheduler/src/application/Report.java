@@ -6,6 +6,12 @@ public class Report {
 	// this is where the information is added
 	private StringBuilder sb;
 
+	/**
+	 * Constructor for Report class
+	 * @param t					Report type
+	 * @param startTermID		Start term ID
+	 * @param endTermID			End term ID
+	 */
 	public Report(ReportType t, String startTermID, String endTermID) {
 		if (t.equals(ReportType.DAY)) {
 			header = "Report Type: DAY<br />Number of student appointments for each day in Term "
@@ -34,6 +40,9 @@ public class Report {
 		sb.append(newInfo + "<br />");
 	}
 
+	/**
+	 * Return header and string generated for report
+	 */
 	public String toString() {
 		return header + "<br />" + sb.toString() + "<br />";
 	}

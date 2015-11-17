@@ -56,6 +56,9 @@ public class TimeSlotHandler {
 		}
 	}
 	
+	/**
+	 * 
+	 */
 	public void getTimeSlot() {
 		for (int i = 1; i <= seatNum; i++) {
 			System.out.println(i + ":");
@@ -77,7 +80,7 @@ public class TimeSlotHandler {
 	 */
 	private class AppointmentList {
 		// Array of appointment for a single seat
-		private Appointment[] appList;
+		private Appointment[] appArray;
 
 		/**
 		 * Constructor for AppointmentList
@@ -85,12 +88,12 @@ public class TimeSlotHandler {
 		private AppointmentList() {
 			// There are total of 47 slots on hour and half-hour each day,
 			// excluding 24:00
-			appList = new Appointment[47];
+			appArray = new Appointment[47];
 		}
 
 		/**
-		 * Set appointment in the appList
-		 * @param app		Appointment to make
+		 * Set appointment in the appArray
+		 * @param app		Existing appointment
 		 */
 		public void setAppointment(Appointment app) {
 			// Set the start time of appointment
@@ -109,16 +112,16 @@ public class TimeSlotHandler {
 			duration = (int)Math.ceil((double) duration / 30);
 			// Put the appointment in the range of time
 			for (int i = 0; i < duration; i++) {
-				appList[index + i] = app;
+				appArray[index + i] = app;
 			}
 		}
 		
 		/**
-		 * Get the current appList
-		 * @return	Current appList
+		 * Get the current appArray
+		 * @return	Current appArray
 		 */
 		public Appointment[] getAppList() {
-			return appList;
+			return appArray;
 		}
 	}
 }

@@ -718,6 +718,7 @@ public class DatabaseManager {
 			q.setParameter("s", Request.RequestStatus.APPROVED);
 			q.setParameter("tS", tStart, TemporalType.TIMESTAMP);
 			q.setParameter("tE", tEnd, TemporalType.TIMESTAMP);
+			q.setMaxResults(10);
 			List<Request> appList = q.getResultList();
 			return appList;
 		} catch (Exception error) {
@@ -741,6 +742,7 @@ public class DatabaseManager {
 		try {
 			TypedQuery<Appointment> q1 = em.createQuery(
 					"SELECT a FROM Appointment a", Appointment.class);
+			q1.setMaxResults(10);
 			aList = q1.getResultList();
 			LoggerWrapper.logger.info("Getting list of appointments");
 			return aList;
@@ -759,7 +761,7 @@ public class DatabaseManager {
 	 * 
 	 * @return List<Term> List of all term
 	 */
-	public List<Term> getTerm() {
+	public List<Term> getAllTerms() {
 		createEntityManager();
 		TypedQuery<Term> a = em.createQuery("SELECT t FROM Term t", Term.class);
 		try {

@@ -199,10 +199,9 @@ public class Administrator {
 					Course c = ((ClassExamRequest) e).getCourse();
 					if (!classList.contains(c)) {
 						classList.add(c);
-						buffer2 += c.getClassID() + " " + c.getCatalogNum()
-								+ " " + c.getSubject() + "-" + c.getSection()
+						buffer2 += c.getClassID() + " " + c.getSubject()
+								+ c.getCatalogNum() + "_" + c.getSection()
 								+ " " + c.getInstructorNetID() + ", ";
-
 					}
 				}
 			}
@@ -223,6 +222,7 @@ public class Administrator {
 
 		return r;
 	}
+
 	/**
 	 * Generates a report with the courses in this term
 	 * 
@@ -243,8 +243,8 @@ public class Administrator {
 				termEnd);
 		for (Request e : examList) {
 			Course c = ((ClassExamRequest) e).getCourse();
-			r.addToReport(c.getClassID() + " " + c.getCatalogNum() + " "
-					+ c.getSubject() + "-" + c.getSection() + " "
+			r.addToReport(c.getClassID() + " " + c.getSubject()
+					+ c.getCatalogNum() + "_" + c.getSection() + " "
 					+ c.getInstructorNetID());
 
 		}
@@ -362,7 +362,7 @@ public class Administrator {
 	 * @return List of existing terms
 	 */
 	public List<Term> getTerms() {
-		return dbManager.getTerm();
+		return dbManager.getAllTerms();
 	}
 
 	/**
@@ -416,10 +416,19 @@ public class Administrator {
 		return utiList;
 	}
 
+	/**
+	 * Get list of requests
+	 * @param type		Type of request
+	 * @return	List of requests
+	 */
 	public List<Request> getRequests(String type) {
 		return dbManager.getRequests(type);
 	}
 
+	/**
+	 * Get list of appointments
+	 * @return	List of appointments
+	 */
 	public List<Appointment> getAllAppointments() {
 		return dbManager.getAllAppointments();
 	}
