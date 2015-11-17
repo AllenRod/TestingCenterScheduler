@@ -47,9 +47,13 @@ public class Authenticator extends HttpServlet {
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		if (request.getSession(false) != null)
-			request.getSession(false).invalidate();
-		response.sendRedirect("index.jsp");
+		if (request.getParameter("logout") != null) {
+			if (request.getSession(false) != null)
+				request.getSession(false).invalidate();
+			// Close entity manager
+			dbManager.closeEntityManager();
+			response.sendRedirect("index.jsp");
+		}
 	}
 
 	/**
@@ -59,6 +63,8 @@ public class Authenticator extends HttpServlet {
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		try {
+			// Initiate entity manager
+			dbManager.createEntityManager();
 			if (request.getSession(false) != null)
 				request.getSession(false).invalidate();
 			String userName = request.getParameter("user");

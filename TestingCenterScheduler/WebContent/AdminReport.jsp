@@ -23,6 +23,15 @@
 </head>
 
 <body>
+
+	<c:if test="${empty user}">
+		<jsp:forward page="/index.jsp"></jsp:forward>
+	</c:if>
+
+	<c:if test="${(not empty user) and (user.role ne 'admin')}">
+		<jsp:forward page="/index.jsp"></jsp:forward>
+	</c:if>
+	
 	<div id="wrapper">
 
 		<!-- Navigation -->
@@ -49,11 +58,11 @@
 						</li>
 						<li class="divider"></li>
 						<li>
-							<a>
 								<form action="Login" method="GET">
-									<input type="submit" value="Log Out" style="background-color: Transparent; border: none;">
+									<a>
+									<input type="submit" value="Log Out" name="logout" style="background-color: Transparent; border: none;">
+									</a>
 								</form>	
-							</a>
 						</li>
 					</ul>
 				</li>
@@ -107,7 +116,7 @@
 			</div>
 		</div>
 
-
+	</div>
     
     	<!-- jQuery -->
 	<script src="js/jquery.js"></script>

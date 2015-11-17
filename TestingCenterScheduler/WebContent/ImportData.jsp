@@ -1,6 +1,6 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+	pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -23,6 +23,14 @@
 </head>
 
 <body>
+
+	<c:if test="${empty user}">
+		<jsp:forward page="/index.jsp"></jsp:forward>
+	</c:if>
+
+	<c:if test="${(not empty user) and (user.role ne 'admin')}">
+		<jsp:forward page="/index.jsp"></jsp:forward>
+	</c:if>
 	<div id="wrapper">
 
 		<!-- Navigation -->
@@ -42,32 +50,37 @@
 			<!-- Top Menu Items -->
 			<ul class="nav navbar-right top-nav">
 				<li class="dropdown"><a href="#" class="dropdown-toggle"
-					data-toggle="dropdown">
-						${user.firstName} ${user.lastName}<b class="caret"></b></a>
+					data-toggle="dropdown"> ${user.firstName} ${user.lastName}<b
+						class="caret"></b></a>
 					<ul class="dropdown-menu">
-						<li><a href="#">Settings</a>
-						</li>
+						<li><a href="#">Settings</a></li>
 						<li class="divider"></li>
 						<li>
-							<a>
 								<form action="Login" method="GET">
-									<input type="submit" value="Log Out" style="background-color: Transparent; border: none;">
-								</form>	
-							</a>
+								<a>
+									<input type="submit" value="Log Out" name="logout"
+										style="background-color: Transparent; border: none;">
+								</a>
+								</form>
 						</li>
-					</ul>
-				</li>
+					</ul></li>
 			</ul>
 			<!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
 			<div class="collapse navbar-collapse navbar-ex1-collapse">
 				<ul class="nav navbar-nav side-nav">
 					<li><a href="Admin.jsp" style="color: #fff;">Home</a></li>
-					<li><a href="AdminUtilization.jsp" style="color: #fff;">Testing Center Usage Report</a></li>
-					<li><a href="CenterHours.jsp" style="color: #fff;">Testing Center Information</a></li>
-					<li><a href="ImportData.jsp" style="color: #fff;">Import Data</a></li>
-					<li><a href="AdminRequests.jsp" style="color: #fff;">View All Requests</a></li>
-					<li><a href="AdminAppointments.jsp" style="color: #fff;">View All Appointments</a></li>
-					<li><a href="AdminReport.jsp" style="color: #fff;">Generate Reports</a></li>
+					<li><a href="AdminUtilization.jsp" style="color: #fff;">Testing
+							Center Usage Report</a></li>
+					<li><a href="CenterHours.jsp" style="color: #fff;">Testing
+							Center Information</a></li>
+					<li><a href="ImportData.jsp" style="color: #fff;">Import
+							Data</a></li>
+					<li><a href="AdminRequests.jsp" style="color: #fff;">View
+							All Requests</a></li>
+					<li><a href="AdminAppointments.jsp" style="color: #fff;">View
+							All Appointments</a></li>
+					<li><a href="AdminReport.jsp" style="color: #fff;">Generate
+							Reports</a></li>
 				</ul>
 			</div>
 			<!-- /.navbar-collapse -->
@@ -83,77 +96,78 @@
 							Import Data <small>Importing CSV files</small>
 						</h1>
 						<ol class="breadcrumb">
-							<li class="active"> <a href= "Admin.jsp">Home</a> > Import Data</li>
+							<li class="active"><a href="Admin.jsp">Home</a> > Import
+								Data</li>
 						</ol>
 					</div>
 				</div>
-				
+
 				<c:choose>
-				    <c:when test="${returnVal == 'All data imports succeed'}">
-				        <div class="row">
+					<c:when test="${returnVal == 'All data imports succeed'}">
+						<div class="row">
 							<div class="col-lg-12">
-								<div class="alert alert-success">
-									${returnVal}
-								</div>
+								<div class="alert alert-success">${returnVal}</div>
 							</div>
 						</div>
-				    </c:when>
-				    <c:when test="${not empty returnVal}">
-				        <div class="row">
+					</c:when>
+					<c:when test="${not empty returnVal}">
+						<div class="row">
 							<div class="col-lg-12">
-								<div class="alert alert-danger">
-									${returnVal}
-								</div>
+								<div class="alert alert-danger">${returnVal}</div>
 							</div>
 						</div>
-				    </c:when>
-				    <c:otherwise>
-				    </c:otherwise>
+					</c:when>
+					<c:otherwise>
+					</c:otherwise>
 				</c:choose>
 				<c:remove var="returnVal" scope="session" />
-				
+
 				<form class="form-horizontal" action="LoadCSV" method="POST">
-				
+
 					<div class="form-group">
-							<label for="termVal">Choose a term: </label>
-							<select class="form-control input-sm" name="termVal">				
-								<c:forEach items="${termlist}" var="term"> 
-	    							<option value="${term.termID}">${term.termID} ${term.termSeason}_${term.termYear}</option>
-								</c:forEach>
-							</select> 
-					</div>
-				
-					<div class="form-group">
-						<label for="table">CSV Type: </label>
-						<select name="table" class="form-control input-sm">
-							<option value = "roster" selected> Roster</option>
-							<option value = "user" > User</option>
-							<option value = "class" > Class</option>
+						<label for="termVal">Choose a term: </label> <select
+							class="form-control input-sm" name="termVal">
+							<c:forEach items="${termlist}" var="term">
+								<option value="${term.termID}">${term.termID}
+									${term.termSeason}_${term.termYear}</option>
+							</c:forEach>
 						</select>
 					</div>
-					
+
 					<div class="form-group">
-						<label for="file">Choose your .csv file </label>
-						<input type="file" name="file" size="50" onClick="enableButton()" required>
+						<label for="table">CSV Type: </label> <select name="table"
+							class="form-control input-sm">
+							<option value="roster" selected>Roster</option>
+							<option value="user">User</option>
+							<option value="class">Class</option>
+						</select>
 					</div>
 
-					<input class="btn btn-primary" id = "submit" type="submit" value="Send" onClick="this.disabled=true; this.value='Uploading...';">
+					<div class="form-group">
+						<label for="file">Choose your .csv file </label> <input
+							type="file" name="file" size="50" onClick="enableButton()"
+							required>
+					</div>
+
+					<input class="btn btn-primary" id="submit" type="submit"
+						value="Send"
+						onClick="this.disabled=true; this.value='Uploading...';">
 				</form>
 			</div>
 		</div>
 	</div>
 	<script>
-        function enableButton() {
-            document.getElementById("submit").disabled = false;
-            document.getElementById("submit").value = "Send";
-        }
-    </script>
-    
-    	<!-- jQuery -->
+		function enableButton() {
+			document.getElementById("submit").disabled = false;
+			document.getElementById("submit").value = "Send";
+		}
+	</script>
+
+	<!-- jQuery -->
 	<script src="js/jquery.js"></script>
 
 	<!-- Bootstrap Core JavaScript -->
 	<script src="js/bootstrap.min.js"></script>
-	
+
 </body>
 </html>

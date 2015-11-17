@@ -23,6 +23,13 @@
 </head>
 
 <body>
+	<c:if test="${empty user}">
+		<jsp:forward page="/index.jsp"></jsp:forward>
+	</c:if>
+
+	<c:if test="${(not empty user) and (user.role ne 'student')}">
+		<jsp:forward page="/index.jsp"></jsp:forward>
+	</c:if>
 	<div id="wrapper">
 
 		<!-- Navigation -->
@@ -47,12 +54,14 @@
 					<ul class="dropdown-menu">
 						<li><a href="#"> Settings</a></li>
 						<li class="divider"></li>
-						<li><a>
+						<li>
 								<form action="Login" method="GET">
-									<input type="submit" value="Log Out"
+								<a>
+									<input type="submit" value="Log Out" name="logout"
 										style="background-color: Transparent; border: none;">
+								</a>
 								</form>
-						</a></li>
+						</li>
 					</ul></li>
 			</ul>
 			<!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->

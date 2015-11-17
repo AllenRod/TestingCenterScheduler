@@ -23,6 +23,15 @@
 </head>
 
 <body>
+	
+	<c:if test="${empty user}">
+		<jsp:forward page="/index.jsp"></jsp:forward>
+	</c:if>
+
+	<c:if test="${(not empty user) and (user.role ne 'admin')}">
+		<jsp:forward page="/index.jsp"></jsp:forward>
+	</c:if>
+	
 	<div id="page-wrapper">
 		<div class="container-fluid">
 			<div class="row">

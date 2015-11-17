@@ -55,8 +55,6 @@ public class DatabaseManager {
 	 * @return UserAccount data
 	 */
 	public UserAccount getUser(String userName, String pw) {
-		createEntityManager();
-
 		TypedQuery<UserAccount> q = em.createQuery(
 				"SELECT u FROM UserAccount u WHERE "
 						+ "u.netID = :uid AND u.hashedPassword = :upw",
@@ -73,8 +71,6 @@ public class DatabaseManager {
 		} catch (Exception error) {
 			LoggerWrapper.logger.warning("Error in finding user");
 			return null;
-		} finally {
-			closeEntityManager();
 		}
 	}
 
@@ -86,7 +82,6 @@ public class DatabaseManager {
 	 * @return Term with the given term id
 	 */
 	public Term getTermByID(String termID) {
-		createEntityManager();
 		TypedQuery<Term> q = em.createQuery(
 				"SELECT t FROM Term t WHERE t.termID = :tid", Term.class);
 		q.setParameter("tid", termID);
@@ -98,8 +93,6 @@ public class DatabaseManager {
 		} catch (Exception error) {
 			LoggerWrapper.logger.warning("Error in finding term by id");
 			return null;
-		} finally {
-			closeEntityManager();
 		}
 	}
 
@@ -111,7 +104,6 @@ public class DatabaseManager {
 	 * @return Term where the given date belong
 	 */
 	public Term getTermByDate(Date date) {
-		createEntityManager();
 		TypedQuery<Term> q = em.createQuery("SELECT t FROM Term t "
 				+ "WHERE t.startDate <= :td AND t.endDate >= :td", Term.class);
 		q.setParameter("td", date, TemporalType.DATE);
@@ -123,11 +115,9 @@ public class DatabaseManager {
 		} catch (Exception error) {
 			LoggerWrapper.logger.warning("Error in finding term by date");
 			return null;
-		} finally {
-			closeEntityManager();
 		}
 	}
-	
+
 	/**
 	 * Get the term when the request is taking place
 	 * 
@@ -140,8 +130,7 @@ public class DatabaseManager {
 		if (request instanceof ClassExamRequest) {
 			term = ((ClassExamRequest) request).getCourse().getTerm();
 		} else if (request instanceof NonClassRequest) {
-			term = getTermByDate(((NonClassRequest) request)
-					.getTimeStart());
+			term = getTermByDate(((NonClassRequest) request).getTimeStart());
 		}
 		return term;
 	}
@@ -156,7 +145,7 @@ public class DatabaseManager {
 	public boolean delTable(String tableName, String termID) {
 		try {
 			Term term = this.getTermByID(termID);
-			createTransactionalEntityManager();
+			startTransaction();
 			em.createNativeQuery("SET FOREIGN_KEY_CHECKS = 0;").executeUpdate();
 			em.createQuery(
 					"DELETE FROM " + tableName
@@ -165,13 +154,13 @@ public class DatabaseManager {
 			em.createNativeQuery("SET FOREIGN_KEY_CHECKS = 1;").executeUpdate();
 			LoggerWrapper.logger.info("Table " + tableName
 					+ " with data in term " + termID + " is deleted");
-			closeTransactionalEntityManager();
+			commitTransaction();
 			return true;
 		} catch (Exception error) {
 			LoggerWrapper.logger.warning("Error in deleting in table "
 					+ tableName + "\n" + error.getClass() + ":"
 					+ error.getMessage());
-			closeEntityManager();
+			rollbackTransaction();
 			return false;
 		}
 	}
@@ -184,14 +173,14 @@ public class DatabaseManager {
 	 * @return if the data is successfully imported into database
 	 */
 	public String loadData(Object data) {
-		createTransactionalEntityManager();
+		startTransaction();
 		try {
 			em.persist(data);
-			closeTransactionalEntityManager();
+			commitTransaction();
 			LoggerWrapper.logger.info("Data imported into database");
 			return "Data import succeeds";
 		} catch (PersistenceException error) {
-			closeEntityManager();
+			rollbackTransaction();
 			LoggerWrapper.logger.warning("Data import error occured:\n"
 					+ error.getClass() + ":" + error.getMessage());
 			return error.getClass() + ":" + error.getMessage();
@@ -206,7 +195,7 @@ public class DatabaseManager {
 	 * @return if all data are successfully imported into database
 	 */
 	public String loadDataList(ArrayList<Object> dataList) {
-		createTransactionalEntityManager();
+		startTransaction();
 		try {
 			Iterator<Object> it = dataList.iterator();
 			int c = 0;
@@ -222,12 +211,12 @@ public class DatabaseManager {
 					c = 0;
 				}
 			}
-			closeTransactionalEntityManager();
+			commitTransaction();
 			LoggerWrapper.logger.info("All data successfully imported. "
 					+ "Total of " + n + " rows inserted into database");
 			return "All data imports succeed";
 		} catch (PersistenceException error) {
-			closeEntityManager();
+			rollbackTransaction();
 			LoggerWrapper.logger.warning("Data import error occured:\n"
 					+ error.getClass() + ":" + error.getMessage());
 			return error.getMessage();
@@ -255,7 +244,7 @@ public class DatabaseManager {
 	 */
 	public String I_editRequest(String RID, String type, String examName,
 			String testDuration, Date startTime, Date endTime, String roster) {
-		createTransactionalEntityManager();
+		startTransaction();
 		try {
 			if (type.equals("CLASS")) {
 				Query q = em
@@ -281,10 +270,10 @@ public class DatabaseManager {
 				q.setParameter("id", Integer.parseInt(RID));
 				q.executeUpdate();
 			}
-			closeTransactionalEntityManager();
+			commitTransaction();
 			return "Update Success";
 		} catch (Exception error) {
-			closeEntityManager();
+			rollbackTransaction();
 			LoggerWrapper.logger.warning("Error in I_editRequest:"
 					+ error.getClass() + ":" + error.getMessage());
 			return error.getClass() + ":" + error.getMessage();
@@ -299,16 +288,16 @@ public class DatabaseManager {
 	 * @return if the entity is deleted
 	 */
 	public String I_deleteRequest(String RID) {
-		createTransactionalEntityManager();
+		startTransaction();
 		try {
 			em.createNativeQuery("SET FOREIGN_KEY_CHECKS = 0;").executeUpdate();
 			em.createQuery("DELETE FROM Request r WHERE r.examIndex = :rid")
 					.setParameter("rid", Integer.parseInt(RID)).executeUpdate();
 			em.createNativeQuery("SET FOREIGN_KEY_CHECKS = 1;").executeUpdate();
-			closeTransactionalEntityManager();
+			commitTransaction();
 			return "Delete Success";
 		} catch (Exception error) {
-			closeEntityManager();
+			rollbackTransaction();
 			LoggerWrapper.logger.warning("Error in I_deleteRequest:"
 					+ error.getClass() + ":" + error.getMessage());
 			return error.getClass() + ":" + error.getMessage();
@@ -325,7 +314,6 @@ public class DatabaseManager {
 	 * @return Course with the courseID and term
 	 */
 	public Course I_findCourse(String courseID, Term term) {
-		createEntityManager();
 		TypedQuery<Course> q = em.createQuery(
 				"SELECT c FROM Course c WHERE c.classID = :cID "
 						+ "AND c.term = :cTerm", Course.class);
@@ -346,8 +334,6 @@ public class DatabaseManager {
 			LoggerWrapper.logger.info("There is an error in I_findCourse:\n"
 					+ error.getClass() + ":" + error.getMessage());
 			return null;
-		} finally {
-			closeEntityManager();
 		}
 	}
 
@@ -359,7 +345,6 @@ public class DatabaseManager {
 	 * @return List<Course> List of all courses belonging to the instructor
 	 */
 	public List<Course> I_getCourses(String netID) {
-		createEntityManager();
 		TypedQuery<Course> a = em.createQuery(
 				"SELECT c FROM Course c WHERE c.instructorNetID = :nID",
 				Course.class);
@@ -372,8 +357,6 @@ public class DatabaseManager {
 			LoggerWrapper.logger.info("There is an error in I_getCourses:\n"
 					+ error.getClass() + ":" + error.getMessage());
 			return null;
-		} finally {
-			closeEntityManager();
 		}
 	}
 
@@ -386,7 +369,6 @@ public class DatabaseManager {
 	 *         instructor
 	 */
 	public List<Request> I_getClassExamRequests(String netID) {
-		createEntityManager();
 		TypedQuery<Request> a = em.createQuery(
 				"SELECT r FROM ClassExamRequest r WHERE "
 						+ "r.instructorNetID = :nID ORDER BY r.examIndex DESC",
@@ -402,8 +384,6 @@ public class DatabaseManager {
 					.info("There is an error in I_getClassExamRequests:\n"
 							+ error.getClass() + ":" + error.getMessage());
 			return null;
-		} finally {
-			closeEntityManager();
 		}
 	}
 
@@ -416,7 +396,6 @@ public class DatabaseManager {
 	 *         instructor
 	 */
 	public List<Request> I_getNonClassRequests(String netID) {
-		createEntityManager();
 		TypedQuery<Request> a = em.createQuery(
 				"SELECT r FROM NonClassRequest r WHERE "
 						+ "r.instructorNetID = :nID ORDER BY r.examIndex DESC",
@@ -432,8 +411,6 @@ public class DatabaseManager {
 					.info("There is an error in I_getNonClassRequests:\n"
 							+ error.getClass() + ":" + error.getMessage());
 			return null;
-		} finally {
-			closeEntityManager();
 		}
 	}
 
@@ -445,7 +422,6 @@ public class DatabaseManager {
 	 * @return String Appropriate class exam name
 	 */
 	public String I_setClassExamName(String classID) {
-		createEntityManager();
 		TypedQuery<Course> a = em.createQuery(
 				"SELECT c FROM Course c WHERE c.classID = :cID", Course.class);
 		a.setParameter("cID", classID);
@@ -466,8 +442,6 @@ public class DatabaseManager {
 					.info("There is an error in I_getNonClassRequests:\n"
 							+ error.getClass() + ":" + error.getMessage());
 			return "";
-		} finally {
-			closeEntityManager();
 		}
 	}
 
@@ -477,7 +451,6 @@ public class DatabaseManager {
 	 * @return List<TestCenterInfo> List of all test center info by term
 	 */
 	public List<TestCenterInfo> A_getTCInfo() {
-		createEntityManager();
 		TypedQuery<TestCenterInfo> a = em.createQuery(
 				"SELECT t FROM TestCenterInfo t", TestCenterInfo.class);
 		try {
@@ -488,8 +461,6 @@ public class DatabaseManager {
 			LoggerWrapper.logger.info("There is an error in A_getTCInfo:\n"
 					+ error.getClass() + ":" + error.getMessage());
 			return null;
-		} finally {
-			closeEntityManager();
 		}
 	}
 
@@ -500,7 +471,7 @@ public class DatabaseManager {
 	 *            The term to check
 	 */
 	public void A_checkTerm(String term) {
-		createTransactionalEntityManager();
+		startTransaction();
 		try {
 			TestCenterInfo t = em.find(TestCenterInfo.class, term);
 			if (t == null) {
@@ -511,11 +482,11 @@ public class DatabaseManager {
 						+ " already exists, info would be updated");
 				em.remove(t);
 			}
+			commitTransaction();
 		} catch (PersistenceException error) {
 			LoggerWrapper.logger.info("There is an error in A_checkTerm:\n"
 					+ error.getClass() + ":" + error.getMessage());
-		} finally {
-			closeTransactionalEntityManager();
+			rollbackTransaction();
 		}
 	}
 
@@ -527,7 +498,6 @@ public class DatabaseManager {
 	 * @return Number of student in the course
 	 */
 	public int R_getStudentNum(Course course) {
-		createEntityManager();
 		try {
 			Query q = em
 					.createQuery("SELECT COUNT(r.user) FROM Roster r WHERE r.course = :cou "
@@ -542,8 +512,6 @@ public class DatabaseManager {
 			LoggerWrapper.logger.info("There is an error in R_getStudentNum:\n"
 					+ error.getClass() + ":" + error.getMessage());
 			return 0;
-		} finally {
-			closeEntityManager();
 		}
 	}
 
@@ -555,7 +523,6 @@ public class DatabaseManager {
 	 * @return the testing center info in the given term
 	 */
 	public TestCenterInfo R_getTestCenterInfo(String termID) {
-		createEntityManager();
 		try {
 			TestCenterInfo tci = em.find(TestCenterInfo.class, termID);
 			LoggerWrapper.logger.info("Getting test center info in term "
@@ -566,8 +533,6 @@ public class DatabaseManager {
 					.info("There is an error in R_getTestCenterInfo:\n"
 							+ error.getClass() + ":" + error.getMessage());
 			return null;
-		} finally {
-			closeEntityManager();
 		}
 	}
 
@@ -579,7 +544,6 @@ public class DatabaseManager {
 	 * @return the list of appointment in given date
 	 */
 	public List<Appointment> R_getAppointmentOnDate(Date d) {
-		createEntityManager();
 		try {
 			Calendar c = Calendar.getInstance();
 			c.setTime(d);
@@ -598,8 +562,6 @@ public class DatabaseManager {
 					.info("There is an error in R_getAppointmentOnDate:\n"
 							+ error.getClass() + ":" + error.getMessage());
 			return null;
-		} finally {
-			closeEntityManager();
 		}
 	}
 
@@ -613,7 +575,6 @@ public class DatabaseManager {
 	 * @return the list of requests in given time range
 	 */
 	public List<Request> R_getRequestBetween(Date tStart, Date tEnd) {
-		createEntityManager();
 		try {
 			TypedQuery<Request> q = em.createQuery(
 					"SELECT r FROM Request r WHERE "
@@ -628,8 +589,6 @@ public class DatabaseManager {
 					.info("There is an error in R_getRequestBetween:\n"
 							+ error.getClass() + ":" + error.getMessage());
 			return null;
-		} finally {
-			closeEntityManager();
 		}
 	}
 
@@ -641,7 +600,6 @@ public class DatabaseManager {
 	 * @return list of requests with given type
 	 */
 	public List<Request> getRequests(String type) {
-		createEntityManager();
 		try {
 			TypedQuery<Request> q1 = em.createQuery("SELECT r FROM Request r",
 					Request.class);
@@ -661,8 +619,6 @@ public class DatabaseManager {
 			LoggerWrapper.logger.info("There is an error in getRequests:\n"
 					+ error.getClass() + ":" + error.getMessage());
 			return null;
-		} finally {
-			closeEntityManager();
 		}
 	}
 
@@ -675,7 +631,6 @@ public class DatabaseManager {
 	 * @return all existing exams for a certain date
 	 */
 	public List<Request> getAllExamsByDate(Date d) {
-		createEntityManager();
 		List<Request> eList = null;
 		try {
 			TypedQuery<Request> q = em
@@ -693,8 +648,6 @@ public class DatabaseManager {
 					.info("There is an error in getAllExamsByDate:\n"
 							+ error.getClass() + ":" + error.getMessage());
 			return null;
-		} finally {
-			closeEntityManager();
 		}
 	}
 
@@ -708,7 +661,6 @@ public class DatabaseManager {
 	 * @return the list of exams in given time range
 	 */
 	public List<Request> getAllExamsBetween(Date tStart, Date tEnd) {
-		createEntityManager();
 		try {
 			TypedQuery<Request> q = em
 					.createQuery(
@@ -726,8 +678,6 @@ public class DatabaseManager {
 					.info("There is an error in getAllExamBetween:\n"
 							+ error.getClass() + ":" + error.getMessage());
 			return null;
-		} finally {
-			closeEntityManager();
 		}
 	}
 
@@ -737,7 +687,6 @@ public class DatabaseManager {
 	 * @return all existing appointments
 	 */
 	public List<Appointment> getAllAppointments() {
-		createEntityManager();
 		List<Appointment> aList = null;
 		try {
 			TypedQuery<Appointment> q1 = em.createQuery(
@@ -751,8 +700,6 @@ public class DatabaseManager {
 					.info("There is an error in getAllApointments:\n"
 							+ error.getClass() + ":" + error.getMessage());
 			return null;
-		} finally {
-			closeEntityManager();
 		}
 	}
 
@@ -762,7 +709,6 @@ public class DatabaseManager {
 	 * @return List<Term> List of all term
 	 */
 	public List<Term> getAllTerms() {
-		createEntityManager();
 		TypedQuery<Term> a = em.createQuery("SELECT t FROM Term t", Term.class);
 		try {
 			List<Term> rs = a.getResultList();
@@ -772,8 +718,6 @@ public class DatabaseManager {
 			LoggerWrapper.logger.info("There is an error in getTerm:\n"
 					+ error.getClass() + ":" + error.getMessage());
 			return null;
-		} finally {
-			closeEntityManager();
 		}
 	}
 
@@ -788,7 +732,6 @@ public class DatabaseManager {
 	 * @return list of terms in range
 	 */
 	public List<Term> getTermByRange(String startTermID, String endTermID) {
-		createEntityManager();
 		TypedQuery<Term> q = em
 				.createQuery(
 						"SELECT t FROM Term t WHERE t.termID >= :start AND t.termID <= :end",
@@ -803,8 +746,6 @@ public class DatabaseManager {
 			LoggerWrapper.logger.info("There is an error in getTermByRange:\n"
 					+ error.getClass() + ":" + error.getMessage());
 			return null;
-		} finally {
-			closeEntityManager();
 		}
 	}
 
@@ -823,40 +764,55 @@ public class DatabaseManager {
 	/**
 	 * Start entity transaction
 	 */
-	private void createTransactionalEntityManager() {
-		// Create a new EntityManager
-		em = emf.createEntityManager();
-		// Begin transaction
-		em.getTransaction().begin();
-		// LoggerWrapper.logger.info("Transaction begins");
+	private void startTransaction() {
+		if (!em.getTransaction().isActive()) {
+			// Begin transaction
+			em.getTransaction().begin();
+		}
+		LoggerWrapper.logger.info("Transaction begins");
 	}
 
 	/**
-	 * Commit transaction and close EntityManager
+	 * Commit transaction
 	 */
-	private void closeTransactionalEntityManager() {
-		// Commit the transaction
-		em.getTransaction().commit();
-		// Close this EntityManager
-		em.close();
-		// LoggerWrapper.logger.info("Transaction commits");
+	private void commitTransaction() {
+		if (em.getTransaction().isActive()) {
+			// Commit the transaction
+			em.getTransaction().commit();
+		}
+		LoggerWrapper.logger.info("Transaction commits");
+	}
+	
+	/**
+	 * Rollback transaction
+	 */
+	private void rollbackTransaction() {
+		if (em.getTransaction().isActive()) {
+			// Commit the transaction
+			em.getTransaction().rollback();;
+		}
+		LoggerWrapper.logger.info("Transaction rollbacks");
 	}
 
 	/**
 	 * Create new EntityManager
 	 */
-	private void createEntityManager() {
+	public void createEntityManager() {
 		// Create a new EntityManager
 		em = emf.createEntityManager();
-		// LoggerWrapper.logger.info("Create entity manager");
+		LoggerWrapper.logger.info("Create entity manager");
 	}
 
 	/**
 	 * Close the constructed EntityManager
 	 */
-	private void closeEntityManager() {
+	public void closeEntityManager() {
 		// Close this EntityManager
-		em.close();
-		// LoggerWrapper.logger.info("Close entity manager");
+		if (em == null) 
+			return;
+		if (em.isOpen()) {
+			em.close();
+		}
+		LoggerWrapper.logger.info("Close entity manager");
 	}
 }

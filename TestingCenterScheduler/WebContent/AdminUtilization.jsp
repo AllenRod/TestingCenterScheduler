@@ -23,6 +23,14 @@
 
 <body>
 
+	<c:if test="${empty user}">
+		<jsp:forward page="/index.jsp"></jsp:forward>
+	</c:if>
+
+	<c:if test="${(not empty user) and (user.role ne 'admin')}">
+		<jsp:forward page="/index.jsp"></jsp:forward>
+	</c:if>
+	
 	<div id="wrapper">
 
 		<!-- Navigation -->
@@ -42,18 +50,18 @@
 			<!-- Top Menu Items -->
 			<ul class="nav navbar-right top-nav">
 				<li class="dropdown"><a href="#" class="dropdown-toggle"
-					data-toggle="dropdown"></i>
+					data-toggle="dropdown">
 						${user.firstName} ${user.lastName}<b class="caret"></b></a>
 					<ul class="dropdown-menu">
 						<li><a href="#">Settings</a>
 						</li>
 						<li class="divider"></li>
 						<li>
-							<a>
 								<form action="Login" method="GET">
-									<input type="submit" value="Log Out" style="background-color: Transparent; border: none;">
+								<a>
+									<input type="submit" value="Log Out" name="logout" style="background-color: Transparent; border: none;">
+								</a>
 								</form>	
-							</a>
 						</li>
 					</ul>
 				</li>
