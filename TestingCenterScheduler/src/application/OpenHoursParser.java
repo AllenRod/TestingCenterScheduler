@@ -171,4 +171,51 @@ public class OpenHoursParser {
 		return diff;
 	}
 
+	/**
+	 * Get the opening time from openHours
+	 * 
+	 * @param openHours
+	 *            the long string of our open hours
+	 * @param dayValue
+	 *            the day of the week as an int
+	 * @return Opening time of Testing Center
+	 */
+	public static String getOpeningTime(String openHours, int dayValue) {
+		// split the list into each day
+		String[] sepHours = openHours.split(";");
+		// Sunday is 1 in Calendar.DAY_OF_WEEK but in our string is 6, all other
+		// days minus 2
+		if (dayValue == 1) {
+			dayValue = 6;
+		} else {
+			dayValue -= 2;
+		}
+		// [0] is start time, [1] is end time
+		String[] dayHours = sepHours[dayValue].split("-");
+		return dayHours[0];
+	}
+
+	/**
+	 * Get the closing time from openHours
+	 * 
+	 * @param openHours
+	 *            the long string of our open hours
+	 * @param dayValue
+	 *            the day of the week as an int
+	 * @return Closing time of Testing Center
+	 */
+	public static String getClosingTime(String openHours, int dayValue) {
+		// split the list into each day
+		String[] sepHours = openHours.split(";");
+		// Sunday is 1 in Calendar.DAY_OF_WEEK but in our string is 6, all other
+		// days minus 2
+		if (dayValue == 1) {
+			dayValue = 6;
+		} else {
+			dayValue -= 2;
+		}
+		// [0] is start time, [1] is end time
+		String[] dayHours = sepHours[dayValue].split("-");
+		return dayHours[1];
+	}
 }

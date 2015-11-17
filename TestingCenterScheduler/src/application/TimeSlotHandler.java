@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import entity.Appointment;
+import entity.Term;
 
 /**
  * Handle timeslot for appointments in one single day
@@ -21,6 +22,9 @@ public class TimeSlotHandler {
 
 	// Number of seats in Test Center
 	private int seatNum;
+
+	// Term of the date of the timeslot
+	private Term term = null;
 
 	// A hashmap with <Integer, AppointmentList> pair that maps the seat to its
 	// appointment list of the day
@@ -46,8 +50,8 @@ public class TimeSlotHandler {
 	public TimeSlotHandler(Date date) {
 		this.date = date;
 		dbManager = DatabaseManager.getSingleton();
-		seatNum = dbManager.R_getTestCenterInfo(
-				dbManager.getTermByDate(date).getTermID()).getSeats();
+		term = dbManager.getTermByDate(date);
+		seatNum = dbManager.R_getTestCenterInfo(term.getTermID()).getSeats();
 		for (int i = 1; i <= seatNum; i++) {
 			AppointmentTimeSlot appList = new AppointmentTimeSlot();
 			seatMap.put(i, appList);
@@ -73,7 +77,8 @@ public class TimeSlotHandler {
 
 	/**
 	 * Generate the openTimeSlotMap from existing appointments
-	 * @return	The generated openTimeSlotMap 
+	 * 
+	 * @return The generated openTimeSlotMap
 	 */
 	public HashMap<Integer, Integer[]> getTimeSlot() {
 		for (int i = 1; i <= seatNum; i++) {
@@ -86,8 +91,28 @@ public class TimeSlotHandler {
 			for (int j = 0; j < appRequestIDArray.length; j++) {
 				appRequestIDArray[j] = -1;
 			}
+			Calendar c = Calendar.getInstance();
+			c.setTime(date);
+			String openHours = dbManager.R_getTestCenterInfo(term.getTermID()).getOpenHours();
+			String openTime = OpenHoursParser.getOpeningTime(openHours, c.get(Calendar.DAY_OF_WEEK));
+			String closeTime = OpenHoursParser.getClosingTime(openHours, c.get(Calendar.DAY_OF_WEEK));
+			int openInt = -1;
+			int closeInt = 48;
+			if (!openTime.equals("Closed")) {
+				openInt = Integer.parseInt(openTime.split(":")[0]) * 2;
+				if (openTime.split(":")[1].equals("30")) {
+					openInt++;
+				}
+			}
+			if (!closeTime.equals("Closed")) {
+				closeInt = Integer.parseInt(closeTime.split(":")[0]) * 2;
+				if (closeTime.split(":")[1].equals("30")) {
+					closeInt++;
+				}
+			}
 			Appointment[] appArray = seatMap.get(i).getAppList();
 			for (int j = 0; j < appArray.length; j++) {
+				if (j < openInt || j>= closeInt) continue; 
 				if (appArray[j] == null) {
 					appRequestIDArray[j] = 0;
 				} else {
@@ -136,8 +161,7 @@ public class TimeSlotHandler {
 			}
 			// Get the duration of appointment(test)
 			int duration = app.getRequest().getTestDuration();
-			duration += dbManager.R_getTestCenterInfo(
-					dbManager.getTermByRequest(app.getRequest()).getTermID())
+			duration += dbManager.R_getTestCenterInfo(term.getTermID())
 					.getGapTime();
 			duration = (int) Math.ceil((double) duration / 30);
 			// Update the appointment timeslot for the range of appointment

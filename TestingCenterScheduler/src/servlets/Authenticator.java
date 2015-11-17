@@ -85,10 +85,11 @@ public class Authenticator extends HttpServlet {
 					RequestDispatcher rd = request
 							.getRequestDispatcher("/InstructorHome");
 					rd.forward(request, response);
-				}
-				if (role.equals("student")) {
+				} else if (role.equals("student")) {
 					LoggerWrapper.logger.info("Forward to Student");
-					response.sendRedirect("Student.jsp");
+					RequestDispatcher rd = request
+							.getRequestDispatcher("/StudentHome");
+					rd.forward(request, response);
 				}
 			} else {
 				LoggerWrapper.logger
