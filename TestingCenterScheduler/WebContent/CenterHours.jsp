@@ -186,22 +186,21 @@
 										<div class="form-group">
 										<label class="sr-only" for="mono"></label>
 										<select name="mono" class="form-control" style="width:100px">
-											<!--<option selected> ${monohr}:${monomin}</option>-->
 											<c:forEach begin="0" end="23" var="val">
 											    <option ${(monohr == val) && (monomin == "00") ? 'selected' : ''}> ${val}:00</option>
 											    <option ${(monohr == val) && (monomin == "30") ? 'selected' : ''}> ${val}:30</option>
 											</c:forEach>
-											<option >Closed</option>
+											<option > ${(monh[0] == "Closed") ? 'selected' : 'Closed'}</option>
 										</select>
 										 to 
 										 <label class="sr-only" for="monc"></label>
 										<select name="monc" class="form-control" style="width:100px">
 											<option selected> ${monchr}:${moncmin}</option>
 											<c:forEach begin="0" end="23" var="val">
-											    <option> ${val}:00</option>
-											    <option> ${val}:30</option>
+											    <option ${(monchr == val) && (moncmin == "00") ? 'selected' : ''}> ${val}:00</option>
+											    <option ${(monchr == val) && (moncmin == "30") ? 'selected' : ''}> ${val}:30</option>
 											</c:forEach>
-											<option >Closed</option>
+											<option ${(monh[1] == "Closed") ? 'selected' : ''}>Closed</option>
 										</select>
 										</div>
 									</div>
@@ -214,22 +213,20 @@
 										<div class="form-group">
 										<label class="sr-only" for="tueo"></label>
 										<select name="tueo" class="form-control" style="width:100px">
-											<option selected> ${tueohr}:${tueomin}</option>
 											<c:forEach begin="0" end="23" var="val">
-											    <option> ${val}:00</option>
-											    <option> ${val}:30</option>
+											    <option ${(tueohr == val) && (tueomin == "00") ? 'selected' : ''}> ${val}:00</option>
+											    <option ${(tueohr == val) && (tueomin == "30") ? 'selected' : ''}> ${val}:30</option>
 											</c:forEach>
-											<option>Closed</option>
+											<option ${(tueh[0] == "Closed") ? 'selected' : ''}>Closed</option>
 										</select>
 										 to 
 										 <label class="sr-only" for="tuec"></label>
 										<select name="tuec" class="form-control" style="width:100px">
-											<option selected> ${tuechr}:${tuecmin}</option>
 											<c:forEach begin="0" end="23" var="val">
-											    <option> ${val}:00</option>
-											    <option> ${val}:30</option>
+											    <option ${(tuechr == val) && (tuecmin == "00") ? 'selected' : ''}> ${val}:00</option>
+											    <option ${(tuechr == val) && (tuecmin == "30") ? 'selected' : ''}> ${val}:30</option>
 											</c:forEach>
-											<option >Closed</option>
+											<option ${(tueh[1] == "Closed") ? 'selected' : ''}>Closed</option>
 										</select>
 										</div>
 									</div>
@@ -242,22 +239,20 @@
 										<div class="form-group">
 										<label class="sr-only" for="wedo"></label>
 										<select name="wedo" class="form-control" style="width:100px">
-											<option selected> ${wedohr}:${wedomin}</option>
 											<c:forEach begin="0" end="23" var="val">
-											    <option> ${val}:00</option>
-											    <option> ${val}:30</option>
+											   <option ${(wedohr == val) && (wedomin == "00") ? 'selected' : ''}> ${val}:00</option>
+											   <option ${(wedohr == val) && (wedomin == "30") ? 'selected' : ''}> ${val}:30</option>
 											</c:forEach>
-											<option>Closed</option>
+											<option ${(wedh[0] == "Closed") ? 'selected' : ''}>Closed</option>
 										</select>
 										 to 
 										 <label class="sr-only" for="wedc"></label>
 										<select name="wedc" class="form-control" style="width:100px">
-											<option selected> ${wedchr}:${wedcmin}</option>
 											<c:forEach begin="0" end="23" var="val">
-											    <option> ${val}:00</option>
-											    <option> ${val}:30</option>
+											    <option ${(wedchr == val) && (wedcmin == "00") ? 'selected' : ''}> ${val}:00</option>
+											    <option ${(wedchr == val) && (wedcmin == "30") ? 'selected' : ''}> ${val}:30</option>
 											</c:forEach>
-											<option>Closed</option>
+											<option ${(wedh[1] == "Closed") ? 'selected' : ''}>Closed</option>
 										</select>
 										</div>
 									</div>
@@ -270,22 +265,20 @@
 										<div class="form-group">
 										<label class="sr-only" for="thuo"></label>
 										<select name="thuo" class="form-control" style="width:100px">
-											<option selected> ${thuohr}:${thuomin}</option>
 											<c:forEach begin="0" end="23" var="val">
-											    <option> ${val}:00</option>
-											    <option> ${val}:30</option>
+											    <option ${(thuohr == val) && (thuomin == "00") ? 'selected' : ''}> ${val}:00</option>
+											    <option ${(thuohr == val) && (thuomin == "30") ? 'selected' : ''}> ${val}:30</option>
 											</c:forEach>
-											<option>Closed</option>
+											<option ${(thuh[0] == "Closed") ? 'selected' : ''}>Closed</option>
 										</select>
 										 to 
 										 <label class="sr-only" for="thuc"></label>
 										<select name="thuc" class="form-control" style="width:100px">
-											<option selected> ${thuchr}:${thucmin}</option>
 											<c:forEach begin="0" end="23" var="val">
-											    <option> ${val}:00</option>
-											    <option> ${val}:30</option>
+											    <option ${(thuchr == val) && (thucmin == "00") ? 'selected' : ''}> ${val}:00</option>
+											    <option ${(thuchr == val) && (thucmin == "30") ? 'selected' : ''}> ${val}:30</option>
 											</c:forEach>
-											<option>Closed</option>
+											<option ${(thuh[1] == "Closed") ? 'selected' : ''}>Closed</option>
 										</select>
 										</div>
 									</div>
@@ -298,22 +291,20 @@
 										<div class="form-group">
 										<label class="sr-only" for="frio"></label>
 										<select name="frio" class="form-control" style="width:100px">
-											<option selected> ${friohr}:${friomin}</option>
 											<c:forEach begin="0" end="23" var="val">
-											    <option> ${val}:00</option>
-											    <option> ${val}:30</option>
+											    <option ${(friohr == val) && (friomin == "00") ? 'selected' : ''}> ${val}:00</option>
+											    <option ${(friohr == val) && (friomin == "30") ? 'selected' : ''}> ${val}:30</option>
 											</c:forEach>
-											<option>Closed</option>
+											<option ${(frih[0] == "Closed") ? 'selected' : ''}>Closed</option>
 										</select>
 										 to 
 										 <label class="sr-only" for="fric"></label>
 										<select name="fric" class="form-control" style="width:100px">
-											<option selected> ${frichr}:${fricmin}</option>
 											<c:forEach begin="0" end="23" var="val">
-											    <option> ${val}:00</option>
-											    <option> ${val}:30</option>
+											    <option ${(frichr == val) && (fricmin == "00") ? 'selected' : ''}> ${val}:00</option>
+											    <option ${(frichr == val) && (fricmin == "30") ? 'selected' : ''}> ${val}:30</option>
 											</c:forEach>
-											<option>Closed</option>
+											<option ${(frih[1] == "Closed") ? 'selected' : ''}>Closed</option>
 										</select>
 										</div>
 									</div>
@@ -326,22 +317,20 @@
 										<div class="form-group">
 										<label class="sr-only" for="sato"></label>
 										<select name="sato" class="form-control" style="width:100px">
-											<option selected> ${satohr}:${satomin}</option>
 											<c:forEach begin="0" end="23" var="val">
-											    <option> ${val}:00</option>
-											    <option> ${val}:30</option>
+											    <option ${(satohr == val) && (satomin == "00") ? 'selected' : ''}> ${val}:00</option>
+											    <option ${(satohr == val) && (satomin == "30") ? 'selected' : ''}> ${val}:30</option>
 											</c:forEach>
-											<option>Closed</option>
+											<option ${(sath[0] == "Closed") ? 'selected' : ''}>Closed</option>
 										</select>
 										 to 
 										<label class="sr-only" for="satc"></label>
 										<select name="satc" class="form-control" style="width:100px">
-											<option selected> ${satchr}:${satcmin}</option>
 											<c:forEach begin="0" end="23" var="val">
-											    <option> ${val}:00</option>
-											    <option> ${val}:30</option>
+											    <option ${(satchr == val) && (satcmin == "00") ? 'selected' : ''}> ${val}:00</option>
+											    <option ${(satchr == val) && (satcmin == "30") ? 'selected' : ''}> ${val}:30</option>
 											</c:forEach>
-											<option>Closed</option>
+											<option ${(sath[1] == "Closed") ? 'selected' : ''}>Closed</option>
 										</select>
 										</div>
 									</div>
@@ -354,22 +343,20 @@
 										<div class="form-group">
 										<label class="sr-only" for="suno"></label>
 										<select name="suno" class="form-control" style="width:100px">
-											<option selected> ${sunohr}:${sunomin}</option>
 											<c:forEach begin="0" end="23" var="val">
-											    <option> ${val}:00</option>
-											    <option> ${val}:30</option>
+											    <option ${(sunohr == val) && (sunomin == "00") ? 'selected' : ''}> ${val}:00</option>
+											    <option ${(sunohr == val) && (sunomin == "30") ? 'selected' : ''}> ${val}:30</option>
 											</c:forEach>
-											<option>Closed</option>
+											<option ${(sunh[0] == "Closed") ? 'selected' : ''}>Closed</option>
 										</select>
 										 to 
 										<label class="sr-only" for="sunc"></label>
 										<select name="sunc" class="form-control" style="width:100px">
-											<option selected> ${sunchr}:${suncmin}</option>
 											<c:forEach begin="0" end="23" var="val">
-											    <option> ${val}:00</option>
-											    <option> ${val}:30</option>
+											    <option ${(sunchr == val) && (suncmin == "00") ? 'selected' : ''}> ${val}:00</option>
+											    <option ${(sunchr == val) && (suncmin == "30") ? 'selected' : ''}> ${val}:30</option>
 											</c:forEach>
-											<option>Closed</option>
+											<option ${(sunh[1] == "Closed") ? 'selected' : ''}>Closed</option>
 										</select>
 										</div>
 									</div>
