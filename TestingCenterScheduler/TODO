@@ -6,7 +6,6 @@ McNuggets:
 - Instructor: View Exam information
 
 Guy From Breaking Bad:
-- Fix editing testing center info, fix having all times as closed
 - Check for Superman appointments
 - Cancel/edit appointment
 
@@ -15,7 +14,7 @@ DereK:
 
 Requirements, % done , (what needs to be done in parenthesis)
 ADMIN
-Edit testing center info - 75 % (close times are default)
+Edit testing center info - 100 % 
 Import data - 60 % (check for superfluous, import without breaking existing table)
 Display utilization - 75 % (calculations may be wrong lol, possibly change display)
 Approve/deny request - 25 % (need button, show utilization for requests)
