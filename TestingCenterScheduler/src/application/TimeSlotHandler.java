@@ -22,8 +22,20 @@ public class TimeSlotHandler {
 	// Number of seats in Test Center
 	private int seatNum;
 
-	// A hashmap that maps the seat to its appointment list of the day
-	private HashMap<Integer, AppointmentList> seatMap = new HashMap<>();
+	// A hashmap with <Integer, AppointmentList> pair that maps the seat to its
+	// appointment list of the day
+	// Key is the seat number starting from 1
+	// Value is the AppointmentTimeSlot object which holds timeslot of
+	// appointments
+	// for a single seat in
+	private HashMap<Integer, AppointmentTimeSlot> seatMap = new HashMap<>();
+
+	// A hashmap with <Integer, Integer[]> pair that maps the seats to its
+	// appointment request ID in each timeslot of the day
+	// Key is the seat number starting from 1
+	// Value is an Integer array with size of 47 that records the request ID for
+	// the appointments taking over the timeslots
+	private HashMap<Integer, Integer[]> openTimeSlotMap = new HashMap<>();
 
 	/**
 	 * Constructor for TimeSlotHandler
@@ -37,55 +49,71 @@ public class TimeSlotHandler {
 		seatNum = dbManager.R_getTestCenterInfo(
 				dbManager.getTermByDate(date).getTermID()).getSeats();
 		for (int i = 1; i <= seatNum; i++) {
-			AppointmentList appList = new AppointmentList();
+			AppointmentTimeSlot appList = new AppointmentTimeSlot();
 			seatMap.put(i, appList);
 		}
 		setTimeSlot();
 	}
-	
+
 	/**
 	 * Set timeslot for the existing appointments on the current date
 	 */
 	private void setTimeSlot() {
-		List<Appointment> appointmentsOnDate = dbManager.R_getAppointmentOnDate(date);
+		// Get list of appointment on the current date
+		List<Appointment> appointmentsOnDate = dbManager
+				.R_getAppointmentOnDate(date);
 		for (Appointment a : appointmentsOnDate) {
+			// Get seat number of the appointment
 			int seat = a.getSeatNum();
-			AppointmentList appointmentsOnSeat = seatMap.get(seat);
+			// Update the appointment timeslot array for the given seat number
+			AppointmentTimeSlot appointmentsOnSeat = seatMap.get(seat);
 			appointmentsOnSeat.setAppointment(a);
-			seatMap.put(seat, appointmentsOnSeat);
-		}
-	}
-	
-	/**
-	 * 
-	 */
-	public void getTimeSlot() {
-		for (int i = 1; i <= seatNum; i++) {
-			System.out.println(i + ":");
-			Appointment[] appArray = seatMap.get(i).getAppList();
-			for (int j = 0; j < appArray.length; j++) {
-				if (appArray[j] == null) {
-					System.out.print("Empty - ");
-				} else {
-					System.out.print(appArray[j].toString() + " - ");
-				}
-			}
-			System.out.println();
 		}
 	}
 
 	/**
+	 * Generate the openTimeSlotMap from existing appointments
+	 * @return	The generated openTimeSlotMap 
+	 */
+	public HashMap<Integer, Integer[]> getTimeSlot() {
+		for (int i = 1; i <= seatNum; i++) {
+			// There are total of 47 slots on hour and half-hour each day,
+			// excluding 24:00. The array records the appointment request ID
+			// -1 means no appointments can be made in that timeslot
+			// 0 means the 30 minutes range is free
+			Integer[] appRequestIDArray = new Integer[47];
+			// Initiate array by setting all timeslot request ID to -1
+			for (int j = 0; j < appRequestIDArray.length; j++) {
+				appRequestIDArray[j] = -1;
+			}
+			Appointment[] appArray = seatMap.get(i).getAppList();
+			for (int j = 0; j < appArray.length; j++) {
+				if (appArray[j] == null) {
+					appRequestIDArray[j] = 0;
+				} else {
+					appRequestIDArray[j] = appArray[j].getRequest()
+							.getExamIndex();
+				}
+			}
+			openTimeSlotMap.put(i, appRequestIDArray);
+		}
+		return openTimeSlotMap;
+	}
+
+	/**
 	 * Inner class AppointmentList that represents the timeslot for single seat
+	 * 
 	 * @author CSE308 Team Five
 	 */
-	private class AppointmentList {
-		// Array of appointment for a single seat
+	private class AppointmentTimeSlot {
+		// Array of appointment for a single seat in every hour ad half-hour
+		// slot
 		private Appointment[] appArray;
 
 		/**
 		 * Constructor for AppointmentList
 		 */
-		private AppointmentList() {
+		private AppointmentTimeSlot() {
 			// There are total of 47 slots on hour and half-hour each day,
 			// excluding 24:00
 			appArray = new Appointment[47];
@@ -93,7 +121,9 @@ public class TimeSlotHandler {
 
 		/**
 		 * Set appointment in the appArray
-		 * @param app		Existing appointment
+		 * 
+		 * @param app
+		 *            Existing appointment
 		 */
 		public void setAppointment(Appointment app) {
 			// Set the start time of appointment
@@ -109,16 +139,18 @@ public class TimeSlotHandler {
 			duration += dbManager.R_getTestCenterInfo(
 					dbManager.getTermByRequest(app.getRequest()).getTermID())
 					.getGapTime();
-			duration = (int)Math.ceil((double) duration / 30);
-			// Put the appointment in the range of time
+			duration = (int) Math.ceil((double) duration / 30);
+			// Update the appointment timeslot for the range of appointment
+			// duration
 			for (int i = 0; i < duration; i++) {
 				appArray[index + i] = app;
 			}
 		}
-		
+
 		/**
 		 * Get the current appArray
-		 * @return	Current appArray
+		 * 
+		 * @return Current appArray
 		 */
 		public Appointment[] getAppList() {
 			return appArray;

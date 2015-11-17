@@ -1,3 +1,6 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+	pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -14,15 +17,20 @@
 <!-- Bootstrap Core CSS -->
 <link href="css/bootstrap.min.css" rel="stylesheet">
 
-<!-- Morris Charts CSS -->
-<link href="css/plugins/morris.css" rel="stylesheet">
-
 <!-- Custom CSS -->
 <link href="css/core.css" rel="stylesheet">
 
 </head>
 
 <body>
+
+	<c:if test="${empty user}">
+		<jsp:forward page="/index.jsp"></jsp:forward>
+	</c:if>
+	
+	<c:if test="${(not empty user) and (user.role ne 'admin')}">
+		<jsp:forward page="/index.jsp"></jsp:forward>
+	</c:if>
 
 	<div id="wrapper">
 
@@ -46,29 +54,32 @@
 					data-toggle="dropdown"><i class="fa fa-user"></i>
 						${user.firstName} ${user.lastName}<b class="caret"></b></a>
 					<ul class="dropdown-menu">
-						<li><a href="#">Settings</a>
-						</li>
+						<li><a href="#">Settings</a></li>
 						<li class="divider"></li>
-						<li>
-							<a>
+						<li><a>
 								<form action="Login" method="GET">
-									<input type="submit" value="Log Out" style="background-color: Transparent; border: none;">
-								</form>	
-							</a>
-						</li>
-					</ul>
-				</li>
+									<input type="submit" value="Log Out"
+										style="background-color: Transparent; border: none;">
+								</form>
+						</a></li>
+					</ul></li>
 			</ul>
 			<!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
 			<div class="collapse navbar-collapse navbar-ex1-collapse">
 				<ul class="nav navbar-nav side-nav">
 					<li><a href="Admin.jsp" style="color: #fff;">Home</a></li>
-					<li><a href="AdminUtilization.jsp" style="color: #fff;">Testing Center Usage Report</a></li>
-					<li><a href="CenterHours.jsp" style="color: #fff;">Testing Center Information</a></li>
-					<li><a href="ImportData.jsp" style="color: #fff;">Import Data</a></li>
-					<li><a href="AdminRequests.jsp" style="color: #fff;">View All Requests</a></li>
-					<li><a href="AdminAppointments.jsp" style="color: #fff;">View All Appointments</a></li>
-					<li><a href="AdminReport.jsp" style="color: #fff;">Generate Reports</a></li>
+					<li><a href="AdminUtilization.jsp" style="color: #fff;">Testing
+							Center Usage Report</a></li>
+					<li><a href="CenterHours.jsp" style="color: #fff;">Testing
+							Center Information</a></li>
+					<li><a href="ImportData.jsp" style="color: #fff;">Import
+							Data</a></li>
+					<li><a href="AdminRequests.jsp" style="color: #fff;">View
+							All Requests</a></li>
+					<li><a href="AdminAppointments.jsp" style="color: #fff;">View
+							All Appointments</a></li>
+					<li><a href="AdminReport.jsp" style="color: #fff;">Generate
+							Reports</a></li>
 				</ul>
 			</div>
 			<!-- /.navbar-collapse -->
@@ -85,8 +96,8 @@
 							Home <small>Overview</small>
 						</h1>
 						<ol class="breadcrumb">
-							<li class="active"></i> Home</li>
-						</ol>
+							<li class="active"><li>
+						Home</li></ol>
 					</div>
 				</div>
 				<!-- /.row -->
