@@ -201,27 +201,44 @@
 															<div class="form-group">
 																<label class="sr-only" for="mono"></label> <select
 																	name="mono" class="form-control" style="width: 100px">
-																	<c:forEach begin="0" end="23" var="val">
-																		<option
-																			${(monohr == val) && (monomin == "00") ? 'selected' : ''}>
-																			${val}:00</option>
-																		<option
-																			${(monohr == val) && (monomin == "30") ? 'selected' : ''}>
-																			${val}:30</option>
-																	</c:forEach>
-																	<option>${(monh[0] == "Closed") ? 'selected' : 'Closed'}</option>
+																	<c:if test="${monh[0] != 'Closed'}">
+																		<c:forEach begin="0" end="23" var="val">
+																			<option
+																				${(monohr == val) && (monomin == "00") ? 'selected' : ''}>
+																				${val}:00</option>
+																			<option
+																				${(monohr == val) && (monomin == "30") ? 'selected' : ''}>
+																				${val}:30</option>
+																		</c:forEach>
+																		<option>Closed</option>
+																	</c:if>
+																	<c:if test="${monh[0] == 'Closed'}">
+																		<c:forEach begin="0" end="23" var="val">
+																			<option>${val}:00</option>
+																			<option>${val}:30</option>
+																		</c:forEach>
+																		<option selected>Closed</option>
+																	</c:if>
 																</select> to <label class="sr-only" for="monc"></label> <select
 																	name="monc" class="form-control" style="width: 100px">
-																	<option selected>${monchr}:${moncmin}</option>
-																	<c:forEach begin="0" end="23" var="val">
-																		<option
-																			${(monchr == val) && (moncmin == "00") ? 'selected' : ''}>
-																			${val}:00</option>
-																		<option
-																			${(monchr == val) && (moncmin == "30") ? 'selected' : ''}>
-																			${val}:30</option>
-																	</c:forEach>
-																	<option ${(monh[1] == "Closed") ? 'selected' : ''}>Closed</option>
+																	<c:if test="${monh[1] != 'Closed'}">
+																		<c:forEach begin="0" end="23" var="val">
+																			<option
+																				${(monchr == val) && (moncmin == "00") ? 'selected' : ''}>
+																				${val}:00</option>
+																			<option
+																				${(monchr == val) && (moncomin == "30") ? 'selected' : ''}>
+																				${val}:30</option>
+																		</c:forEach>
+																		<option>Closed</option>
+																	</c:if>
+																	<c:if test="${monh[1] == 'Closed'}">
+																		<c:forEach begin="0" end="23" var="val">
+																			<option>${val}:00</option>
+																			<option>${val}:30</option>
+																		</c:forEach>
+																		<option selected>Closed</option>
+																	</c:if>
 																</select>
 															</div>
 														</div>
@@ -234,26 +251,44 @@
 															<div class="form-group">
 																<label class="sr-only" for="tueo"></label> <select
 																	name="tueo" class="form-control" style="width: 100px">
-																	<c:forEach begin="0" end="23" var="val">
-																		<option
-																			${(tueohr == val) && (tueomin == "00") ? 'selected' : ''}>
-																			${val}:00</option>
-																		<option
-																			${(tueohr == val) && (tueomin == "30") ? 'selected' : ''}>
-																			${val}:30</option>
-																	</c:forEach>
-																	<option ${(tueh[0] == "Closed") ? 'selected' : ''}>Closed</option>
+																	<c:if test="${tueh[0] != 'Closed'}">
+																		<c:forEach begin="0" end="23" var="val">
+																			<option
+																				${(tueohr == val) && (tueomin == "00") ? 'selected' : ''}>
+																				${val}:00</option>
+																			<option
+																				${(tueohr == val) && (tueomin == "30") ? 'selected' : ''}>
+																				${val}:30</option>
+																		</c:forEach>
+																		<option>Closed</option>
+																	</c:if>
+																	<c:if test="${monh[0] == 'Closed'}">
+																		<c:forEach begin="0" end="23" var="val">
+																			<option>${val}:00</option>
+																			<option>${val}:30</option>
+																		</c:forEach>
+																		<option selected>Closed</option>
+																	</c:if>
 																</select> to <label class="sr-only" for="tuec"></label> <select
 																	name="tuec" class="form-control" style="width: 100px">
-																	<c:forEach begin="0" end="23" var="val">
-																		<option
-																			${(tuechr == val) && (tuecmin == "00") ? 'selected' : ''}>
-																			${val}:00</option>
-																		<option
-																			${(tuechr == val) && (tuecmin == "30") ? 'selected' : ''}>
-																			${val}:30</option>
-																	</c:forEach>
-																	<option ${(tueh[1] == "Closed") ? 'selected' : ''}>Closed</option>
+																	<c:if test="${tueh[1] != 'Closed'}">
+																		<c:forEach begin="0" end="23" var="val">
+																			<option
+																				${(tuechr == val) && (tuecmin == "00") ? 'selected' : ''}>
+																				${val}:00</option>
+																			<option
+																				${(tuechr == val) && (tuecmin == "30") ? 'selected' : ''}>
+																				${val}:30</option>
+																		</c:forEach>
+																		<option>Closed</option>
+																	</c:if>
+																	<c:if test="${tueh[1] == 'Closed'}">
+																		<c:forEach begin="0" end="23" var="val">
+																			<option>${val}:00</option>
+																			<option>${val}:30</option>
+																		</c:forEach>
+																		<option selected>Closed</option>
+																	</c:if>
 																</select>
 															</div>
 														</div>
@@ -266,26 +301,44 @@
 															<div class="form-group">
 																<label class="sr-only" for="wedo"></label> <select
 																	name="wedo" class="form-control" style="width: 100px">
-																	<c:forEach begin="0" end="23" var="val">
-																		<option
-																			${(wedohr == val) && (wedomin == "00") ? 'selected' : ''}>
-																			${val}:00</option>
-																		<option
-																			${(wedohr == val) && (wedomin == "30") ? 'selected' : ''}>
-																			${val}:30</option>
-																	</c:forEach>
-																	<option ${(wedh[0] == "Closed") ? 'selected' : ''}>Closed</option>
+																	<c:if test="${wedh[0] != 'Closed'}">
+																		<c:forEach begin="0" end="23" var="val">
+																			<option
+																				${(wedohr == val) && (wedomin == "00") ? 'selected' : ''}>
+																				${val}:00</option>
+																			<option
+																				${(wedohr == val) && (wedomin == "30") ? 'selected' : ''}>
+																				${val}:30</option>
+																		</c:forEach>
+																		<option>Closed</option>
+																	</c:if>
+																	<c:if test="${wedh[0] == 'Closed'}">
+																		<c:forEach begin="0" end="23" var="val">
+																			<option>${val}:00</option>
+																			<option>${val}:30</option>
+																		</c:forEach>
+																		<option selected>Closed</option>
+																	</c:if>
 																</select> to <label class="sr-only" for="wedc"></label> <select
 																	name="wedc" class="form-control" style="width: 100px">
-																	<c:forEach begin="0" end="23" var="val">
-																		<option
-																			${(wedchr == val) && (wedcmin == "00") ? 'selected' : ''}>
-																			${val}:00</option>
-																		<option
-																			${(wedchr == val) && (wedcmin == "30") ? 'selected' : ''}>
-																			${val}:30</option>
-																	</c:forEach>
-																	<option ${(wedh[1] == "Closed") ? 'selected' : ''}>Closed</option>
+																	<c:if test="${wedh[1] != 'Closed'}">
+																		<c:forEach begin="0" end="23" var="val">
+																			<option
+																				${(wedchr == val) && (wedcmin == "00") ? 'selected' : ''}>
+																				${val}:00</option>
+																			<option
+																				${(wedchr == val) && (wedcmin == "30") ? 'selected' : ''}>
+																				${val}:30</option>
+																		</c:forEach>
+																		<option>Closed</option>
+																	</c:if>
+																	<c:if test="${wedh[1] == 'Closed'}">
+																		<c:forEach begin="0" end="23" var="val">
+																			<option>${val}:00</option>
+																			<option>${val}:30</option>
+																		</c:forEach>
+																		<option selected>Closed</option>
+																	</c:if>
 																</select>
 															</div>
 														</div>
@@ -298,26 +351,44 @@
 															<div class="form-group">
 																<label class="sr-only" for="thuo"></label> <select
 																	name="thuo" class="form-control" style="width: 100px">
-																	<c:forEach begin="0" end="23" var="val">
-																		<option
-																			${(thuohr == val) && (thuomin == "00") ? 'selected' : ''}>
-																			${val}:00</option>
-																		<option
-																			${(thuohr == val) && (thuomin == "30") ? 'selected' : ''}>
-																			${val}:30</option>
-																	</c:forEach>
-																	<option ${(thuh[0] == "Closed") ? 'selected' : ''}>Closed</option>
+																	<c:if test="${thuh[0] != 'Closed'}">
+																		<c:forEach begin="0" end="23" var="val">
+																			<option
+																				${(thuohr == val) && (thuomin == "00") ? 'selected' : ''}>
+																				${val}:00</option>
+																			<option
+																				${(thuohr == val) && (thuomin == "30") ? 'selected' : ''}>
+																				${val}:30</option>
+																		</c:forEach>
+																		<option>Closed</option>
+																	</c:if>
+																	<c:if test="${thuh[0] == 'Closed'}">
+																		<c:forEach begin="0" end="23" var="val">
+																			<option>${val}:00</option>
+																			<option>${val}:30</option>
+																		</c:forEach>
+																		<option selected>Closed</option>
+																	</c:if>
 																</select> to <label class="sr-only" for="thuc"></label> <select
 																	name="thuc" class="form-control" style="width: 100px">
-																	<c:forEach begin="0" end="23" var="val">
-																		<option
-																			${(thuchr == val) && (thucmin == "00") ? 'selected' : ''}>
-																			${val}:00</option>
-																		<option
-																			${(thuchr == val) && (thucmin == "30") ? 'selected' : ''}>
-																			${val}:30</option>
-																	</c:forEach>
-																	<option ${(thuh[1] == "Closed") ? 'selected' : ''}>Closed</option>
+																	<c:if test="${thuh[1] != 'Closed'}">
+																		<c:forEach begin="0" end="23" var="val">
+																			<option
+																				${(thuchr == val) && (thucmin == "00") ? 'selected' : ''}>
+																				${val}:00</option>
+																			<option
+																				${(thuchr == val) && (thucmin == "30") ? 'selected' : ''}>
+																				${val}:30</option>
+																		</c:forEach>
+																		<option>Closed</option>
+																	</c:if>
+																	<c:if test="${thuh[1] == 'Closed'}">
+																		<c:forEach begin="0" end="23" var="val">
+																			<option>${val}:00</option>
+																			<option>${val}:30</option>
+																		</c:forEach>
+																		<option selected>Closed</option>
+																	</c:if>
 																</select>
 															</div>
 														</div>
@@ -330,26 +401,44 @@
 															<div class="form-group">
 																<label class="sr-only" for="frio"></label> <select
 																	name="frio" class="form-control" style="width: 100px">
-																	<c:forEach begin="0" end="23" var="val">
-																		<option
-																			${(friohr == val) && (friomin == "00") ? 'selected' : ''}>
-																			${val}:00</option>
-																		<option
-																			${(friohr == val) && (friomin == "30") ? 'selected' : ''}>
-																			${val}:30</option>
-																	</c:forEach>
-																	<option ${(frih[0] == "Closed") ? 'selected' : ''}>Closed</option>
+																	<c:if test="${frih[0] != 'Closed'}">
+																		<c:forEach begin="0" end="23" var="val">
+																			<option
+																				${(friohr == val) && (friomin == "00") ? 'selected' : ''}>
+																				${val}:00</option>
+																			<option
+																				${(friohr == val) && (friomin == "30") ? 'selected' : ''}>
+																				${val}:30</option>
+																		</c:forEach>
+																		<option>Closed</option>
+																	</c:if>
+																	<c:if test="${frih[0] == 'Closed'}">
+																		<c:forEach begin="0" end="23" var="val">
+																			<option>${val}:00</option>
+																			<option>${val}:30</option>
+																		</c:forEach>
+																		<option selected>Closed</option>
+																	</c:if>
 																</select> to <label class="sr-only" for="fric"></label> <select
 																	name="fric" class="form-control" style="width: 100px">
-																	<c:forEach begin="0" end="23" var="val">
-																		<option
-																			${(frichr == val) && (fricmin == "00") ? 'selected' : ''}>
-																			${val}:00</option>
-																		<option
-																			${(frichr == val) && (fricmin == "30") ? 'selected' : ''}>
-																			${val}:30</option>
-																	</c:forEach>
-																	<option ${(frih[1] == "Closed") ? 'selected' : ''}>Closed</option>
+																	<c:if test="${frih[1] != 'Closed'}">
+																		<c:forEach begin="0" end="23" var="val">
+																			<option
+																				${(frichr == val) && (fricmin == "00") ? 'selected' : ''}>
+																				${val}:00</option>
+																			<option
+																				${(frichr == val) && (fricmin == "30") ? 'selected' : ''}>
+																				${val}:30</option>
+																		</c:forEach>
+																		<option>Closed</option>
+																	</c:if>
+																	<c:if test="${frih[1] == 'Closed'}">
+																		<c:forEach begin="0" end="23" var="val">
+																			<option>${val}:00</option>
+																			<option>${val}:30</option>
+																		</c:forEach>
+																		<option selected>Closed</option>
+																	</c:if>
 																</select>
 															</div>
 														</div>

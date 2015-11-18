@@ -124,7 +124,6 @@
 					</form>
 					<table class="table">
 						<tr>
-							<th>Class</th>
 							<th>Exam Name</th>
 							<th>Instructor</th>
 							<th>Student Name</th>
@@ -136,15 +135,27 @@
 						</tr>
 						<c:forEach items="${appointments}" var="apps">
 							<tr class="success">
-								<td><font color="blue">${apps.request.course.classID}</font></td>
-								<td>${apps.request.examName}</td>
+								<td><font color="blue">${apps.request.examName}</font></td>
 								<td>${apps.request.instructorNetID}</td>
 								<td>${apps.user.firstName}${apps.user.lastName}</td>
 								<td>${apps.user.netID}</td>
 								<td>${apps.request.examIndex}</td>
 								<td>${apps.timeStart}</td>
 								<td>${apps.seatNum}</td>
-								<td>${apps.status}</td>
+								<c:choose>
+									<c:when test="${apps.status eq 'taken'}">
+										<td><font color="green">${apps.status}</font>
+									</c:when>
+									<c:when test="${apps.status eq 'missed'}">
+										<td><font color="red">${apps.status}</font>
+									</c:when>
+									<c:when test="${apps.status eq 'pending'}">
+										<td><font color="grey">${apps.status}</font>
+									</c:when>
+									<c:otherwise>
+										<td>${apps.status}</font>
+									</c:otherwise>
+								</c:choose>
 							</tr>
 						</c:forEach>
 					</table>
