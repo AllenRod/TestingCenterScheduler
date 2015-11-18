@@ -134,6 +134,7 @@
 							<th>Duration</th>
 							<th>RequestID</th>
 							<th>Status</th>
+							<th>Utilization</th>
 							<th>Approve/Deny</th>
 						</tr>
 						<c:forEach items="${crequests}" var="requests">
@@ -160,8 +161,32 @@
 									</c:otherwise>
 								</c:choose>
 								<td>
-									<!--                TODO                             -->
+									<form action = AdministratorHome method = POST>
+										<input type="submit" class="btn btn-primary" name="request_uti" value="View utilization"/>
+									</form> 
 								</td>
+								<c:choose>
+								<c:when test = "${requests.status eq 'approved' || requests.status eq 'denied'}">
+								<td>
+									<form action = AdministratorHome method = POST>
+										<input type="submit" class="btn btn-success.disabled" name="request_approve" value="Approve"/>
+									</form> 
+									<form action = AdministratorHome method = POST>
+										<input type="submit" class="btn btn-danger.disabled" name="request_deny" value="Deny" />
+									</form>
+								</td>
+								</c:when>
+								<c:when test = "${requests.status eq 'pending'}">
+								<td>
+									<form action = AdministratorHome method = POST>
+										<input type="submit" class="btn btn-success" name="request_approve" value="Approve"/>
+									</form> 
+									<form action = AdministratorHome method = POST>
+										<input type="submit" class="btn btn-danger" name="request_deny" value="Deny" />
+									</form>
+								</td>
+								</c:when>
+								</c:choose>
 							</tr>
 						</c:forEach>
 					</table>
@@ -177,6 +202,7 @@
 							<th>Duration</th>
 							<th>RequestID</th>
 							<th>Status</th>
+							<th>Utilization</th>
 							<th>Approve/Deny</th>
 						</tr>
 						<c:forEach items="${nrequests}" var="requests">
@@ -202,10 +228,18 @@
 										<td>${requests.status}</font>
 									</c:otherwise>
 								</c:choose>
-
-
 								<td>
-									<!--                TODO                             -->
+								<form action = AdministratorHome method = POST>
+										<input type="submit" class="btn btn-primary" name="request_uti" value="View utilization"/>
+								</form> 
+								</td>
+								<td>
+								<form action = AdministratorHome method = POST>
+									<input type="submit" class="btn btn-success" name="request_approve" value="Approve"/>
+								</form> 
+								<form action = AdministratorHome method = POST>
+									<input type="submit" class="btn btn-danger" name="request_deny" value="Deny"/>
+								</form>
 								</td>
 							</tr>
 						</c:forEach>
