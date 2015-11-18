@@ -110,10 +110,12 @@ public class Administrator {
 	 * 
 	 * @param netid
 	 *            the net ID of the student to be checked in
+	 * @param termID
+	 *            the termID of the term the student is in
 	 * @return if the student was successfully checked in
 	 */
-	public boolean checkInStudent(String netid) {
-		return false;
+	public boolean checkInStudent(String netid, int examID, String termID) {
+		return dbManager.A_checkinStudent(netid, examID, termID);
 	}
 
 	/**
@@ -418,8 +420,10 @@ public class Administrator {
 
 	/**
 	 * Get list of requests
-	 * @param type		Type of request
-	 * @return	List of requests
+	 * 
+	 * @param type
+	 *            Type of request
+	 * @return List of requests
 	 */
 	public List<Request> getRequests(String type) {
 		return dbManager.getRequests(type);
@@ -427,7 +431,8 @@ public class Administrator {
 
 	/**
 	 * Get list of appointments
-	 * @return	List of appointments
+	 * 
+	 * @return List of appointments
 	 */
 	public List<Appointment> getAllAppointments() {
 		return dbManager.getAllAppointments();

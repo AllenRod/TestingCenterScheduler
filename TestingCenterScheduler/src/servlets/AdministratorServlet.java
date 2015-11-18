@@ -1,7 +1,6 @@
 package servlets;
 
 import java.io.IOException;
-import java.util.Calendar;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -144,6 +143,24 @@ public class AdministratorServlet extends HttpServlet {
 				request.setAttribute("returnVal", reports);
 				RequestDispatcher rd = request
 						.getRequestDispatcher("Report.jsp");
+				rd.forward(request, response);
+			}
+			if (request.getParameterValues("checkin") != null) {
+				LoggerWrapper.logger.info("Admin " + admin.getNetID()
+						+ " checkin students");
+				String[] students = request.getParameterValues("checkin");
+				boolean noError = true;
+				for (String s : students) {
+					String[] idList = s.split(":");
+					boolean b = admin.checkInStudent(idList[0],
+							Integer.parseInt(idList[1]), idList[2]);
+					if (!b) {
+						noError = b;
+					}
+				}
+				request.setAttribute("returnVal", Boolean.valueOf(noError));
+				RequestDispatcher rd = request
+						.getRequestDispatcher("AdminAppointments.jsp");
 				rd.forward(request, response);
 			}
 		} catch (Exception error) {

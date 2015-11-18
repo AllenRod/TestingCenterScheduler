@@ -48,20 +48,21 @@
 			<!-- Top Menu Items -->
 			<ul class="nav navbar-right top-nav">
 				<li class="dropdown"><a href="#" class="dropdown-toggle"
-					data-toggle="dropdown"></i> ${user.firstName} ${user.lastName}<b
-						class="caret"></b></a>
+					data-toggle="dropdown">
+						${user.firstName} ${user.lastName}<b class="caret"></b></a>
 					<ul class="dropdown-menu">
-						<li><a href="#">Settings</a></li>
+						<li><a href="#">Settings</a>
+						</li>
 						<li class="divider"></li>
 						<li>
-							<form action="Logout" method="GET">
-								<a>
-								<input type="submit" value="Log Out"
-									style="background-color: Transparent; border: none;">
-								</a>
-							</form>
+								<form action="Login" method="GET">
+									<a>
+									<input type="submit" value="Log Out" name="logout" style="background-color: Transparent; border: none;">
+									</a>
+								</form>	
 						</li>
-					</ul></li>
+					</ul>
+				</li>
 			</ul>
 			<!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
 			<div class="collapse navbar-collapse navbar-ex1-collapse">
@@ -122,6 +123,26 @@
 							</div>
 						</div>
 					</form>
+					<c:choose>
+					<c:when test="${returnVal == true}">
+						<div class="row">
+							<div class="col-lg-12">
+								<div class="alert alert-success">Checkin successful!</div>
+							</div>
+						</div>
+					</c:when>
+					<c:when test="${returnVal == false}">
+						<div class="row">
+							<div class="col-lg-12">
+								<div class="alert alert-danger">Checkin failed!</div>
+							</div>
+						</div>
+					</c:when>
+					<c:otherwise>
+					</c:otherwise>
+				</c:choose>
+				<c:remove var="returnVal" scope="session" />
+					<form action=AdministratorHome method=POST>
 					<table class="table">
 						<tr>
 							<th>Exam Name</th>
@@ -132,6 +153,7 @@
 							<th>Test Time</th>
 							<th>Seat Number</th>
 							<th>Status</th>
+							<th>Checkin</th>
 						</tr>
 						<c:forEach items="${appointments}" var="apps">
 							<tr class="success">
@@ -153,12 +175,22 @@
 										<td><font color="grey">${apps.status}</font>
 									</c:when>
 									<c:otherwise>
-										<td>${apps.status}</font>
+										<td>${apps.status}</td>
+									</c:otherwise>
+								</c:choose>
+								<c:choose>
+									<c:when test="${apps.status eq 'taken' || apps.status eq 'missed'}">
+										<td><input type="checkbox" name="" value="" disabled/></td>
+									</c:when>
+									<c:otherwise>
+										<td><input type="checkbox" name="checkin" value="${apps.user.netID}:${apps.request.examIndex}:${apps.user.term.termID}" /></td>
 									</c:otherwise>
 								</c:choose>
 							</tr>
 						</c:forEach>
 					</table>
+					<input type="submit" class="btn btn-primary" name="checkin_btn" value="Checkin"/>
+					</form>
 				</div>
 			</div>
 			<!-- /.container-fluid -->

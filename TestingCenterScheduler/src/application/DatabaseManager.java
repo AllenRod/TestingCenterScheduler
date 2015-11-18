@@ -15,6 +15,8 @@ import javax.persistence.TemporalType;
 import javax.persistence.TypedQuery;
 
 import entity.Appointment;
+import entity.Appointment.AppointmentStatus;
+import entity.AppointmentPK;
 import entity.ClassExamRequest;
 import entity.Course;
 import entity.NonClassRequest;
@@ -22,6 +24,7 @@ import entity.Request;
 import entity.Term;
 import entity.TestCenterInfo;
 import entity.UserAccount;
+import entity.UserPK;
 
 /**
  * Manage all database transaction and activity using EntityManagers.
@@ -491,6 +494,34 @@ public class DatabaseManager {
 	}
 
 	/**
+	 * Checks in a student with a given netid with given exam id in the given
+	 * term
+	 * 
+	 * @param netID
+	 *            the netid of student to be checked in
+	 * @param examID
+	 *            exam id of exam student is checking in for
+	 * @param termID
+	 *            term the exam is in
+	 * @return if the appointment's status was changed to TAKEN
+	 */
+	public boolean A_checkinStudent(String netID, int examID, String termID) {
+		AppointmentPK appKey = new AppointmentPK();
+		UserPK userKey = new UserPK();
+		userKey.setNetID(netID);
+		userKey.setTerm(termID);
+		appKey.setRequest(examID);
+		appKey.setUserPK(userKey);
+		Appointment a = em.find(Appointment.class, appKey);
+		if (a == null) {
+			return false;
+		}
+		startTransaction();
+		a.setStatus(AppointmentStatus.TAKEN);
+		commitTransaction();
+		return true;
+	}
+	/**
 	 * Get the number of student from Roster with the given course
 	 * 
 	 * @param course
@@ -782,7 +813,7 @@ public class DatabaseManager {
 		}
 		LoggerWrapper.logger.info("Transaction commits");
 	}
-	
+
 	/**
 	 * Rollback transaction
 	 */
@@ -808,7 +839,7 @@ public class DatabaseManager {
 	 */
 	public void closeEntityManager() {
 		// Close this EntityManager
-		if (em == null) 
+		if (em == null)
 			return;
 		if (em.isOpen()) {
 			em.close();
