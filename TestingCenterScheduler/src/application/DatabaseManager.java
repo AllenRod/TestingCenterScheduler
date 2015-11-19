@@ -757,7 +757,7 @@ public class DatabaseManager {
 		try {
 			TypedQuery<Appointment> q1 = em.createQuery(
 					"SELECT a FROM Appointment a", Appointment.class);
-			q1.setMaxResults(10);
+			//q1.setMaxResults(10);
 			aList = q1.getResultList();
 			LoggerWrapper.logger.info("Getting list of appointments");
 			return aList;
