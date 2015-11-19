@@ -29,7 +29,6 @@
 	<c:if test="${(not empty user) and (user.role ne 'admin')}">
 		<jsp:forward page="/index.jsp"></jsp:forward>
 	</c:if>
-
 	<div id="wrapper">
 
 		<!-- Navigation -->
@@ -83,7 +82,6 @@
 			</div>
 			<!-- /.navbar-collapse -->
 		</nav>
-
 		<div id="page-wrapper">
 
 			<div class="container-fluid">
@@ -122,10 +120,21 @@
 						<c:otherwise>
 						</c:otherwise>
 					</c:choose>
-
 					<div class=".col-md-6 .col-md-offset-3">
 						<h2>StonyBrook Exam Requests</h2>
+						<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#utilization" onClick="loadContent()" style="float: right">View Utilization</button>
 					</div>
+					<div class="modal fade" id="utilization" tabindex="-1" role="dialog" aria-labelledby="idkModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+						    <div class="modal-content">
+								<div class="modal-header" id="modalContent"></div>
+								<div class="modal-footer">
+									    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+								</div>
+						    </div>
+						</div>
+					</div>
+						
 					<table class="table">
 						<tr>
 							<th>ClassID</th>
@@ -135,7 +144,6 @@
 							<th>Duration</th>
 							<th>RequestID</th>
 							<th>Status</th>
-							<th>Utilization</th>
 							<th>Approve/Deny</th>
 						</tr>
 						<c:forEach items="${crequests}" var="requests">
@@ -165,11 +173,6 @@
 								<c:when test = "${requests.status eq 'approved' || requests.status eq 'denied'}">
 								<td>
 									<form action = AdministratorHome method = POST>
-										<input type="submit" class="btn btn-primary disabled" name="request_uti" value="View utilization"/>
-									</form> 
-								</td>
-								<td>
-									<form action = AdministratorHome method = POST>
 										<button type=submit class="btn btn-success disabled" name="request_approve" value="${requests.examIndex}">Approve</button>
 									</form> 
 									<form action = AdministratorHome method = POST>
@@ -178,11 +181,6 @@
 								</td>
 								</c:when>
 								<c:when test = "${requests.status eq 'pending'}">
-								<td>
-									<form action = AdministratorHome method = POST>
-										<input type="submit" class="btn btn-primary" name="request_uti" value="View utilization"/>
-									</form> 
-								</td>
 								<td>
 									<form action = AdministratorHome method = POST>
 										<button type=submit class="btn btn-success" name="request_approve" value="${requests.examIndex}">Approve</button>
@@ -198,6 +196,7 @@
 					</table>
 					<div class=".col-md-6 .col-md-offset-3">
 						<h2>Non-StonyBrook Exam Requests</h2>
+						<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#utilization" onClick="loadContent()" style="float: right">View Utilization</button>
 					</div>
 					<table class="table">
 						<tr>
@@ -208,7 +207,6 @@
 							<th>Duration</th>
 							<th>RequestID</th>
 							<th>Status</th>
-							<th>Utilization</th>
 							<th>Approve/Deny</th>
 						</tr>
 						<c:forEach items="${nrequests}" var="requests">
@@ -237,11 +235,6 @@
 								<c:choose>
 								<c:when test = "${requests.status eq 'approved' || requests.status eq 'denied'}">
 								<td>
-									<form action = AdministratorHome method = POST>
-										<input type="submit" class="btn btn-primary disabled" name="request_uti" value="View utilization"/>
-									</form> 
-								</td>
-								<td>
 								<form action = AdministratorHome method = POST>
 										<button type=submit class="btn btn-success disabled" name="request_approve" value="${requests.examIndex}">Approve</button>
 									</form> 
@@ -251,11 +244,6 @@
 									</td>
 								</c:when>
 								<c:when test = "${requests.status eq 'pending'}">
-								<td>
-									<form action = AdministratorHome method = POST>
-										<input type="submit" class="btn btn-primary" name="request_uti" value="View utilization"/>
-									</form> 
-								</td>
 								<td>
 									<form action = AdministratorHome method = POST>
 										<button type=submit class="btn btn-success" name="request_approve" value="${requests.examIndex}">Approve</button>
@@ -278,7 +266,11 @@
 
 	</div>
 	<!-- /#wrapper -->
-
+	<script>
+	function loadContent() {
+	    $('#modalContent').load('EmptyPage.jsp');
+	}
+	</script>
 	<!-- jQuery -->
 	<script src="js/jquery.js"></script>
 

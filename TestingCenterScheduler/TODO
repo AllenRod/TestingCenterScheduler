@@ -30,7 +30,7 @@ INSTRUCTOR
 Submit request - 50 % (need to show current utilization + utilization with request, check for schedulability)
 Cancel pending request - 100 %
 View requests for current/future term - 75 % (need to show for only current term + future, not past)
-See appointment/attendance details - 0 % (everything)
+See appointment/attendance details - 50 % (need to show student attendance details)
 
 STUDENT
 Make appointment - 0 % (everything)

@@ -47,11 +47,10 @@
 						</li>
 						<li class="divider"></li>
 						<li>
-							<a>
-								<form action="Login" method="GET">
+							<form action="Login" method="GET">
+								
 									<input type="submit" value="Log Out" style="background-color: Transparent; border: none;">
-								</form>
-							</a>
+							</form>
 						</li>
 					</ul>
 				</li>

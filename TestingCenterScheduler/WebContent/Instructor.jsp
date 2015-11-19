@@ -197,10 +197,7 @@
 	</div>
 	<!-- /#wrapper -->
 	<script>
-		function toCourses(ele) {
 
-			window.location.href = "Courses.jsp"
-		}
 	</script>
 	<!-- jQuery -->
 	<script src="js/jquery.js"></script>

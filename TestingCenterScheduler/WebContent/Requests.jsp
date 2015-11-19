@@ -133,8 +133,8 @@
 								<th>Status</th>
 							</tr>
 							<c:forEach items="${crequests}" var="requests">
-							<tr class="success" onClick="editRequest(this);" id = "<c:out value="${requests.examIndex}"/>">
-								<td><font color="blue">
+							<tr class="success">
+								<td onClick="editRequest(this);" id="<c:out value="${requests.examIndex}"/>"> <font color="blue" >
 										${requests.course.classID}</font></td>
 								<td>${requests.examName}</td>
 								<td>${requests.timeStart}</td>
@@ -157,9 +157,20 @@
 								</c:choose>
 							</tr>
 							</c:forEach>
+						</table>
+						<table class ="table">
+							<tr>
+								<th>ClassID</th>
+								<th>Test Name</th>
+								<th>Start Date</th>
+								<th>End Date</th>
+								<th>Duration</th>
+								<th>RequestID</th>
+								<th>Status</th>
+							</tr>
 							<c:forEach items="${nrequests}" var="requests">   
-							<tr class="info" onClick="editRequest(this);" id="<c:out value="${requests.examIndex}"/>">
-								<td><font color="blue">
+							<tr class="info">
+								<td onClick="editRequest(this);" id="<c:out value="${requests.examIndex}"/>"><font color="blue">
 										Non-Class Exam</font></td>
 								<td>${requests.examName}</td>
 								<td>${requests.timeStart}</td>

@@ -183,6 +183,11 @@ public class AdministratorServlet extends HttpServlet {
 						.getRequestDispatcher("AdminRequests.jsp");
 				rd.forward(request, response);
 			}
+			if (request.getParameter("utilization") != null) {
+				LoggerWrapper.logger.info("Utilization");
+				response.setContentType("text/html;charset=UTF-8");
+		        response.getWriter().write("Success Data");
+			}
 		} catch (Exception error) {
 			LoggerWrapper.logger
 					.warning("Error occurs in AdministratorServlet:\n"
