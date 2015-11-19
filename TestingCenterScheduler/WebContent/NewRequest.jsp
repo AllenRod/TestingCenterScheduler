@@ -161,7 +161,7 @@
 								name="Reday" min="1" max="31" placeholder="Day"
 								style="width: 100px;" required>
 
-							</select> <select name="Retime" class="form-control input-sm" style="width: 100px">
+							<select name="Retime" class="form-control input-sm" style="width: 100px">
 								<c:forEach begin="0" end="23" var="val">
 									<option>${val}:00</option>
 									<option>${val}:30</option>

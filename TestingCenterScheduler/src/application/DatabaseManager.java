@@ -816,28 +816,25 @@ public class DatabaseManager {
 	}
 
 	/**
-	 * Queries DB by StudentNetID and returns a list of courses
+	 * Queries DB by StudentNetID and returns a list of requests
 	 * 
 	 * @param String
 	 *            Name of student to get courses for
-	 * @return List<Course> List of all courses belonging to the student
+	 * @return List<Request> List of all requests belonging to the student
 	 */
-	public List<Course> S_getExams(String netID) {
-		System.out.println("TEST");
-		createEntityManager();
-		Query a = em
-				.createQuery("SELECT r FROM Request r WHERE r.roster.course = r.classID AND r.roster.user = netID");
+	public List<Request> S_getRequests(String netID) {
+		TypedQuery<Request> a = em
+				.createQuery("SELECT r FROM Request r WHERE "
+						+ "r.roster.course = r.classID AND r.roster.user = netID", Request.class);
 		a.setParameter("nID", netID);
 		try {
-			List<Course> rs = a.getResultList();
+			List<Request> rs = a.getResultList();
 			LoggerWrapper.logger.info("Get courses belongs to " + netID);
 			return rs;
 		} catch (PersistenceException error) {
 			LoggerWrapper.logger.info("There is an error in S_getExams:\n"
 					+ error.getClass() + ":" + error.getMessage());
 			return null;
-		} finally {
-			closeEntityManager();
 		}
 	}
 	
@@ -850,9 +847,8 @@ public class DatabaseManager {
 	 * @return List<Course> List of all courses belonging to the student
 	 */
 	public List<Appointment> S_getAppointments(String netID) {
-		createEntityManager();
-		Query a = em
-				.createQuery("SELECT a FROM Appointment a WHERE a.user.netID = :nID");
+		TypedQuery<Appointment> a = em
+				.createQuery("SELECT a FROM Appointment a WHERE a.user.netID = :nID", Appointment.class);
 		a.setParameter("nID", netID);
 		try {
 			List<Appointment> rs = a.getResultList();
@@ -862,8 +858,6 @@ public class DatabaseManager {
 			LoggerWrapper.logger.info("There is an error in S_getAppointments:\n"
 					+ error.getClass() + ":" + error.getMessage());
 			return null;
-		} finally {
-			closeEntityManager();
 		}
 	}
 	
@@ -875,9 +869,8 @@ public class DatabaseManager {
 	 * @return Course with the courseID
 	 */
 	public Course S_findCourses(String courseID) {
-		createEntityManager();
-		Query q = em
-				.createQuery("SELECT c FROM Course c WHERE c.classID = :cID");
+		TypedQuery<Course> q = em
+				.createQuery("SELECT c FROM Course c WHERE c.classID = :cID", Course.class);
 		q.setParameter("cID", courseID);
 		try {
 			Course rs = (Course) q.getSingleResult();
@@ -892,8 +885,6 @@ public class DatabaseManager {
 			LoggerWrapper.logger.info("There is an error in S_findCourse:\n"
 					+ error.getClass() + ":" + error.getMessage());
 			return null;
-		} finally {
-			closeEntityManager();
 		}
 	}
 	

@@ -311,7 +311,7 @@
 								name="Reday" min="1" max="31" placeholder="Day"
 								style="width: 100px;" value="${eday}" required>
 
-							</select> <select name="Retime" class="form-control input-sm" style="width: 100px">
+							<select name="Retime" class="form-control input-sm" style="width: 100px">
 								<c:forEach begin="0" end="23" var="val">
 									<c:choose>             
 						                <c:when test="${val eq ehour}">
