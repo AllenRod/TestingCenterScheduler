@@ -357,10 +357,10 @@
 						<input type="submit" name = "editAction" value="Edit"
 							class="btn btn-default"
 							style="background: #980100; color: #FFF;">
-						</c:if>
 						<input type="submit" name = "editAction" value="Delete"
 							class="btn btn-default"
 							style="background: #980100; color: #FFF;">
+						</c:if>
 					</form>
 				</div>
 			</div>
