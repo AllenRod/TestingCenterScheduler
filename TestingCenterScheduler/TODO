@@ -22,7 +22,7 @@ ADMIN
 Edit testing center info - 100 % 
 Import data - 60 % (check for superfluous, import without breaking existing table)
 Display utilization - 75 % (calculations may be wrong lol, possibly change display)
-Approve/deny request - 25 % (need button, show utilization for requests)
+Approve/deny request - 40 % (scheduability test, show utilization for requests)
 Make appointment for student - 0 % (everything)
 View appointment - 50 % (implement search bar)
 Cancel/edit appointment - 0 % (everything)

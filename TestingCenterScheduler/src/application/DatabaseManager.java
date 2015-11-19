@@ -521,6 +521,41 @@ public class DatabaseManager {
 		commitTransaction();
 		return true;
 	}
+
+	/**
+	 * Approves a request
+	 * 
+	 * @param requestID
+	 *            ID of request to be approved
+	 * @return if status was changed to approved
+	 */
+	public boolean A_approveRequest(String requestID) {
+		Request r = em.find(Request.class, Integer.parseInt(requestID));
+		if (r == null) {
+			return false;
+		}
+		startTransaction();
+		r.setStatus("approved");
+		commitTransaction();
+		return true;
+	}
+	/**
+	 * Denies a request
+	 * 
+	 * @param requestID
+	 *            ID of request to be denied
+	 * @return if status was changed to denied
+	 */
+	public boolean A_denyRequest(String requestID) {
+		Request r = em.find(Request.class, Integer.parseInt(requestID));
+		if (r == null) {
+			return false;
+		}
+		startTransaction();
+		r.setStatus("denied");
+		commitTransaction();
+		return true;
+	}
 	/**
 	 * Get the number of student from Roster with the given course
 	 * 

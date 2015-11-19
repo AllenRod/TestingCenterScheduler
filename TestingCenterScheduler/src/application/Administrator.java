@@ -59,23 +59,23 @@ public class Administrator {
 	/**
 	 * Approves a pending request
 	 * 
-	 * @param r
-	 *            the request to be approved
+	 * @param string
+	 *            the request ID of the request to approve
 	 * @return if the request was successfully approved
 	 */
-	public boolean approveRequest(Request r) {
-		return false;
+	public boolean approveRequest(String requestID) {
+		return dbManager.A_approveRequest(requestID);
 	}
 
 	/**
 	 * Denies a pending request
 	 * 
 	 * @param r
-	 *            the request to be denied
+	 *            the request ID of the request to approve
 	 * @return if the request was successfully denied
 	 */
-	public boolean denyRequest(Request r) {
-		return false;
+	public boolean denyRequest(String requestID) {
+		return dbManager.A_denyRequest(requestID);
 	}
 
 	/**

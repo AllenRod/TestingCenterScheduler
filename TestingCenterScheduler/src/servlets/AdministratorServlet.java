@@ -163,6 +163,26 @@ public class AdministratorServlet extends HttpServlet {
 						.getRequestDispatcher("AdminAppointments.jsp");
 				rd.forward(request, response);
 			}
+			if (request.getParameter("request_approve") != null) {
+				LoggerWrapper.logger.info("Admin " + admin.getNetID()
+						+ " approving a request");
+				boolean approved = admin.approveRequest(request
+						.getParameter("request_approve"));
+				request.setAttribute("returnVal", Boolean.valueOf(approved));
+				RequestDispatcher rd = request
+						.getRequestDispatcher("AdminRequests.jsp");
+				rd.forward(request, response);
+			}
+			if (request.getParameter("request_deny") != null) {
+				LoggerWrapper.logger.info("Admin " + admin.getNetID()
+						+ " denying a request");
+				boolean denied = admin.denyRequest(request
+						.getParameter("request_deny"));
+				request.setAttribute("returnVal", Boolean.valueOf(denied));
+				RequestDispatcher rd = request
+						.getRequestDispatcher("AdminRequests.jsp");
+				rd.forward(request, response);
+			}
 		} catch (Exception error) {
 			LoggerWrapper.logger
 					.warning("Error occurs in AdministratorServlet:\n"

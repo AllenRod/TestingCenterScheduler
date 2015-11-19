@@ -103,18 +103,19 @@
 				<!-- /.row -->
 				<div class="row">
 					<c:choose>
-						<c:when test="${returnVal == 'Data import succeeds'}">
+						<c:when test="${returnVal == true}">
 							<div class="row">
 								<div class="col-lg-12">
 									<div class="alert alert-success">Request Successfully
-										Processed</div>
+										Approved</div>
 								</div>
 							</div>
 						</c:when>
-						<c:when test="${not empty returnVal}">
+						<c:when test="${returnVal == false}">
 							<div class="row">
 								<div class="col-lg-12">
-									<div class="alert alert-danger">${returnVal}</div>
+									<div class="alert alert-danger">Request Successfully
+										Denied</div>
 								</div>
 							</div>
 						</c:when>
@@ -160,29 +161,34 @@
 										<td>${requests.status}</font>
 									</c:otherwise>
 								</c:choose>
-								<td>
-									<form action = AdministratorHome method = POST>
-										<input type="submit" class="btn btn-primary" name="request_uti" value="View utilization"/>
-									</form> 
-								</td>
 								<c:choose>
 								<c:when test = "${requests.status eq 'approved' || requests.status eq 'denied'}">
 								<td>
 									<form action = AdministratorHome method = POST>
-										<input type="submit" class="btn btn-success.disabled" name="request_approve" value="Approve"/>
+										<input type="submit" class="btn btn-primary disabled" name="request_uti" value="View utilization"/>
+									</form> 
+								</td>
+								<td>
+									<form action = AdministratorHome method = POST>
+										<button type=submit class="btn btn-success disabled" name="request_approve" value="${requests.examIndex}">Approve</button>
 									</form> 
 									<form action = AdministratorHome method = POST>
-										<input type="submit" class="btn btn-danger.disabled" name="request_deny" value="Deny" />
+										<button type="submit" class="btn btn-danger disabled" name="request_deny" value="${requests.examIndex}">Deny</button>
 									</form>
 								</td>
 								</c:when>
 								<c:when test = "${requests.status eq 'pending'}">
 								<td>
 									<form action = AdministratorHome method = POST>
-										<input type="submit" class="btn btn-success" name="request_approve" value="Approve"/>
+										<input type="submit" class="btn btn-primary" name="request_uti" value="View utilization"/>
+									</form> 
+								</td>
+								<td>
+									<form action = AdministratorHome method = POST>
+										<button type=submit class="btn btn-success" name="request_approve" value="${requests.examIndex}">Approve</button>
 									</form> 
 									<form action = AdministratorHome method = POST>
-										<input type="submit" class="btn btn-danger" name="request_deny" value="Deny" />
+										<button type="submit" class="btn btn-danger" name="request_deny" value="${requests.examIndex}">Deny</button>
 									</form>
 								</td>
 								</c:when>
@@ -228,19 +234,36 @@
 										<td>${requests.status}</font>
 									</c:otherwise>
 								</c:choose>
+								<c:choose>
+								<c:when test = "${requests.status eq 'approved' || requests.status eq 'denied'}">
 								<td>
+									<form action = AdministratorHome method = POST>
+										<input type="submit" class="btn btn-primary disabled" name="request_uti" value="View utilization"/>
+									</form> 
+								</td>
 								<form action = AdministratorHome method = POST>
+										<button type=submit class="btn btn-success disabled" name="request_approve" value="${requests.examIndex}">Approve</button>
+									</form> 
+									<form action = AdministratorHome method = POST>
+										<button type="submit" class="btn btn-danger disabled" name="request_deny" value="${requests.examIndex}">Deny</button>
+									</form>
+								</c:when>
+								<c:when test = "${requests.status eq 'pending'}">
+								<td>
+									<form action = AdministratorHome method = POST>
 										<input type="submit" class="btn btn-primary" name="request_uti" value="View utilization"/>
-								</form> 
+									</form> 
 								</td>
 								<td>
-								<form action = AdministratorHome method = POST>
-									<input type="submit" class="btn btn-success" name="request_approve" value="Approve"/>
-								</form> 
-								<form action = AdministratorHome method = POST>
-									<input type="submit" class="btn btn-danger" name="request_deny" value="Deny"/>
-								</form>
+									<form action = AdministratorHome method = POST>
+										<button type=submit class="btn btn-success" name="request_approve" value="${requests.examIndex}">Approve</button>
+									</form> 
+									<form action = AdministratorHome method = POST>
+										<button type="submit" class="btn btn-danger" name="request_deny" value="${requests.examIndex}">Deny</button>
+									</form>
 								</td>
+								</c:when>
+								</c:choose>
 							</tr>
 						</c:forEach>
 					</table>
