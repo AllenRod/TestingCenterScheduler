@@ -241,12 +241,14 @@
 										<input type="submit" class="btn btn-primary disabled" name="request_uti" value="View utilization"/>
 									</form> 
 								</td>
+								<td>
 								<form action = AdministratorHome method = POST>
 										<button type=submit class="btn btn-success disabled" name="request_approve" value="${requests.examIndex}">Approve</button>
 									</form> 
 									<form action = AdministratorHome method = POST>
 										<button type="submit" class="btn btn-danger disabled" name="request_deny" value="${requests.examIndex}">Deny</button>
 									</form>
+									</td>
 								</c:when>
 								<c:when test = "${requests.status eq 'pending'}">
 								<td>
