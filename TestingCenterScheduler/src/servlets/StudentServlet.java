@@ -65,7 +65,7 @@ public class StudentServlet extends HttpServlet {
 			doGet(request, response);
 			return;
 		}
-		/*if (request.getSession().getAttribute("action").equals("newAppointment")) {
+		if (request.getSession().getAttribute("action").equals("newAppointment")) {
 			LoggerWrapper.logger.info("Processing New Appointment");
 			String s;
 			s = stu.newAppointment(request.getParameter("Aclass"),
@@ -80,7 +80,7 @@ public class StudentServlet extends HttpServlet {
 			RequestDispatcher rd = request.getRequestDispatcher("Student.jsp");
 			rd.forward(request, response);
 			// response.sendRedirect("Requests.jsp");
-		}*/ else {
+		} else {
 			LoggerWrapper.logger.info("Unsupported Case");
 		}
 	}

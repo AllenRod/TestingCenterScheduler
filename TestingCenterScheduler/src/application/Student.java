@@ -20,9 +20,6 @@ public class Student {
 	// netID of the Student
 	private String netID;
 
-	// request manager object
-	private RequestManager reqManager;
-
 	/**
 	 * Constructor for class Student
 	 * 
@@ -32,7 +29,6 @@ public class Student {
 	public Student(String netID) {
 		this.netID = netID;
 		dbManager = DatabaseManager.getSingleton();
-		reqManager = RequestManager.getSingleton();
 	}
 
 	/**
@@ -64,12 +60,12 @@ public class Student {
 	}
 
 	/**
-	 * Get all courses taken by this student
+	 * Get all requests taken by this student
 	 * 
-	 * @return List of taken courses
+	 * @return List of taken requests
 	 */
-	public List<Course> getExams() {
-		return dbManager.S_getExams(netID);
+	public List<Course> getRequests() {
+		return dbManager.S_getRequests(netID);
 	}
 	
 	/**
@@ -88,7 +84,7 @@ public class Student {
 	 * @return Result from making new appointment
 	 */
 	public String newAppointment(String course, String sMonth, String sDay,
-			String sTime) { //FIXXXXXXXXXXXXX
+			String sTime) { 
 		try {
 			String s = "";
 			Calendar curC = Calendar.getInstance();
