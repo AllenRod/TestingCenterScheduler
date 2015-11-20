@@ -9,6 +9,7 @@ import application.Report.ReportType;
 import entity.Appointment;
 import entity.ClassExamRequest;
 import entity.Course;
+import entity.NonClassRequest;
 import entity.Request;
 import entity.Term;
 import entity.TestCenterInfo;
@@ -198,6 +199,9 @@ public class Administrator {
 			if (numApps > 0) {
 				List<Request> examList = dbManager.getAllExamsByDate(d);
 				for (Request e : examList) {
+					if (e instanceof NonClassRequest) {
+						continue;
+					}
 					Course c = ((ClassExamRequest) e).getCourse();
 					if (!classList.contains(c)) {
 						classList.add(c);
@@ -224,7 +228,6 @@ public class Administrator {
 
 		return r;
 	}
-
 	/**
 	 * Generates a report with the courses in this term
 	 * 
@@ -244,6 +247,9 @@ public class Administrator {
 		List<Request> examList = dbManager.getAllExamsBetween(termStart,
 				termEnd);
 		for (Request e : examList) {
+			if (e instanceof NonClassRequest) {
+				continue;
+			}
 			Course c = ((ClassExamRequest) e).getCourse();
 			r.addToReport(c.getClassID() + " " + c.getSubject()
 					+ c.getCatalogNum() + "_" + c.getSection() + " "

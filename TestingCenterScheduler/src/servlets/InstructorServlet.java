@@ -1,6 +1,7 @@
 package servlets;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import application.Instructor;
 import application.LoggerWrapper;
+import entity.Appointment;
 import entity.UserAccount;
 
 /**
@@ -101,7 +103,8 @@ public class InstructorServlet extends HttpServlet {
 			if (request.getParameter("editAction").equals("Delete")) {
 				LoggerWrapper.logger.info("Processing delete Request");
 				s = instr.deleteRequest(request.getParameter("RID"));
-			} else if (request.getParameter("editAction").equals("Edit")) {
+			} 
+			else if (request.getParameter("editAction").equals("Edit")) {
 				LoggerWrapper.logger.info("Processing edit Request");
 				s = instr.editRequest(request.getParameter("RID"),
 						request.getParameter("Ryear"),
@@ -115,7 +118,9 @@ public class InstructorServlet extends HttpServlet {
 						request.getParameter("Reday"),
 						request.getParameter("Retime"),
 						request.getParameter("Rlist"));
-			} else {
+			} 
+			
+			else {
 				LoggerWrapper.logger.info("Unsupported Edit Case");
 			}
 			request.getSession().setAttribute("crequests",
@@ -126,7 +131,17 @@ public class InstructorServlet extends HttpServlet {
 			request.setAttribute("returnVal", s);
 			RequestDispatcher rd = request.getRequestDispatcher("Requests.jsp");
 			rd.forward(request, response);
-		} else {
+		} 
+		else if (request.getSession().getAttribute("action")
+				.equals("getExamAppointments")) {
+			LoggerWrapper.logger.info("Fetching Appointments");
+			List<Appointment> a = instr.getAppointmentsByExamID(request.getParameter("EID"));
+			int s = instr.getStudentsInCourse(request.getParameter("CID"));
+			request.getSession().setAttribute("returnVal", a);
+			request.getSession().setAttribute("returnVal2", s);
+			response.sendRedirect(request.getHeader("referer"));
+		}
+		else {
 			LoggerWrapper.logger.info("Unsupported Case");
 		}
 	}

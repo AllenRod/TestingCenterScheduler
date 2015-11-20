@@ -108,7 +108,7 @@
 							<th>Start Date</th>
 							<th>End Date</th>
 							<th>Duration</th>
-							<th>Students Taken</th>
+							<th>Appointments</th>
 							<th>Status</th>
 						</tr>
 						<c:forEach items="${crequests}" var="requests">
@@ -123,37 +123,32 @@
 										<td>${requests.timeEnd}</td>
 										<td>${requests.testDuration}</td>
 										<td>${fn:length(requests.appointment)}</td>
-										<td><font color="green">${requests.status}</font>
-										</th>
+										<td><font color="green">${requests.status}</font></td>
 										</tr>
 									</c:if>
 								</c:if>
 							</c:forEach>
 					</table>
 					<table class="table table-striped table-hover">
-												<tr>
+							<tr>
 								<th>ClassID</th>
 								<th>Test Name</th>
 								<th>Start Date</th>
 								<th>End Date</th>
 								<th>Duration</th>
-								<th>Students Taken</th>
 								<th>Status</th>
 							</tr>
 							<c:forEach items="${nrequests}" var="requests">    
 	    						<c:if test="${requests.status ne 'denied'}">
 		    						<c:if test="${requests.status ne 'pending'}">
 			    						<tr class="success">
-											<td onClick="ExamStatus(this);"
-																	id="<c:out value="${requests.examIndex}"/>"><font
-																	color="blue">Non-Class Exam</font></td>
+											<td onClick="ExamStatus(this);"id="<c:out value="${requests.examIndex}"/>">
+											<font color="blue">Non-Class Exam</font></td>
 											<td>${requests.examName}</td>
 											<td>${requests.timeStart}</td>
 											<td>${requests.timeEnd}</td>
 											<td>${requests.testDuration}</td>
-											<td>${fn:length(requests.appointment)}</td>
-											<td><font color="green">${requests.status}</font>
-																</th>
+											<td><font color="green">${requests.status}</font></td>
 										</tr>
 									</c:if>
 								</c:if>

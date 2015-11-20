@@ -6,6 +6,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import entity.Appointment;
 import entity.ClassExamRequest;
 import entity.Course;
 import entity.NonClassRequest;
@@ -247,5 +248,28 @@ public class Instructor {
 	 */
 	public String deleteRequest(String RID) {
 		return dbManager.I_deleteRequest(RID);
+	}
+	
+	/**
+	 * Queries DB by ExamID and returns a list of appointments
+	 * 
+	 * @param int
+	 *            ExamID number
+	 * @return List<Course> List of all appointments belonging to the exam
+	 */
+	public List<Appointment> getAppointmentsByExamID(String EID){
+		return dbManager.getAppointmentsByExamID(Integer.parseInt(EID));
+	}
+	
+	/**
+	 * Queries DB by ExamID and returns a list of appointments
+	 * 
+	 * @param int
+	 *            ExamID number
+	 * @return List<Course> List of all appointments belonging to the exam
+	 */
+	public int getStudentsInCourse(String CID){
+		
+		return dbManager.R_getStudentNum(dbManager.getCourseByID(CID));
 	}
 }

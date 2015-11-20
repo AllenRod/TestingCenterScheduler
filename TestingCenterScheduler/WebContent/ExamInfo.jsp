@@ -192,25 +192,77 @@
 						</div>
 						<br>
 						<div class="form-group">
+							<c:if test="${isADHOC eq true}">
 							<label for="Rlist">Student Information:</label>
 							<br>
-							<c:if test="${isADHOC eq true}">
 								<textarea id="Rlist" name="Rlist" class="form-control" rows="7" cols="50" readonly><c:out value="${request.rosterList}"/></textarea>
 							</c:if>
 							<c:if test="${isADHOC eq false}">
-					    		<textarea id="Rlist" name="Rlist" class="form-control" rows="7" cols="50" disabled> TO BE IMPLEMENTED</textarea>
+							<c:set var="action" value="getExamAppointments" scope="session" />
+							<c:if test="${empty returnVal}">
+							<form action="InstructorHome" method="POST">
+								<input type="hidden" name="EID" value="${param.RequestID}">
+								<input type="hidden" name="CID" value="${request.course.classID}">
+					    		<input type="submit" value="Load Appointment Information"
+								class="btn btn-default"	style="background: #FFF; color: #000;">
+					    	</form>
+					    	</c:if>
+					    	<c:if test="${not empty returnVal}">
+								<div>
+									<label>Total Seats Reserved: </label> ${returnVal2}
+									<br>
+									<label>Total Appointments: </label> ${fn:length(returnVal)}
+									<table class="table table-striped table-hover" onload="hideButt()">
+									<tr>
+									<th>Student NetID</th>
+									<th>Seat No.</th>
+									<th>Appointment Time</th>
+									<th>Status</th>
+									</tr>
+									<c:forEach var="app" items="${returnVal}">
+									<c:if test="${app.status eq 'taken'}">
+									<tr class="success">
+									  	<td>${app.user.netID}</td>
+									  	<td>${app.seatNum}</td>
+									  	<td>${app.timeStart}</td>
+									  	<td><font color="green">${app.status}</font></td>
+									</tr>
+									</c:if>
+									<c:if test="${app.status eq 'missed'}">
+									<tr class="danger">
+									  	<td>${app.user.netID}</td>
+									  	<td>${app.seatNum}</td>
+									  	<td>${app.timeStart}</td>
+									  	<td><font color="red">${app.status}</font></td>
+									</tr>
+									</c:if>
+									<c:if test="${app.status ne 'taken' && app.status ne 'missed'}">
+									<tr>
+									  	<td>${app.user.netID}</td>
+									  	<td>${app.seatNum}</td>
+									  	<td>${app.timeStart}</td>
+									  	<td>${app.status}</td>
+									</tr>
+									</c:if>
+									</c:forEach>
+									</table>
+									<c:remove var="returnVal" scope="session" />
+									<c:remove var="returnVal2" scope="session" />
+								</div>
+							</c:if>
 					  		</c:if>
 						</div>
 						<br>
 						<a href="Exams.jsp" class="btn btn-default"
-							style="background: #DDD; color: #980100;">Back</a>
+							style="background: #DDD; color: #980100; margin-top: 5px">Back</a>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>	
 	<!-- /.container-fluid -->
-
+	<script type ="text/javascript">
+	</script>
 	<!-- jQuery -->
 	<script src="js/jquery.js"></script>
 
