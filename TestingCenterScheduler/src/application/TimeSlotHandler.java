@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import entity.Appointment;
+import entity.Request;
 import entity.Term;
 
 /**
@@ -40,6 +41,8 @@ public class TimeSlotHandler {
 	// Value is an Integer array with size of 47 that records the request ID for
 	// the appointments taking over the timeslots
 	private HashMap<Integer, Integer[]> openTimeSlotMap = new HashMap<>();
+
+	private HashMap<Date, Integer> numOfSeatInTimeSlot = new HashMap<>();
 
 	/**
 	 * Constructor for TimeSlotHandler
@@ -93,9 +96,12 @@ public class TimeSlotHandler {
 			}
 			Calendar c = Calendar.getInstance();
 			c.setTime(date);
-			String openHours = dbManager.R_getTestCenterInfo(term.getTermID()).getOpenHours();
-			String openTime = OpenHoursParser.getOpeningTime(openHours, c.get(Calendar.DAY_OF_WEEK));
-			String closeTime = OpenHoursParser.getClosingTime(openHours, c.get(Calendar.DAY_OF_WEEK));
+			String openHours = dbManager.R_getTestCenterInfo(term.getTermID())
+					.getOpenHours();
+			String openTime = OpenHoursParser.getOpeningTime(openHours,
+					c.get(Calendar.DAY_OF_WEEK));
+			String closeTime = OpenHoursParser.getClosingTime(openHours,
+					c.get(Calendar.DAY_OF_WEEK));
 			int openInt = -1;
 			int closeInt = 48;
 			if (!openTime.equals("Closed")) {
@@ -112,7 +118,8 @@ public class TimeSlotHandler {
 			}
 			Appointment[] appArray = seatMap.get(i).getAppList();
 			for (int j = 0; j < appArray.length; j++) {
-				if (j < openInt || j>= closeInt) continue; 
+				if (j < openInt || j >= closeInt)
+					continue;
 				if (appArray[j] == null) {
 					appRequestIDArray[j] = 0;
 				} else {
@@ -122,7 +129,124 @@ public class TimeSlotHandler {
 			}
 			openTimeSlotMap.put(i, appRequestIDArray);
 		}
+		// Test
+		for (java.util.Map.Entry<Integer, Integer[]> e : this.openTimeSlotMap
+				.entrySet()) {
+			System.out.println(e.getKey() + ":");
+			for (int i = 0; i < e.getValue().length; i++) {
+				if (e.getValue()[i] == -1) {
+					System.out.print("+");
+				} else {
+					System.out.print(e.getValue()[i] + "-");
+				}
+			}
+		}
 		return openTimeSlotMap;
+	}
+
+	/**
+	 * 
+	 * @param request
+	 * @return
+	 */
+	public HashMap<Date, Integer> getOpenTimeSlot(Request request) {
+		// Get open hours of Testing Center
+		Calendar c = Calendar.getInstance();
+		c.setTime(date);
+		String openHours = dbManager.R_getTestCenterInfo(term.getTermID())
+				.getOpenHours();
+		String openTime = OpenHoursParser.getOpeningTime(openHours,
+				c.get(Calendar.DAY_OF_WEEK));
+		String closeTime = OpenHoursParser.getClosingTime(openHours,
+				c.get(Calendar.DAY_OF_WEEK));
+		if (openTime.equals("Closed") || closeTime.equals("Closed")) {
+			return null;
+		}
+		// Get open time of Testing Center
+		c.set(Calendar.HOUR_OF_DAY, Integer.parseInt(openTime.split(":")[0]));
+		c.set(Calendar.MINUTE, Integer.parseInt(openTime.split(":")[1]));
+		Date tcOpen = c.getTime();
+		// Get close time of Testing Center
+		c.set(Calendar.HOUR_OF_DAY, Integer.parseInt(closeTime.split(":")[0]));
+		c.set(Calendar.MINUTE, Integer.parseInt(closeTime.split(":")[1]));
+		Date tcClose = c.getTime();
+		// Compare with request start time
+		Calendar cHolder = Calendar.getInstance();
+		cHolder.setTime(request.getTimeStart());
+		if ((c.get(Calendar.YEAR) == cHolder.get(Calendar.YEAR))
+				&& (c.get(Calendar.DAY_OF_YEAR) == cHolder
+						.get(Calendar.DAY_OF_YEAR))) {
+			// Current day is the starting day of request
+			if (request.getTimeStart().after(tcOpen)) {
+				// Check if request start after Testing Center open
+				if (request.getTimeStart().after(tcClose)) {
+					// Check if request start after Testing Center close
+					return null;
+				} else {
+					tcOpen = request.getTimeStart();
+				}
+			}
+		}
+		cHolder.setTime(request.getTimeEnd());
+		if ((c.get(Calendar.YEAR) == cHolder.get(Calendar.YEAR))
+				&& (c.get(Calendar.DAY_OF_YEAR) == cHolder
+						.get(Calendar.DAY_OF_YEAR))) {
+			// Current day is the ending day of request
+			if (request.getTimeEnd().before(tcClose)) {
+				// Check if request end before Testing Center close
+				if (request.getTimeEnd().before(tcOpen)) {
+					// Check if request end before Testing Center open
+					return null;
+				} else {
+					tcClose = request.getTimeEnd();
+				}
+			}
+		}
+		// Get duration of the test in hour
+		int duration = request.getTestDuration();
+		duration += dbManager.R_getTestCenterInfo(term.getTermID())
+				.getGapTime();
+		duration = (int) Math.ceil((double) duration / 30);
+		// Find number of seat open on each possible timeslot
+		c.setTime(tcOpen);
+		cHolder.setTime(tcClose);
+		int endSlot = cHolder.get(Calendar.HOUR_OF_DAY) * 2;
+		if (cHolder.get(Calendar.MINUTE) > 0) {
+			endSlot++;
+		}
+		while (!c.after(cHolder)) {
+			// Get index of current time slot
+			int currentSlot = c.get(Calendar.HOUR_OF_DAY) * 2;
+			if (c.get(Calendar.MINUTE) > 0) {
+				currentSlot++;
+			}
+			if ((currentSlot + duration) > endSlot) {
+				break;
+			}
+			int n = 0;
+			// Iterate through each seat and check if the seat is opened
+			for (Integer e : openTimeSlotMap.keySet()) {
+				Integer[] intArray = openTimeSlotMap.get(e);
+				Boolean open = true;
+				for (int i = 0; i < duration; i++) {
+					if (intArray[currentSlot + i] != 0) {
+						open = false;
+						break;
+					}
+				}
+				if (open) {
+					n++;
+				}
+			}
+			numOfSeatInTimeSlot.put(c.getTime(), n);
+			c.add(Calendar.MINUTE, 30);
+		}
+		// Test
+		for (java.util.Map.Entry<Date, Integer> e : numOfSeatInTimeSlot
+				.entrySet()) {
+			System.out.println(e.getKey().toString() + ":" + e.getValue());
+		}
+		return numOfSeatInTimeSlot;
 	}
 
 	/**

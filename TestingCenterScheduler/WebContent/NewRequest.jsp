@@ -185,7 +185,27 @@
 					</form>
 				</div>
 			</div>
+		
+			<div class="randomTryOUtOP">
+				<table class ="table">
+					<c:forEach items="${requests}" var="request">
+							<tr>
+								<td>${request.examIndex}</td>
+								<td>${request.examName}</td>
+								<td>${request.timeStart}</td>
+								<td>${request.timeEnd}</td>
+								<td>${request.testDuration}</td>
+								<td>${request.instructorNetID}</td>
+								<td>${request.status}</td>
+							</tr>	
+					</c:forEach>
+					</table>
+			</div>
+		
 		</div>
+
+	
+	
 	</div>
 				
 				<!-- /.container-fluid -->

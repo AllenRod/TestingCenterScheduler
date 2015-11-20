@@ -28,7 +28,7 @@
 	<c:if test="${(not empty user) and (user.role ne 'student')}">
 		<jsp:forward page="/index.jsp"></jsp:forward>
 	</c:if>
-	
+
 	<div id="wrapper">
 
 		<!-- Navigation -->
@@ -48,26 +48,25 @@
 			<!-- Top Menu Items -->
 			<ul class="nav navbar-right top-nav">
 				<li class="dropdown"><a href="#" class="dropdown-toggle"
-					data-toggle="dropdown">
-						${user.firstName} ${user.lastName}<b class="caret"></b></a>
+					data-toggle="dropdown"> ${user.firstName} ${user.lastName}<b
+						class="caret"></b></a>
 					<ul class="dropdown-menu">
-						<li><a href="#"> Settings</a>
-						</li>
+						<li><a href="#"> Settings</a></li>
 						<li class="divider"></li>
 						<li>
-								<form action="Login" method="GET">
-								<a>
-									<input type="submit" value="Log Out" name="logout" style="background-color: Transparent; border: none;">
+							<form action="Login" method="GET">
+								<a> <input type="submit" value="Log Out" name="logout"
+									style="background-color: Transparent; border: none;">
 								</a>
-								</form>
+							</form>
 						</li>
-					</ul>
-				</li>
+					</ul></li>
 			</ul>
 			<!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
 			<div class="collapse navbar-collapse navbar-ex1-collapse">
 				<ul class="nav navbar-nav side-nav">
-					<li><a href="Student.jsp" style="color: #fff;">View Appointments</a></li>
+					<li><a href="Student.jsp" style="color: #fff;">View
+							Appointments</a></li>
 				</ul>
 			</div>
 			<!-- /.navbar-collapse -->
@@ -77,19 +76,16 @@
 
 			<div class="container-fluid">
 				<!-- Page Heading -->
-                <div class="row">
-                    <div class="col-lg-12">
-                        <h1 class="page-header">
-                            New Appointment
-                        </h1>
-                        <ol class="breadcrumb">
-                            <li class="active">
-                                <a href="Student.jsp"> Home</a> > New Appointment 
-                            </li>
-                        </ol>
-                    </div>
-                </div>
-                <!-- /.row -->
+				<div class="row">
+					<div class="col-lg-12">
+						<h1 class="page-header">New Appointment</h1>
+						<ol class="breadcrumb">
+							<li class="active"><a href="Student.jsp"> Home</a> > New
+								Appointment</li>
+						</ol>
+					</div>
+				</div>
+				<!-- /.row -->
 				<div class="div-spacing">
 					<form class="form-inline" action="StudentHome" method="POST">
 						<div class="form-group">
@@ -104,14 +100,12 @@
 						<div class="form-group">
 							<label for="Start Time">Start Time: </label> <input type="number"
 								class="form-control input-sm" id="Asmon" name="Asmon" min="1"
-								max="12" placeholder="Month" style="width: 100px;" required>
+								max="12" placeholder="Month" style="width: 100px;">
 
 							<input type="number" class="form-control input-sm" id="Asday"
 								name="Asday" min="1" max="31" placeholder="Day"
-								style="width: 100px;" required>
-
-							<select name="Astime" class="form-control input-sm"
-								style="width: 100px">
+								style="width: 100px;"> <select name="Astime"
+								class="form-control input-sm" style="width: 100px">
 								<c:forEach begin="0" end="23" var="val">
 									<option>${val}:00</option>
 									<option>${val}:30</option>
@@ -121,23 +115,12 @@
 						<br>
 						<c:set var="action" value="newAppointment" scope="session" />
 						<a href="Student.jsp" class="btn btn-default"
-							style="background: #DDD; color: #980100;">Cancel</a>
-						<input type="submit" value="Submit Appointment"
-							class="btn btn-default"
+							style="background: #DDD; color: #980100;">Cancel</a> <input
+							type="submit" value="Submit Appointment" class="btn btn-default"
 							style="background: #980100; color: #FFF;">
 					</form>
 				</div>
-			
-				<!-- OP -->
-				<table>
-					<c:forEach items="${requests}" var="request">
-						<tr>
-							<td>${request.examName}</td>
-						</tr>
-					</c:forEach>
-				</table>
-				
-				
+
 			</div>
 		</div>
 		<!-- /#page-wrapper -->

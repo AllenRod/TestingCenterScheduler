@@ -10,7 +10,7 @@
 <meta name="description" content="">
 <meta name="author" content="">
 
-<title>Student Courses</title>
+<title>Student Requests</title>
 
 <!-- Bootstrap Core CSS -->
 <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -92,45 +92,47 @@
 				<!-- /.row -->
 
 				<div class="row">
-					<c:set var="action" value="getRequests" scope="session" />
-					<form action="StudentHome" method="GET">
-						<button type="submit" class="btn btn-primary">
-							View Open Requests
+					<a href="NewAppointment.jsp">
+						<button type="submit" class="btn btn-primary" style="margin-bottom:10px;">
+							New Appointment
 						</button>
-					</form>
-					<table class ="table">
-							<tr>
-								<th>Exam Name</th>
-								<th>Instructor</th>
-								<th>Test Time</th>
-								<th>Seat Number</th>
-								<th>Status</th>
-								<th>Cancel</th>
-							</tr>
-							<c:forEach items="${appointments}" var="appointments">    
-    						<tr class="success">
-								<td>${appointments.request.examName}</td>
-								<td>${appointments.request.instructorNetID}</td>
-								<td>${appointments.timeStart}</td>
-								<td>${appointments.seatNum}</td>
-								<c:choose>
-									<c:when test="${appointments.status eq 'taken'}">
-										<td><font color="green">${appointments.status}</font>
-									</c:when>
-									<c:when test="${appointments.status eq 'missed'}">
-										<td><font color="red">${appointments.status}</font>
-									</c:when>
-									<c:when test="${appointments.status eq 'pending'}">
-										<td><font color="grey">${appointments.status}</font>
-									</c:when>
-									<c:otherwise>
-										<td>${appointments.status}</td>
-									</c:otherwise>
-								</c:choose>
-							</tr>
-							</c:forEach>
-					</table>
+					</a>
+					
 				</div>
+				
+				<!-- table of all requests -->
+				<table class="table table-striped">
+					<tr>
+						<th>Exam Name</th>
+						<th>Time Start</th>
+						<th>Time End</th>
+						<th>Duration</th>
+						<th>Course</th>
+						<th>Instruction NetID</th>
+						<th>Status</th>
+						<th></th>
+					</tr>
+					<c:forEach items="${requests}" var="request">
+						<tr>
+							<td>${request.examName}</td>
+							<td>${request.timeStart}</td>
+							<td>${request.timeEnd}</td>
+							<td>${request.testDuration}</td>
+							<td>
+								<c:if test="${request['class'].name eq 'entity.ClassExamRequest'}">
+									${request.course.subject}${request.course.catalogNum}_${request.course.section}
+								</c:if>
+								<c:if test="${request['class'].name eq 'entity.NonClassRequest'}">
+									Non-Stony Brook Exam
+								</c:if>
+							</td>
+							<td>${request.instructorNetID}</td>
+							<td>${request.status}</td>
+							<td></td>
+						</tr>
+					</c:forEach>
+				</table>
+				
 			</div>
 			<!-- /.container-fluid -->
 

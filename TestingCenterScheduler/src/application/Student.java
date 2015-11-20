@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import entity.Appointment;
@@ -20,6 +21,9 @@ public class Student {
 
 	// netID of the Student
 	private String netID;
+	
+	// TimeSlotHandler object
+	private TimeSlotHandler handler;
 
 	/**
 	 * Constructor for class Student
@@ -67,6 +71,13 @@ public class Student {
 	 */
 	public List<Request> getRequests() {
 		return dbManager.S_getRequests(netID);
+	}
+	
+	public HashMap<Date, Integer> getOpenTimeSlot(Date date, String requestID) {
+		handler = new TimeSlotHandler(date);
+		handler.getTimeSlot();
+		handler.getOpenTimeSlot(dbManager.S_findRequest(requestID));
+		return  null;
 	}
 	
 	/**

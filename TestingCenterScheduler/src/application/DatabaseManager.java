@@ -852,7 +852,6 @@ public class DatabaseManager {
 				cerList = classExamq.getResultList();
 				for (ClassExamRequest r : cerList) {
 					rList.add((Request) r);
-					System.out.println(r.getExamName());
 				}
 			}
 			// Find all NonClassRequest
@@ -863,9 +862,8 @@ public class DatabaseManager {
 			String roster = "";
 			for (NonClassRequest r : ncrList) {
 				roster = r.getRosterList();
-				if (roster.contains(netID)) {
+				if (roster.contains(netID + ",")) {
 					rList.add((Request) r);
-					System.out.println(r.getExamName());
 				}
 			}
 			LoggerWrapper.logger.info("Get all requests belong to " + netID);
@@ -877,6 +875,24 @@ public class DatabaseManager {
 		}
 	}
 
+	/**
+	 * Queries DB by requestID and returns the request
+	 * 
+	 * @param requestID
+	 *            ID of request to look for
+	 * @return Request with the given requestID
+	 */
+	public Request S_findRequest(String requestID) {
+		try {
+			return em.find(Request.class, Integer.parseInt(requestID));
+		} catch (PersistenceException error) {
+			LoggerWrapper.logger
+					.info("There is an error in S_findRequest:\n"
+							+ error.getClass() + ":" + error.getMessage());
+			return null;
+		}
+	}
+	
 	/**
 	 * Queries DB by StudentNetID and returns a list of courses
 	 * 
