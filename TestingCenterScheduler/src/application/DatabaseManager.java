@@ -362,7 +362,30 @@ public class DatabaseManager {
 			return null;
 		}
 	}
-
+	
+	/**
+	 * Queries DB by classID and returns the respective course
+	 * 
+	 * @param String
+	 *            classID to get course of
+	 * @return Course the respective course
+	 */
+	public Course getCourseByID(String classID) {
+		TypedQuery<Course> a = em.createQuery(
+				"SELECT c FROM Course c WHERE c.classID = :cID",
+				Course.class);
+		a.setParameter("cID", classID);
+		try {
+			Course rs = a.getSingleResult();
+			LoggerWrapper.logger.info("Getting course: " + classID);
+			return rs;
+		} catch (PersistenceException error) {
+			LoggerWrapper.logger.info("The Param was:"+classID+"\nIt caused an error in getCourseByID:\n"
+					+ error.getClass() + ":" + error.getMessage());
+			return null;
+		}
+	}
+	
 	/**
 	 * Queries DB by InstructorNetID and returns a list of ClassExamRequests
 	 * 
@@ -447,7 +470,31 @@ public class DatabaseManager {
 			return "";
 		}
 	}
-
+	
+	/**
+	 * Queries DB by ExamID and returns a list of appointments
+	 * 
+	 * @param int
+	 *            ExamID number
+	 * @return List<Course> List of all appointments belonging to the exam
+	 */
+	public List<Appointment> getAppointmentsByExamID(int ExamID) {
+		TypedQuery<Appointment> a = em.createQuery(
+				"SELECT a FROM Appointment a WHERE a.request.examIndex = :eID",
+				Appointment.class);
+		a.setParameter("eID", ExamID);
+		try {
+			List<Appointment> rs = a.getResultList();
+			LoggerWrapper.logger.info("Getting appointments for ExamID: " + ExamID);
+			return rs;
+		} catch (PersistenceException error) {
+			LoggerWrapper.logger
+					.info("There is an error in getAppointmentsByExamID:\n"
+							+ error.getClass() + ":" + error.getMessage());
+			return null;
+		}
+	}
+	
 	/**
 	 * Queries DB and returns a list of TestCenterInfo by term
 	 * 
