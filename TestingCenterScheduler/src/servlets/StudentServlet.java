@@ -48,7 +48,7 @@ public class StudentServlet extends HttpServlet {
 			stu.setNetID(user.getNetID());
 		}
 		request.getSession().setAttribute("appointments", stu.getAppointments());
-		//request.getSession().setAttribute("exams", stu.getExams()); FIXXXXXXXXXX
+		request.getSession().setAttribute("requests", stu.getRequests());
 		request.getSession().setAttribute("login", true);
 		LoggerWrapper.logger.info("Redirect to Student homepage");
 		response.sendRedirect("Student.jsp");
@@ -75,7 +75,7 @@ public class StudentServlet extends HttpServlet {
 			if (s.equals("Data import succeeds"))
 				s = "New Request Success";
 			request.getSession().setAttribute("appointments", stu.getAppointments());
-			request.getSession().setAttribute("exams", stu.getExams());
+			request.getSession().setAttribute("requests", stu.getRequests());
 			request.setAttribute("returnVal", s);
 			RequestDispatcher rd = request.getRequestDispatcher("Student.jsp");
 			rd.forward(request, response);

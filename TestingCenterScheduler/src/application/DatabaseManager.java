@@ -539,6 +539,7 @@ public class DatabaseManager {
 		commitTransaction();
 		return true;
 	}
+
 	/**
 	 * Denies a request
 	 * 
@@ -556,6 +557,7 @@ public class DatabaseManager {
 		commitTransaction();
 		return true;
 	}
+
 	/**
 	 * Get the number of student from Roster with the given course
 	 * 
@@ -757,7 +759,7 @@ public class DatabaseManager {
 		try {
 			TypedQuery<Appointment> q1 = em.createQuery(
 					"SELECT a FROM Appointment a", Appointment.class);
-			//q1.setMaxResults(10);
+			// q1.setMaxResults(10);
 			aList = q1.getResultList();
 			LoggerWrapper.logger.info("Getting list of appointments");
 			return aList;
@@ -823,21 +825,57 @@ public class DatabaseManager {
 	 * @return List<Request> List of all requests belonging to the student
 	 */
 	public List<Request> S_getRequests(String netID) {
-		TypedQuery<Request> a = em
-				.createQuery("SELECT r FROM Request r WHERE "
-						+ "r.roster.course = r.classID AND r.roster.user = netID", Request.class);
-		a.setParameter("nID", netID);
 		try {
-			List<Request> rs = a.getResultList();
-			LoggerWrapper.logger.info("Get courses belongs to " + netID);
-			return rs;
+			List<Request> rList = new ArrayList<>();
+			// First find all class IDs the student is taking
+			TypedQuery<String> rosterQ = em.createQuery(
+					"SELECT r.course FROM Roster r WHERE r.user = :nID",
+					String.class);
+			rosterQ.setParameter("nID", netID);
+			List<String> classIDRS = rosterQ.getResultList();
+			// Then find all courses having the class IDs
+			TypedQuery<Course> courseQ = em.createQuery(
+					"SELECT c FROM Course c WHERE c.classID IN :cIDList",
+					Course.class);
+			courseQ.setParameter("cIDList", classIDRS);
+			List<Course> courseRS = courseQ.getResultList();
+			// Find all ClassExamRequest with the courses
+			TypedQuery<ClassExamRequest> classExamq = em
+					.createQuery(
+							"SELECT r FROM ClassExamRequest r WHERE "
+									+ "r.course.classID = :cID AND r.course.term = :cTerm",
+							ClassExamRequest.class);
+			List<ClassExamRequest> cerList = new ArrayList<>();
+			for (Course c : courseRS) {
+				classExamq.setParameter("cID", c.getClassID());
+				classExamq.setParameter("cTerm", c.getTerm());
+				cerList = classExamq.getResultList();
+				for (ClassExamRequest r : cerList) {
+					rList.add((Request) r);
+					System.out.println(r.getExamName());
+				}
+			}
+			// Find all NonClassRequest
+			TypedQuery<NonClassRequest> nonClassq = em.createQuery(
+					"SELECT r FROM NonClassRequest r", NonClassRequest.class);
+			List<NonClassRequest> ncrList = nonClassq.getResultList();
+			// Find NonClassRequest with the name shows up in RosterList
+			String roster = "";
+			for (NonClassRequest r : ncrList) {
+				roster = r.getRosterList();
+				if (roster.contains(netID)) {
+					rList.add((Request) r);
+					System.out.println(r.getExamName());
+				}
+			}
+			LoggerWrapper.logger.info("Get all requests belong to " + netID);
+			return rList;
 		} catch (PersistenceException error) {
 			LoggerWrapper.logger.info("There is an error in S_getExams:\n"
 					+ error.getClass() + ":" + error.getMessage());
 			return null;
 		}
 	}
-	
 
 	/**
 	 * Queries DB by StudentNetID and returns a list of courses
@@ -847,20 +885,22 @@ public class DatabaseManager {
 	 * @return List<Course> List of all courses belonging to the student
 	 */
 	public List<Appointment> S_getAppointments(String netID) {
-		TypedQuery<Appointment> a = em
-				.createQuery("SELECT a FROM Appointment a WHERE a.user.netID = :nID", Appointment.class);
+		TypedQuery<Appointment> a = em.createQuery(
+				"SELECT a FROM Appointment a WHERE a.user.netID = :nID",
+				Appointment.class);
 		a.setParameter("nID", netID);
 		try {
 			List<Appointment> rs = a.getResultList();
 			LoggerWrapper.logger.info("Get appointments belongs to " + netID);
 			return rs;
 		} catch (PersistenceException error) {
-			LoggerWrapper.logger.info("There is an error in S_getAppointments:\n"
-					+ error.getClass() + ":" + error.getMessage());
+			LoggerWrapper.logger
+					.info("There is an error in S_getAppointments:\n"
+							+ error.getClass() + ":" + error.getMessage());
 			return null;
 		}
 	}
-	
+
 	/**
 	 * Find the course by the given courseID
 	 * 
@@ -869,14 +909,13 @@ public class DatabaseManager {
 	 * @return Course with the courseID
 	 */
 	public Course S_findCourses(String courseID) {
-		TypedQuery<Course> q = em
-				.createQuery("SELECT c FROM Course c WHERE c.classID = :cID", Course.class);
+		TypedQuery<Course> q = em.createQuery(
+				"SELECT c FROM Course c WHERE c.classID = :cID", Course.class);
 		q.setParameter("cID", courseID);
 		try {
 			Course rs = (Course) q.getSingleResult();
 			if (rs == null) {
-				LoggerWrapper.logger
-						.info("Course not found");
+				LoggerWrapper.logger.info("Course not found");
 				return null;
 			}
 			LoggerWrapper.logger.info("Get course with course " + courseID);
@@ -887,7 +926,7 @@ public class DatabaseManager {
 			return null;
 		}
 	}
-	
+
 	/**
 	 * Return a singleton of DatabaseManager
 	 * 
@@ -928,7 +967,8 @@ public class DatabaseManager {
 	private void rollbackTransaction() {
 		if (em.getTransaction().isActive()) {
 			// Commit the transaction
-			em.getTransaction().rollback();;
+			em.getTransaction().rollback();
+			;
 		}
 		LoggerWrapper.logger.info("Transaction rollbacks");
 	}

@@ -5,9 +5,10 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import entity.Course;
+
 import entity.Appointment;
 import entity.Appointment.AppointmentStatus;
+import entity.Request;
 
 /**
  * 
@@ -64,7 +65,7 @@ public class Student {
 	 * 
 	 * @return List of taken requests
 	 */
-	public List<Course> getRequests() {
+	public List<Request> getRequests() {
 		return dbManager.S_getRequests(netID);
 	}
 	
@@ -99,7 +100,8 @@ public class Student {
 				r.setTimeStart(timeStart);
 				r.setStatus(AppointmentStatus.PENDING);
 				r.setSeatNum(2); //PLACEHOLDERRRRRRRRRRRRRRRRRRRRRRRR
-				Course c = dbManager.S_findCourses(course);
+				//Course c = dbManager.S_findCourses(course);
+				Object c = null;
 				if (c == null) {
 					return "Course not found";
 				}

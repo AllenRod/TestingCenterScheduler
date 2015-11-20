@@ -127,6 +127,17 @@
 							style="background: #980100; color: #FFF;">
 					</form>
 				</div>
+			
+				<!-- OP -->
+				<table>
+					<c:forEach items="${requests}" var="request">
+						<tr>
+							<td>${request.examName}</td>
+						</tr>
+					</c:forEach>
+				</table>
+				
+				
 			</div>
 		</div>
 		<!-- /#page-wrapper -->
