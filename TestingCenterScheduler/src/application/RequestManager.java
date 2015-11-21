@@ -126,7 +126,6 @@ public class RequestManager {
 	 * @return utilization for that day
 	 */
 	public double calculateUtilizationDay(String termID, Date d) {
-		System.out.println("Request manager for day " + d.toString());
 		double currentDayUTI = 0;
 		int durationSum = 0;
 		TestCenterInfo tci = dbManager.R_getTestCenterInfo(termID);
@@ -163,36 +162,93 @@ public class RequestManager {
 		int expectedDurationSum = 0;
 		List<Request> exams = dbManager.getAllExamsByDate(d);
 		for (Request e : exams) {
-			System.out.println("Iterating through list of exams");
 			int expectedDuration = e.getTestDuration() + gapTime;
 			int numStudentsForExam = 0;
-			System.out.println("Exam e is a for a class "
-					+ (e instanceof ClassExamRequest));
 			if (e instanceof ClassExamRequest) {
-				System.out.println(e.getExamIndex() + " " + e.getExamName());
-				System.out.println(((ClassExamRequest) e).getCourse() == null);
 				numStudentsForExam = dbManager
 						.R_getStudentNum(((ClassExamRequest) e).getCourse());
 			}
-			System.out.println("Exam e is not for a class "
-					+ (e instanceof NonClassRequest));
 			if (e instanceof NonClassRequest) {
 				numStudentsForExam = ((NonClassRequest) e).getRosterList()
 						.split(";").length;
 			}
-			System.out.println("About to do calculation");
 			expectedDuration *= numStudentsForExam - e.getAppointment().size();
 			expectedDuration /= e.getTestRangeLength();
 			expectedDurationSum += expectedDuration;
 		}
-		System.out.println("Finished iterating, about to return totalUTI");
-		System.out.println("seatNum and openHourDuartion are " + seatNum + " "
-				+ openHourDuration);
 		totalUTI = (double) currentDayUTI + expectedDurationSum
 				/ (seatNum * openHourDuration);
 		return totalUTI;
 	}
 
+	/**
+	 * Calculate utilization for a given day including a request as if it was
+	 * approved
+	 * 
+	 * @param d
+	 *            the date for which to calculate the utilization
+	 * @param request
+	 *            the request to be included
+	 * @return utilization for that day
+	 */
+	public double calculateUtilizationDayWithRequest(Date d, Request r) {
+		double currentDayUTI = 0;
+		int durationSum = 0;
+		TestCenterInfo tci = dbManager.R_getTestCenterInfo(dbManager
+				.getTermByDate(d).getTermID());
+		List<Appointment> appList = dbManager.R_getAppointmentOnDate(d);
+		int gapTime = tci.getGapTime();
+		for (Appointment a : appList) {
+			int appLength = a.getRequest().getTestDuration() + gapTime;
+			// check if it needs to be rounded up
+			if (appLength % 30 != 0) {
+				appLength = ((appLength / 30) + 1) * 30;
+			}
+			durationSum += appLength;
+		}
+		int openHourDuration = 0;
+		Calendar c = Calendar.getInstance();
+		c.setTime(d);
+		Calendar c2 = Calendar.getInstance();
+		int dayVal = c.get(Calendar.DAY_OF_WEEK);
+		openHourDuration = OpenHoursParser.getHoursDifference(
+				tci.getOpenHours(), dayVal);
+		if (openHourDuration == -1) {
+			return -1;
+		}
+		int seatNum = tci.getSeats();
+		currentDayUTI = (double) durationSum / (seatNum * openHourDuration);
+		// past or current day
+		if (c.get(Calendar.YEAR) <= c2.get(Calendar.YEAR)
+				&& c.get(Calendar.MONTH) <= c2.get(Calendar.MONTH)
+				&& c.get(Calendar.DATE) <= c2.get(Calendar.DATE)) {
+			return currentDayUTI;
+		}
+		// future day
+		double totalUTI = currentDayUTI;
+		int expectedDurationSum = 0;
+		List<Request> exams = dbManager.getAllExamsByDate(d);
+		// include the request in these calculations
+		exams.add(r);
+		for (Request e : exams) {
+			int expectedDuration = e.getTestDuration() + gapTime;
+			int numStudentsForExam = 0;
+			if (e instanceof ClassExamRequest) {
+				numStudentsForExam = dbManager
+						.R_getStudentNum(((ClassExamRequest) e).getCourse());
+			}
+			if (e instanceof NonClassRequest) {
+				numStudentsForExam = ((NonClassRequest) e).getRosterList()
+						.split(";").length;
+			}
+			expectedDuration *= numStudentsForExam - e.getAppointment().size();
+			expectedDuration /= e.getTestRangeLength();
+			expectedDurationSum += expectedDuration;
+		}
+		totalUTI = (double) currentDayUTI + expectedDurationSum
+				/ (seatNum * openHourDuration);
+		return totalUTI;
+	}
 	/**
 	 * Get the number of student taking the test from the request
 	 * 

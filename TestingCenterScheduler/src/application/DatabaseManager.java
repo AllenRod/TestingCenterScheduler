@@ -994,6 +994,18 @@ public class DatabaseManager {
 	}
 
 	/**
+	 * Returns a request based on its id
+	 * 
+	 * @param requestID
+	 *            ID of request
+	 * @return the request with given ID
+	 */
+	public Request getRequestByID(int requestID) {
+		Request r = em.find(Request.class, requestID);
+		return r;
+	}
+
+	/**
 	 * Return a singleton of DatabaseManager
 	 * 
 	 * @return a singleton of class DatabaseManager
