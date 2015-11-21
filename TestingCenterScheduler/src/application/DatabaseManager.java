@@ -362,7 +362,7 @@ public class DatabaseManager {
 			return null;
 		}
 	}
-	
+
 	/**
 	 * Queries DB by classID and returns the respective course
 	 * 
@@ -372,20 +372,20 @@ public class DatabaseManager {
 	 */
 	public Course getCourseByID(String classID) {
 		TypedQuery<Course> a = em.createQuery(
-				"SELECT c FROM Course c WHERE c.classID = :cID",
-				Course.class);
+				"SELECT c FROM Course c WHERE c.classID = :cID", Course.class);
 		a.setParameter("cID", classID);
 		try {
 			Course rs = a.getSingleResult();
 			LoggerWrapper.logger.info("Getting course: " + classID);
 			return rs;
 		} catch (PersistenceException error) {
-			LoggerWrapper.logger.info("The Param was:"+classID+"\nIt caused an error in getCourseByID:\n"
+			LoggerWrapper.logger.info("The Param was:" + classID
+					+ "\nIt caused an error in getCourseByID:\n"
 					+ error.getClass() + ":" + error.getMessage());
 			return null;
 		}
 	}
-	
+
 	/**
 	 * Queries DB by InstructorNetID and returns a list of ClassExamRequests
 	 * 
@@ -470,12 +470,11 @@ public class DatabaseManager {
 			return "";
 		}
 	}
-	
+
 	/**
 	 * Queries DB by ExamID and returns a list of appointments
 	 * 
-	 * @param int
-	 *            ExamID number
+	 * @param int ExamID number
 	 * @return List<Course> List of all appointments belonging to the exam
 	 */
 	public List<Appointment> getAppointmentsByExamID(int ExamID) {
@@ -485,7 +484,8 @@ public class DatabaseManager {
 		a.setParameter("eID", ExamID);
 		try {
 			List<Appointment> rs = a.getResultList();
-			LoggerWrapper.logger.info("Getting appointments for ExamID: " + ExamID);
+			LoggerWrapper.logger.info("Getting appointments for ExamID: "
+					+ ExamID);
 			return rs;
 		} catch (PersistenceException error) {
 			LoggerWrapper.logger
@@ -494,7 +494,7 @@ public class DatabaseManager {
 			return null;
 		}
 	}
-	
+
 	/**
 	 * Queries DB and returns a list of TestCenterInfo by term
 	 * 
@@ -746,7 +746,7 @@ public class DatabaseManager {
 	 * @return all existing exams for a certain date
 	 */
 	public List<Request> getAllExamsByDate(Date d) {
-		List<Request> eList = null;
+		List<Request> eList = new ArrayList<Request>();
 		try {
 			TypedQuery<Request> q = em
 					.createQuery(
@@ -802,7 +802,7 @@ public class DatabaseManager {
 	 * @return all existing appointments
 	 */
 	public List<Appointment> getAllAppointments() {
-		List<Appointment> aList = null;
+		List<Appointment> aList = new ArrayList<Appointment>();
 		try {
 			TypedQuery<Appointment> q1 = em.createQuery(
 					"SELECT a FROM Appointment a", Appointment.class);
@@ -933,13 +933,12 @@ public class DatabaseManager {
 		try {
 			return em.find(Request.class, Integer.parseInt(requestID));
 		} catch (PersistenceException error) {
-			LoggerWrapper.logger
-					.info("There is an error in S_findRequest:\n"
-							+ error.getClass() + ":" + error.getMessage());
+			LoggerWrapper.logger.info("There is an error in S_findRequest:\n"
+					+ error.getClass() + ":" + error.getMessage());
 			return null;
 		}
 	}
-	
+
 	/**
 	 * Queries DB by StudentNetID and returns a list of courses
 	 * 
@@ -1030,8 +1029,7 @@ public class DatabaseManager {
 	private void rollbackTransaction() {
 		if (em.getTransaction().isActive()) {
 			// Commit the transaction
-			em.getTransaction().rollback();
-			;
+			em.getTransaction().rollback();;
 		}
 		LoggerWrapper.logger.info("Transaction rollbacks");
 	}

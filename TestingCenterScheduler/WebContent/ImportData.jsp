@@ -150,8 +150,8 @@
 					</div>
 
 					<input class="btn btn-primary" id="submit" type="submit"
-						value="Send"
-						onClick="this.disabled=true; this.value='Uploading...';">
+						value="Send" >
+						<!-- onClick="this.disabled=true; this.value='Uploading...';"> -->
 				</form>
 			</div>
 		</div>

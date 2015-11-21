@@ -1,5 +1,6 @@
 package application;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -402,9 +403,12 @@ public class Administrator {
 		if (startDate.after(endDate)) {
 			return null;
 		}
+		NumberFormat numFormat = NumberFormat.getPercentInstance();
+		numFormat.setMaximumFractionDigits(3);
 		for (Date d = startDate.getTime(); !startDate.after(endDate); startDate
 				.add(Calendar.DATE, 1), d = startDate.getTime()) {
 			dateHolder.setTime(d);
+			System.out.println("About to calculate for day " + d.toString());
 			double singleUTI = reqManager.calculateUtilizationDay(term, d);
 			String s = "";
 			if (singleUTI == -1) {
@@ -417,7 +421,7 @@ public class Administrator {
 						+ "/"
 						+ Integer.toString(dateHolder
 								.get(Calendar.DAY_OF_MONTH)) + ": "
-						+ Double.toString(singleUTI) + "<br />";
+						+ numFormat.format(singleUTI) + "<br />";
 			}
 			utiList.add(s);
 		}
