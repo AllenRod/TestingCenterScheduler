@@ -23,6 +23,7 @@ import entity.NonClassRequest;
 import entity.Request;
 import entity.Term;
 import entity.TestCenterInfo;
+import entity.User;
 import entity.UserAccount;
 import entity.UserPK;
 
@@ -944,7 +945,8 @@ public class DatabaseManager {
 	 * 
 	 * @param String
 	 *            Name of student to get appointment for
-	 * @return List<Appointment> List of all appointments belonging to the student
+	 * @return List<Appointment> List of all appointments belonging to the
+	 *         student
 	 */
 	public List<Appointment> S_getAppointments(String netID) {
 		TypedQuery<Appointment> a = em.createQuery(
@@ -964,26 +966,28 @@ public class DatabaseManager {
 	}
 
 	/**
-	 * Find the course by the given courseID
+	 * Find the user by the given netID and term
 	 * 
-	 * @param courseID
-	 *            Given courseID
-	 * @return Course with the courseID
+	 * @param netID
+	 *            Given netID
+	 * @param term
+	 *            Given term
+	 * @return User with the netID in the given term
 	 */
-	public Course S_findCourses(String courseID) {
-		TypedQuery<Course> q = em.createQuery(
-				"SELECT c FROM Course c WHERE c.classID = :cID", Course.class);
-		q.setParameter("cID", courseID);
+	public User S_findUser(String netID, Term term) {
+		UserPK userKey = new UserPK();
+		userKey.setNetID(netID);
+		userKey.setTerm(term.getTermID());
 		try {
-			Course rs = (Course) q.getSingleResult();
-			if (rs == null) {
-				LoggerWrapper.logger.info("Course not found");
+			User result = em.find(User.class, userKey);
+			if (result == null) {
+				LoggerWrapper.logger.info("User not found");
 				return null;
 			}
-			LoggerWrapper.logger.info("Get course with course " + courseID);
-			return rs;
+			LoggerWrapper.logger.info("Get user with netID " + netID);
+			return result;
 		} catch (PersistenceException error) {
-			LoggerWrapper.logger.info("There is an error in S_findCourse:\n"
+			LoggerWrapper.logger.info("There is an error in S_findUser:\n"
 					+ error.getClass() + ":" + error.getMessage());
 			return null;
 		}
@@ -1029,7 +1033,8 @@ public class DatabaseManager {
 	private void rollbackTransaction() {
 		if (em.getTransaction().isActive()) {
 			// Commit the transaction
-			em.getTransaction().rollback();;
+			em.getTransaction().rollback();
+			;
 		}
 		LoggerWrapper.logger.info("Transaction rollbacks");
 	}

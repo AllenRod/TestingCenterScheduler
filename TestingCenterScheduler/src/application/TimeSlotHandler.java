@@ -43,6 +43,11 @@ public class TimeSlotHandler {
 	// the appointments taking over the timeslots
 	private HashMap<Integer, Integer[]> openTimeSlotMap = new HashMap<>();
 
+	// A linkedhashmap with <Date, Integer> pair that maps the time of time slot
+	// to
+	// the number of available seats at that time
+	// Key is the time slot with equal to or more than 0 open seat
+	// Value is the number of available seats
 	private LinkedHashMap<Date, Integer> numOfSeatInTimeSlot = new LinkedHashMap<>();
 
 	/**
@@ -85,6 +90,8 @@ public class TimeSlotHandler {
 	 * @return The generated openTimeSlotMap
 	 */
 	public HashMap<Integer, Integer[]> getTimeSlot() {
+		String openHours = dbManager.R_getTestCenterInfo(term.getTermID())
+				.getOpenHours();
 		for (int i = 1; i <= seatNum; i++) {
 			// There are total of 47 slots on hour and half-hour each day,
 			// excluding 24:00. The array records the appointment request ID
@@ -95,16 +102,15 @@ public class TimeSlotHandler {
 			for (int j = 0; j < appRequestIDArray.length; j++) {
 				appRequestIDArray[j] = -1;
 			}
+			// Setting start time and end time
 			Calendar c = Calendar.getInstance();
 			c.setTime(date);
-			String openHours = dbManager.R_getTestCenterInfo(term.getTermID())
-					.getOpenHours();
 			String openTime = OpenHoursParser.getOpeningTime(openHours,
 					c.get(Calendar.DAY_OF_WEEK));
 			String closeTime = OpenHoursParser.getClosingTime(openHours,
 					c.get(Calendar.DAY_OF_WEEK));
-			int openInt = -1;
-			int closeInt = 48;
+			int openInt = 48;
+			int closeInt = -1;
 			if (!openTime.equals("Closed")) {
 				openInt = Integer.parseInt(openTime.split(":")[0]) * 2;
 				if (openTime.split(":")[1].equals("30")) {
@@ -117,6 +123,7 @@ public class TimeSlotHandler {
 					closeInt++;
 				}
 			}
+			// Iterate through the appointment array for a single seat
 			Appointment[] appArray = seatMap.get(i).getAppList();
 			for (int j = 0; j < appArray.length; j++) {
 				if (j < openInt || j >= closeInt)
@@ -134,9 +141,11 @@ public class TimeSlotHandler {
 	}
 
 	/**
-	 * Get all possible time slot of current date for the given request 
-	 * @param request		Given request
-	 * @return	HashMap with Time and Number of Seat value pair 
+	 * Get all possible time slot of current date for the given request
+	 * 
+	 * @param request
+	 *            Given request
+	 * @return HashMap with Time and Number of Seat value pair
 	 */
 	public LinkedHashMap<Date, Integer> getOpenTimeSlot(Request request) {
 		// Get open hours of Testing Center
@@ -231,6 +240,59 @@ public class TimeSlotHandler {
 			c.add(Calendar.MINUTE, 30);
 		}
 		return numOfSeatInTimeSlot;
+	}
+
+	/**
+	 * Find a seat that the student can take appointment at
+	 * 
+	 * @param request
+	 *            Given request
+	 * @param slotTime
+	 *            Give time of the slot
+	 * @return An available seat that avoid students taking same request in
+	 *         adjacent seats
+	 */
+	public int getSeatNum(Request request, Date slotTime) {
+		openTimeSlotMap = getTimeSlot();
+		int s = 0;
+		// Get the request ID to avoid placing students in adjacent seat
+		int reqID = request.getExamIndex();
+		// Generate index for the time slot
+		Calendar c = Calendar.getInstance();
+		c.setTime(slotTime);
+		int index = c.get(Calendar.HOUR_OF_DAY) * 2;
+		if (c.get(Calendar.MINUTE) > 0) {
+			index++;
+		}
+		for (int i = 1; i <= openTimeSlotMap.size(); i++) {
+			Integer[] timeSlot = openTimeSlotMap.get(i);
+			s = i;
+			// Check if this seat is opened
+			if (timeSlot[index] != 0) {
+				continue;
+			}
+			// Check previous seat
+			if (i > 1) {
+				Integer[] prevSlot = openTimeSlotMap.get(i - 1);
+				if (prevSlot[index] == reqID) {
+					continue;
+				}
+			}
+			// Check next seat
+			if (i < openTimeSlotMap.size()) {
+				Integer[] nextSlot = openTimeSlotMap.get(i + 1);
+				if (nextSlot[index] == reqID) {
+					continue;
+				}
+			}
+			break;
+		}
+		LoggerWrapper.logger.info("Seat number " + s + " found");
+		return s;
+	}
+
+	public String checkAppointment(Request request, Date slotTime) {
+		return "";
 	}
 
 	/**

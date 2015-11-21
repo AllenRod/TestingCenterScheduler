@@ -1,10 +1,8 @@
 package application;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,7 +21,7 @@ public class Student {
 
 	// netID of the Student
 	private String netID;
-	
+
 	// TimeSlotHandler object
 	private TimeSlotHandler handler;
 
@@ -75,13 +73,16 @@ public class Student {
 	public List<Request> getRequests() {
 		return dbManager.S_getRequests(netID);
 	}
-	
+
 	/**
 	 * Generate time slots from start date to end date of the given request
-	 * @param requestID		ID of given request
-	 * @return	A LinkedHashMap with Date and Map<Date, Integer> pair
+	 * 
+	 * @param requestID
+	 *            ID of given request
+	 * @return A LinkedHashMap with Date and Map<Date, Integer> pair
 	 */
-	public LinkedHashMap<Date, Map<Date, Integer>> generateTimeSlot(int requestID) {
+	public LinkedHashMap<Date, Map<Date, Integer>> generateTimeSlot(
+			int requestID) {
 		Request request = dbManager.S_findRequest(requestID);
 		LinkedHashMap<Date, Map<Date, Integer>> allTimeSlot = new LinkedHashMap<>();
 		if (request == null) {
@@ -97,64 +98,58 @@ public class Student {
 		cEnd.setTime(request.getTimeEnd());
 		// Iterate through each day to generate open timeslot
 		while (!cStart.after(cEnd)) {
-			allTimeSlot.put(cStart.getTime(), getOpenTimeSlot(cStart.getTime(), request));
+			allTimeSlot.put(cStart.getTime(),
+					getOpenTimeSlot(cStart.getTime(), request));
 			cStart.add(Calendar.DATE, 1);
 		}
 		return allTimeSlot;
 	}
-	
+
 	/**
+	 * Get the open time slot of the given date for the given request
 	 * 
 	 * @param date
+	 *            Given date
 	 * @param request
-	 * @return
+	 *            Give request
+	 * @return LinkedHashMap with Time and Number of open seats value pair
 	 */
-	private LinkedHashMap<Date, Integer> getOpenTimeSlot(Date date, Request request) {
+	private LinkedHashMap<Date, Integer> getOpenTimeSlot(Date date,
+			Request request) {
 		handler = new TimeSlotHandler(date);
 		handler.getTimeSlot();
 		return handler.getOpenTimeSlot(request);
 	}
-	
+
 	/**
 	 * Make new appointment from student's input
 	 * 
-	 * @param course
-	 *            Course of exam. If not for a course set null
-	 * @param sMonth
-	 *            Start month
-	 * @param sDay
-	 *            Start day
-	 * @param sTime
+	 * @param requestID
+	 *            ID of request
+	 * @param startTime
 	 *            Start time
-	 * @param eTime
-	 *            End time
 	 * @return Result from making new appointment
 	 */
-	public String newAppointment(String course, String sMonth, String sDay,
-			String sTime) { 
+	public String newAppointment(String requestID, String startTime) {
 		try {
 			String s = "";
-			Calendar curC = Calendar.getInstance();
-			String year = "2015"; //<<PLACEHOLDER!!!!!!!!!!!AAAAAAAAAAAA
+			// Parse start time of appointment
 			SimpleDateFormat formatter = new SimpleDateFormat(
-					"yyyy-MM-dd HH:mm:ss");
-			Date requestDate = curC.getTime();
-			String timeStartstr = year + "-" + sMonth + "-" + sDay + " "
-					+ sTime + ":00";
-			Date timeStart = (Date) formatter.parse(timeStartstr);
-				Appointment r = new Appointment();
-				r.setTimeStart(timeStart);
-				r.setStatus(AppointmentStatus.PENDING);
-				r.setSeatNum(2); //PLACEHOLDERRRRRRRRRRRRRRRRRRRRRRRR
-				//Course c = dbManager.S_findCourses(course);
-				Object c = null;
-				if (c == null) {
-					return "Course not found";
-				}
-				s = dbManager.loadData(r);
+					"EEE MMM dd HH:mm:ss zzz yyyy");
+			Date appDate = formatter.parse(startTime);
+			// Get request from requestID
+			Request appReq = dbManager.S_findRequest(Integer.parseInt(requestID));
+			// Find available seat
+			handler = new TimeSlotHandler(appDate);
+			Appointment a = new Appointment();
+			a.setRequest(appReq);
+			a.setTimeStart(appDate);
+			a.setUser(dbManager.S_findUser(netID, dbManager.getTermByRequest(appReq)));
+			a.setStatus(AppointmentStatus.PENDING);
+			a.setSeatNum(handler.getSeatNum(appReq, appDate));
+			s = dbManager.loadData(a);
 			return s;
-		} catch (ParseException error) {
-			System.out.println(error.getClass() + ":" + error.getMessage());
+		} catch (Exception error) {
 			return error.getClass() + ":" + error.getMessage();
 		}
 	}
