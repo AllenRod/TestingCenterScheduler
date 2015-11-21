@@ -5,7 +5,9 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import entity.Appointment;
 import entity.Appointment.AppointmentStatus;
@@ -34,6 +36,7 @@ public class Student {
 	public Student(String netID) {
 		this.netID = netID;
 		dbManager = DatabaseManager.getSingleton();
+		handler = null;
 	}
 
 	/**
@@ -73,11 +76,43 @@ public class Student {
 		return dbManager.S_getRequests(netID);
 	}
 	
-	public HashMap<Date, Integer> getOpenTimeSlot(Date date, String requestID) {
+	/**
+	 * Generate time slots from start date to end date of the given request
+	 * @param requestID		ID of given request
+	 * @return	A LinkedHashMap with Date and Map<Date, Integer> pair
+	 */
+	public LinkedHashMap<Date, Map<Date, Integer>> generateTimeSlot(int requestID) {
+		Request request = dbManager.S_findRequest(requestID);
+		LinkedHashMap<Date, Map<Date, Integer>> allTimeSlot = new LinkedHashMap<>();
+		if (request == null) {
+			return null;
+		}
+		// Get start date and end date
+		Calendar cStart = Calendar.getInstance();
+		cStart.setTime(request.getTimeStart());
+		cStart.set(Calendar.HOUR_OF_DAY, 0);
+		cStart.set(Calendar.MINUTE, 0);
+		cStart.set(Calendar.SECOND, 0);
+		Calendar cEnd = Calendar.getInstance();
+		cEnd.setTime(request.getTimeEnd());
+		// Iterate through each day to generate open timeslot
+		while (!cStart.after(cEnd)) {
+			allTimeSlot.put(cStart.getTime(), getOpenTimeSlot(cStart.getTime(), request));
+			cStart.add(Calendar.DATE, 1);
+		}
+		return allTimeSlot;
+	}
+	
+	/**
+	 * 
+	 * @param date
+	 * @param request
+	 * @return
+	 */
+	private LinkedHashMap<Date, Integer> getOpenTimeSlot(Date date, Request request) {
 		handler = new TimeSlotHandler(date);
 		handler.getTimeSlot();
-		handler.getOpenTimeSlot(dbManager.S_findRequest(requestID));
-		return  null;
+		return handler.getOpenTimeSlot(request);
 	}
 	
 	/**

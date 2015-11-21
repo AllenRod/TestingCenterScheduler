@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -88,31 +89,33 @@
 				<!-- /.row -->
 				<div class="div-spacing">
 					<form class="form-inline" action="StudentHome" method="POST">
-						<div class="form-group">
-							<label for="Aclass">Available Exams: </label> <select
-								class="form-control" id="Aclass" name="Aclass">
-								<c:forEach items="${exams}" var="exam">
-									<option value="${exam.examName}"></option>
-								</c:forEach>
-							</select>
-						</div>
-						<br>
-						<div class="form-group">
-							<label for="Start Time">Start Time: </label> <input type="number"
-								class="form-control input-sm" id="Asmon" name="Asmon" min="1"
-								max="12" placeholder="Month" style="width: 100px;">
-
-							<input type="number" class="form-control input-sm" id="Asday"
-								name="Asday" min="1" max="31" placeholder="Day"
-								style="width: 100px;"> <select name="Astime"
-								class="form-control input-sm" style="width: 100px">
-								<c:forEach begin="0" end="23" var="val">
-									<option>${val}:00</option>
-									<option>${val}:30</option>
-								</c:forEach>
-							</select>
-						</div>
-						<br>
+						<p>
+							<c:out value="${Areq}" />
+						</p>
+						<select id="select" class="form-control">
+							<c:forEach items="${timeSlot}" var="slotEntry">
+								<fmt:formatDate pattern='D' value='${slotEntry.key}' var="key"/>
+								<option value="${key}">
+									<fmt:formatDate type="date" value="${slotEntry.key}" />
+								</option>
+							</c:forEach>
+						</select>
+						<c:forEach items="${timeSlot}" var="slotEntry">
+							<fmt:formatDate pattern='D' value='${slotEntry.key}' var="key"/>
+							<div id="slot${key}" class="formDiv" style="display:none">
+								<h5>
+									<fmt:formatDate type="date" value="${slotEntry.key}" />
+								</h5>
+								<table class="table table-striped">
+									<c:forEach items="${slotEntry.value}" var="slot">
+										<tr>
+											<th><fmt:formatDate type="time" value="${slot.key}" /></th>
+											<td>${slot.value}</td>
+										<tr>
+									</c:forEach>
+								</table>
+							</div>
+						</c:forEach>
 						<c:set var="action" value="newAppointment" scope="session" />
 						<a href="Student.jsp" class="btn btn-default"
 							style="background: #DDD; color: #980100;">Cancel</a> <input
@@ -127,12 +130,29 @@
 
 	</div>
 	<!-- /#wrapper -->
-
+	
 	<!-- jQuery -->
 	<script src="js/jquery.js"></script>
-
+	
 	<!-- Bootstrap Core JavaScript -->
 	<script src="js/bootstrap.min.js"></script>
+	
+	<script>
+		$(document).ready(function() {
+			var cur = $('#select').find(":selected").val();
+			$('#slot' + cur).show();
+		});
+		
+	
+		$(function() {
+			$('#select').change(function() {
+				var id = $('#select').find(":selected").val();
+				$('.formDiv').hide();
+				$('#slot' + id).show();
+			});
+		});
+	</script>
+
 
 </body>
 

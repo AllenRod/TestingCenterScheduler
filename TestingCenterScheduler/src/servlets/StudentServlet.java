@@ -2,6 +2,7 @@ package servlets;
 
 import java.io.IOException;
 import java.util.Calendar;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import application.Student;
 import application.LoggerWrapper;
 import application.TimeSlotHandler;
+import entity.Request;
 import entity.UserAccount;
 
 /**
@@ -54,7 +56,7 @@ public class StudentServlet extends HttpServlet {
 					.equals("getRequests")) {
 				request.getSession()
 						.setAttribute("requests", stu.getRequests());
-				//response.sendRedirect("NewAppointment.jsp");
+				// response.sendRedirect("NewAppointment.jsp");
 				response.sendRedirect("StudentRequest.jsp");
 				LoggerWrapper.logger.info("Redirect to Student Request page");
 				return;
@@ -74,6 +76,7 @@ public class StudentServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		int reqID = 0;
 		if (request.getSession().getAttribute("login") == null) {
 			doGet(request, response);
 			return;
@@ -81,24 +84,25 @@ public class StudentServlet extends HttpServlet {
 		if (request.getSession().getAttribute("action")
 				.equals("newAppointment")) {
 			LoggerWrapper.logger.info("Processing New Appointment");
-			java.util.Calendar c = java.util.Calendar.getInstance();
-			c.set(2015, java.util.Calendar.NOVEMBER, 10);
-			c.set(Calendar.SECOND, 0);
-			stu.getOpenTimeSlot(c.getTime(), Integer.toString(stu.getRequests().get(0).getExamIndex()));
-			/**String s;
-			s = stu.newAppointment(request.getParameter("Aclass"),
-					request.getParameter("Asmon"),
-					request.getParameter("Asday"),
-					request.getParameter("Astime"));
-			if (s.equals("Data import succeeds"))
-				s = "New Request Success";
-			request.getSession().setAttribute("appointments",
-					stu.getAppointments());
-			request.getSession().setAttribute("requests", stu.getRequests());
-			request.setAttribute("returnVal", s);
-			RequestDispatcher rd = request.getRequestDispatcher("Student.jsp");
-			rd.forward(request, response);
-			response.sendRedirect("Student.jsp");**/
+			/**
+			 * String s; s = stu.newAppointment(request.getParameter("Aclass"),
+			 * request.getParameter("Asmon"), request.getParameter("Asday"),
+			 * request.getParameter("Astime")); if
+			 * (s.equals("Data import succeeds")) s = "New Request Success";
+			 * request.getSession().setAttribute("appointments",
+			 * stu.getAppointments());
+			 * request.getSession().setAttribute("requests", stu.getRequests());
+			 * request.setAttribute("returnVal", s); RequestDispatcher rd =
+			 * request.getRequestDispatcher("Student.jsp"); rd.forward(request,
+			 * response); response.sendRedirect("Student.jsp");
+			 **/
+		}
+		if (request.getSession().getAttribute("action")
+				.equals("createAppointment")) {
+			LoggerWrapper.logger.info("Creating new appointment for student");
+			reqID = Integer.parseInt(request.getParameter("Areq"));
+			request.getSession().setAttribute("timeSlot", stu.generateTimeSlot(reqID));
+			response.sendRedirect("NewAppointment.jsp");
 		} else {
 			LoggerWrapper.logger.info("Unsupported Case");
 		}

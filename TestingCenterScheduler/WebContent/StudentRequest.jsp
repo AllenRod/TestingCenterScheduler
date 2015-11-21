@@ -21,7 +21,7 @@
 </head>
 
 <body>
-	
+
 	<c:if test="${empty user}">
 		<jsp:forward page="/index.jsp"></jsp:forward>
 	</c:if>
@@ -29,7 +29,7 @@
 	<c:if test="${(not empty user) and (user.role ne 'student')}">
 		<jsp:forward page="/index.jsp"></jsp:forward>
 	</c:if>
-	
+
 	<div id="wrapper">
 
 		<!-- Navigation -->
@@ -49,26 +49,25 @@
 			<!-- Top Menu Items -->
 			<ul class="nav navbar-right top-nav">
 				<li class="dropdown"><a href="#" class="dropdown-toggle"
-					data-toggle="dropdown">
-						${user.firstName} ${user.lastName}<b class="caret"></b></a>
+					data-toggle="dropdown"> ${user.firstName} ${user.lastName}<b
+						class="caret"></b></a>
 					<ul class="dropdown-menu">
-						<li><a href="#"> Settings</a>
-						</li>
+						<li><a href="#"> Settings</a></li>
 						<li class="divider"></li>
 						<li>
-								<form action="Login" method="GET">
-								<a>
-									<input type="submit" value="Log Out" name="logout" style="background-color: Transparent; border: none;">
+							<form action="Login" method="GET">
+								<a> <input type="submit" value="Log Out" name="logout"
+									style="background-color: Transparent; border: none;">
 								</a>
-								</form>
+							</form>
 						</li>
-					</ul>
-				</li>
+					</ul></li>
 			</ul>
 			<!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
 			<div class="collapse navbar-collapse navbar-ex1-collapse">
 				<ul class="nav navbar-nav side-nav">
-					<li><a href="Student.jsp" style="color: #fff;">View Appointments</a></li>
+					<li><a href="Student.jsp" style="color: #fff;">View
+							Appointments</a></li>
 				</ul>
 			</div>
 			<!-- /.navbar-collapse -->
@@ -91,48 +90,46 @@
 				</div>
 				<!-- /.row -->
 
-				<div class="row">
-					<a href="NewAppointment.jsp">
-						<button type="submit" class="btn btn-primary" style="margin-bottom:10px;">
-							New Appointment
-						</button>
-					</a>
-					
-				</div>
-				
-				<!-- table of all requests -->
-				<table class="table table-striped">
-					<tr>
-						<th>Exam Name</th>
-						<th>Time Start</th>
-						<th>Time End</th>
-						<th>Duration</th>
-						<th>Course</th>
-						<th>Instruction NetID</th>
-						<th>Status</th>
-						<th></th>
-					</tr>
-					<c:forEach items="${requests}" var="request">
+				<form action="StudentHome" method="POST">
+				<c:set var="action" value="createAppointment" scope="session" />
+
+					<!-- table of all requests -->
+					<table class="table table-striped">
 						<tr>
-							<td>${request.examName}</td>
-							<td>${request.timeStart}</td>
-							<td>${request.timeEnd}</td>
-							<td>${request.testDuration}</td>
-							<td>
-								<c:if test="${request['class'].name eq 'entity.ClassExamRequest'}">
-									${request.course.subject}${request.course.catalogNum}_${request.course.section}
-								</c:if>
-								<c:if test="${request['class'].name eq 'entity.NonClassRequest'}">
-									Non-Stony Brook Exam
-								</c:if>
-							</td>
-							<td>${request.instructorNetID}</td>
-							<td>${request.status}</td>
-							<td></td>
+							<th>Exam Name</th>
+							<th>Time Start</th>
+							<th>Time End</th>
+							<th>Duration</th>
+							<th>Course</th>
+							<th>Instruction NetID</th>
+							<th>Status</th>
+							<th>Make Appointment</th>
 						</tr>
-					</c:forEach>
-				</table>
-				
+						<c:forEach items="${requests}" var="request">
+							<tr>
+								<td>${request.examName}</td>
+								<td>${request.timeStart}</td>
+								<td>${request.timeEnd}</td>
+								<td>${request.testDuration}</td>
+								<td><c:if
+										test="${request['class'].name eq 'entity.ClassExamRequest'}">
+									${request.course.subject}${request.course.catalogNum}_${request.course.section}
+								</c:if> <c:if
+										test="${request['class'].name eq 'entity.NonClassRequest'}">
+									Non-Stony Brook Exam
+								</c:if></td>
+								<td>${request.instructorNetID}</td>
+								<td>${request.status}</td>
+								<td>
+								<button type="submit" class="btn btn-primary" name="Areq" value=${request.examIndex}>
+									Create
+								</button>
+								</td>
+							</tr>
+						</c:forEach>
+					</table>
+				</form>
+
 			</div>
 			<!-- /.container-fluid -->
 

@@ -94,7 +94,7 @@
 				<div class="row">
 					<c:set var="action" value="getRequests" scope="session" />
 					<form action="StudentHome" method="GET">
-						<button type="submit" class="btn btn-primary">
+						<button type="submit" class="btn btn-primary" style="margin-bottom:10px;">
 							View Open Requests
 						</button>
 					</form>

@@ -3,6 +3,7 @@ package application;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import entity.Appointment;
@@ -42,7 +43,7 @@ public class TimeSlotHandler {
 	// the appointments taking over the timeslots
 	private HashMap<Integer, Integer[]> openTimeSlotMap = new HashMap<>();
 
-	private HashMap<Date, Integer> numOfSeatInTimeSlot = new HashMap<>();
+	private LinkedHashMap<Date, Integer> numOfSeatInTimeSlot = new LinkedHashMap<>();
 
 	/**
 	 * Constructor for TimeSlotHandler
@@ -129,27 +130,15 @@ public class TimeSlotHandler {
 			}
 			openTimeSlotMap.put(i, appRequestIDArray);
 		}
-		// Test
-		for (java.util.Map.Entry<Integer, Integer[]> e : this.openTimeSlotMap
-				.entrySet()) {
-			System.out.println(e.getKey() + ":");
-			for (int i = 0; i < e.getValue().length; i++) {
-				if (e.getValue()[i] == -1) {
-					System.out.print("+");
-				} else {
-					System.out.print(e.getValue()[i] + "-");
-				}
-			}
-		}
 		return openTimeSlotMap;
 	}
 
 	/**
-	 * 
-	 * @param request
-	 * @return
+	 * Get all possible time slot of current date for the given request 
+	 * @param request		Given request
+	 * @return	HashMap with Time and Number of Seat value pair 
 	 */
-	public HashMap<Date, Integer> getOpenTimeSlot(Request request) {
+	public LinkedHashMap<Date, Integer> getOpenTimeSlot(Request request) {
 		// Get open hours of Testing Center
 		Calendar c = Calendar.getInstance();
 		c.setTime(date);
@@ -240,11 +229,6 @@ public class TimeSlotHandler {
 			}
 			numOfSeatInTimeSlot.put(c.getTime(), n);
 			c.add(Calendar.MINUTE, 30);
-		}
-		// Test
-		for (java.util.Map.Entry<Date, Integer> e : numOfSeatInTimeSlot
-				.entrySet()) {
-			System.out.println(e.getKey().toString() + ":" + e.getValue());
 		}
 		return numOfSeatInTimeSlot;
 	}

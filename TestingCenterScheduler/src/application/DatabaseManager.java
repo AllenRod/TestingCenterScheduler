@@ -929,9 +929,9 @@ public class DatabaseManager {
 	 *            ID of request to look for
 	 * @return Request with the given requestID
 	 */
-	public Request S_findRequest(String requestID) {
+	public Request S_findRequest(int requestID) {
 		try {
-			return em.find(Request.class, Integer.parseInt(requestID));
+			return em.find(Request.class, requestID);
 		} catch (PersistenceException error) {
 			LoggerWrapper.logger
 					.info("There is an error in S_findRequest:\n"
@@ -941,11 +941,11 @@ public class DatabaseManager {
 	}
 	
 	/**
-	 * Queries DB by StudentNetID and returns a list of courses
+	 * Queries DB by StudentNetID and returns a list of appointments
 	 * 
 	 * @param String
-	 *            Name of student to get courses for
-	 * @return List<Course> List of all courses belonging to the student
+	 *            Name of student to get appointment for
+	 * @return List<Appointment> List of all appointments belonging to the student
 	 */
 	public List<Appointment> S_getAppointments(String netID) {
 		TypedQuery<Appointment> a = em.createQuery(
