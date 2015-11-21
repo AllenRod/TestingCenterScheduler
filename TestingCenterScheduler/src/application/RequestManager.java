@@ -44,9 +44,9 @@ public class RequestManager {
 		// Total available seat min for this new request
 		int totalAval = requestTotalSeatMin(request);
 		// Find all past requests in the range of this new request
-		List<Request> pastRequests = 
-				dbManager.R_getRequestBetween(request.getTimeStart(), request.getTimeEnd());
-		
+		List<Request> pastRequests = dbManager.R_getRequestBetween(
+				request.getTimeStart(), request.getTimeEnd());
+
 		return false;
 	}
 
@@ -61,8 +61,8 @@ public class RequestManager {
 	 */
 	private int requestRequiredSeatMin(Request request, int appNum) {
 		int stuNum = getStudentNum(request) - appNum;
-		int gapTime = (dbManager.R_getTestCenterInfo(dbManager.getTermByRequest(request)
-				.getTermID())).getGapTime();
+		int gapTime = (dbManager.R_getTestCenterInfo(dbManager
+				.getTermByRequest(request).getTermID())).getGapTime();
 		int required = gapTime + request.getTestDuration();
 		int i = (int) Math.ceil((double) required / 30);
 		required = i * 30 * stuNum;
@@ -126,6 +126,7 @@ public class RequestManager {
 	 * @return utilization for that day
 	 */
 	public double calculateUtilizationDay(String termID, Date d) {
+		System.out.println("Request manager for day " + d.toString());
 		double currentDayUTI = 0;
 		int durationSum = 0;
 		TestCenterInfo tci = dbManager.R_getTestCenterInfo(termID);
@@ -162,14 +163,31 @@ public class RequestManager {
 		int expectedDurationSum = 0;
 		List<Request> exams = dbManager.getAllExamsByDate(d);
 		for (Request e : exams) {
+			System.out.println("Iterating through list of exams");
 			int expectedDuration = e.getTestDuration() + gapTime;
 			int numStudentsForExam = 0;
-			numStudentsForExam = dbManager
-					.R_getStudentNum(((ClassExamRequest) e).getCourse());
+			System.out.println("Exam e is a for a class "
+					+ (e instanceof ClassExamRequest));
+			if (e instanceof ClassExamRequest) {
+				System.out.println(e.getExamIndex() + " " + e.getExamName());
+				System.out.println(((ClassExamRequest) e).getCourse() == null);
+				numStudentsForExam = dbManager
+						.R_getStudentNum(((ClassExamRequest) e).getCourse());
+			}
+			System.out.println("Exam e is not for a class "
+					+ (e instanceof NonClassRequest));
+			if (e instanceof NonClassRequest) {
+				numStudentsForExam = ((NonClassRequest) e).getRosterList()
+						.split(";").length;
+			}
+			System.out.println("About to do calculation");
 			expectedDuration *= numStudentsForExam - e.getAppointment().size();
 			expectedDuration /= e.getTestRangeLength();
 			expectedDurationSum += expectedDuration;
 		}
+		System.out.println("Finished iterating, about to return totalUTI");
+		System.out.println("seatNum and openHourDuartion are " + seatNum + " "
+				+ openHourDuration);
 		totalUTI = (double) currentDayUTI + expectedDurationSum
 				/ (seatNum * openHourDuration);
 		return totalUTI;
@@ -214,10 +232,10 @@ public class RequestManager {
 
 /********************************************************************
  *** TTTTTTTTTT*EEEEEEEEEE*******AAAA*******MM***********MM*5555555555
- ******* TT*****EE**************AA**AA******MMM*********MMM*55********
- ******* TT*****EE*************AA****AA*****MMMM*******MMMM*55*55555**
- ******* TT*****EEEEEEEEEE****AAAAAAAAAA****MM*MM*****MM*MM*555****55*
- ******* TT*****EE***********AA********AA***MM**MM***MM**MM*********55
- ******* TT*****EE**********AA**********AA**MM***MM*MM***MM*55******55
- ******* TT*****EEEEEEEEEE*AA************AA*MM****MMM****MM**55555555*
+ * TT*****EE**************AA**AA******MMM*********MMM*55********
+ * TT*****EE*************AA****AA*****MMMM*******MMMM*55*55555**
+ * TT*****EEEEEEEEEE****AAAAAAAAAA****MM*MM*****MM*MM*555****55*
+ * TT*****EE***********AA********AA***MM**MM***MM**MM*********55
+ * TT*****EE**********AA**********AA**MM***MM*MM***MM*55******55
+ * TT*****EEEEEEEEEE*AA************AA*MM****MMM****MM**55555555*
  ********************************************************************/
