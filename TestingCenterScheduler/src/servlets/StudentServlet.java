@@ -101,6 +101,7 @@ public class StudentServlet extends HttpServlet {
 				.equals("createAppointment")) {
 			LoggerWrapper.logger.info("Creating new appointment for student");
 			reqID = Integer.parseInt(request.getParameter("Areq"));
+			request.getSession().setAttribute("AreqID", reqID);
 			request.getSession().setAttribute("timeSlot", stu.generateTimeSlot(reqID));
 			response.sendRedirect("NewAppointment.jsp");
 		} else {

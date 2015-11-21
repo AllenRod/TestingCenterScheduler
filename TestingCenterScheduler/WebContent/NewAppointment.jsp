@@ -11,6 +11,32 @@
 <meta name="description" content="">
 <meta name="author" content="">
 
+<!-- jQuery -->
+<script src="js/jquery.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="js/bootstrap.min.js"></script>
+
+<script>
+	$(document).ready(function() {
+		var cur = $('#select').find(":selected").val();
+		$('#slot' + cur).show();
+	});
+
+	$(function() {
+		$('#select').change(function() {
+			var id = $('#select').find(":selected").val();
+			$('.formDiv').hide();
+			$('#slot' + id).show();
+		});
+	});
+	
+	function pickSlot(data) {
+		$('#Aslot').val(data);
+	}
+	
+</script>
+
 <title>Student Courses</title>
 
 <!-- Bootstrap Core CSS -->
@@ -89,38 +115,57 @@
 				<!-- /.row -->
 				<div class="div-spacing">
 					<form class="form-inline" action="StudentHome" method="POST">
-						<p>
-							<c:out value="${Areq}" />
-						</p>
+						<div class="form-group">
+							<label for="Areq">Request ID: </label> <input type="text"
+								class="form-control input-sm" name="AreqID" value="${AreqID}"
+								readonly />
+						</div>
+						<div class="form-group">
+							<label for="Atimestart">Start Time: </label> <input type="text"
+								class="form-control input-sm" name="Atime" id="Aslot"
+								placeholder="Pick a time slot in drop down" readonly />
+						</div>
 						<select id="select" class="form-control">
 							<c:forEach items="${timeSlot}" var="slotEntry">
-								<fmt:formatDate pattern='D' value='${slotEntry.key}' var="key"/>
+								<fmt:formatDate pattern="D" value="${slotEntry.key}" var="key" />
 								<option value="${key}">
 									<fmt:formatDate type="date" value="${slotEntry.key}" />
 								</option>
 							</c:forEach>
 						</select>
 						<c:forEach items="${timeSlot}" var="slotEntry">
-							<fmt:formatDate pattern='D' value='${slotEntry.key}' var="key"/>
-							<div id="slot${key}" class="formDiv" style="display:none">
+							<fmt:formatDate pattern='D' value='${slotEntry.key}' var="key" />
+							<div id="slot${key}" class="formDiv" style="display: none">
 								<h5>
 									<fmt:formatDate type="date" value="${slotEntry.key}" />
 								</h5>
 								<table class="table table-striped">
+									<tr>
+										<th>Time</th>
+										<td>Open Seat Number</td>
+										<td>Choose Slot</td>
+									</tr>
 									<c:forEach items="${slotEntry.value}" var="slot">
 										<tr>
 											<th><fmt:formatDate type="time" value="${slot.key}" /></th>
 											<td>${slot.value}</td>
-										<tr>
+											<td>
+												<button type="button" value="${slot.key}"
+													class="btn btn-primary" onClick="pickSlot(this.value);">Pick
+													Slot</button>
+											</td>
+										</tr>
 									</c:forEach>
 								</table>
 							</div>
 						</c:forEach>
+
 						<c:set var="action" value="newAppointment" scope="session" />
 						<a href="Student.jsp" class="btn btn-default"
 							style="background: #DDD; color: #980100;">Cancel</a> <input
 							type="submit" value="Submit Appointment" class="btn btn-default"
 							style="background: #980100; color: #FFF;">
+
 					</form>
 				</div>
 
@@ -130,28 +175,6 @@
 
 	</div>
 	<!-- /#wrapper -->
-	
-	<!-- jQuery -->
-	<script src="js/jquery.js"></script>
-	
-	<!-- Bootstrap Core JavaScript -->
-	<script src="js/bootstrap.min.js"></script>
-	
-	<script>
-		$(document).ready(function() {
-			var cur = $('#select').find(":selected").val();
-			$('#slot' + cur).show();
-		});
-		
-	
-		$(function() {
-			$('#select').change(function() {
-				var id = $('#select').find(":selected").val();
-				$('.formDiv').hide();
-				$('#slot' + id).show();
-			});
-		});
-	</script>
 
 
 </body>
