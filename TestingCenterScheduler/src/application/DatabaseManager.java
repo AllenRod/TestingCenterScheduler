@@ -944,7 +944,8 @@ public class DatabaseManager {
 	 * 
 	 * @param String
 	 *            Name of student to get appointment for
-	 * @return List<Appointment> List of all appointments belonging to the student
+	 * @return List<Appointment> List of all appointments belonging to the
+	 *         student
 	 */
 	public List<Appointment> S_getAppointments(String netID) {
 		TypedQuery<Appointment> a = em.createQuery(
@@ -987,6 +988,18 @@ public class DatabaseManager {
 					+ error.getClass() + ":" + error.getMessage());
 			return null;
 		}
+	}
+
+	/**
+	 * Returns a request based on its id
+	 * 
+	 * @param requestID
+	 *            ID of request
+	 * @return the request with given ID
+	 */
+	public Request getRequestByID(int requestID) {
+		Request r = em.find(Request.class, requestID);
+		return r;
 	}
 
 	/**

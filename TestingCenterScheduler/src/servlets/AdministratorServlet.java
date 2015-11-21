@@ -3,7 +3,6 @@ package servlets;
 import java.io.IOException;
 import java.util.List;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -121,16 +120,13 @@ public class AdministratorServlet extends HttpServlet {
 						+ startDay + "-" + endMonth + "/" + endDay);
 				List<String> result = admin.viewUtilization(term, startMonth,
 						startDay, endMonth, endDay);
-				// add displaying code here
 				if (result.size() == 0) {
-					request.setAttribute("returnVal",
+					request.getSession().setAttribute("returnVal",
 							"Start date is after end date!");
 				} else {
-					request.setAttribute("returnVal", result);
+					request.getSession().setAttribute("returnVal", result);
 				}
-				RequestDispatcher rd = request
-						.getRequestDispatcher("AdminUtilization.jsp");
-				rd.forward(request, response);
+				response.sendRedirect("AdminUtilization.jsp");
 
 			}
 			if (request.getParameter("report") != null) {
@@ -140,10 +136,8 @@ public class AdministratorServlet extends HttpServlet {
 				String endTerm = request.getParameter("termVal2");
 				List<Report> reports = admin.generateReport_All(startTerm,
 						endTerm);
-				request.setAttribute("returnVal", reports);
-				RequestDispatcher rd = request
-						.getRequestDispatcher("Report.jsp");
-				rd.forward(request, response);
+				request.getSession().setAttribute("returnVal", reports);
+				response.sendRedirect("Report.jsp");
 			}
 			if (request.getParameterValues("checkin") != null) {
 				LoggerWrapper.logger.info("Admin " + admin.getNetID()
@@ -158,35 +152,31 @@ public class AdministratorServlet extends HttpServlet {
 						noError = b;
 					}
 				}
-				request.setAttribute("returnVal", Boolean.valueOf(noError));
-				RequestDispatcher rd = request
-						.getRequestDispatcher("AdminAppointments.jsp");
-				rd.forward(request, response);
+				request.getSession().setAttribute("returnVal",
+						Boolean.valueOf(noError));
+				response.sendRedirect("AdminAppointments.jsp");
 			}
 			if (request.getParameter("request_approve") != null) {
 				LoggerWrapper.logger.info("Admin " + admin.getNetID()
 						+ " approving a request");
 				boolean approved = admin.approveRequest(request
 						.getParameter("request_approve"));
-				request.setAttribute("returnVal", Boolean.valueOf(approved));
-				RequestDispatcher rd = request
-						.getRequestDispatcher("AdminRequests.jsp");
-				rd.forward(request, response);
+				request.getSession().setAttribute("returnVal1",
+						"Request Approval: ");
+				request.getSession().setAttribute("returnVal2",
+						Boolean.valueOf(approved));
+				response.sendRedirect("AdminRequests.jsp");
 			}
 			if (request.getParameter("request_deny") != null) {
 				LoggerWrapper.logger.info("Admin " + admin.getNetID()
 						+ " denying a request");
 				boolean denied = admin.denyRequest(request
 						.getParameter("request_deny"));
-				request.setAttribute("returnVal", Boolean.valueOf(denied));
-				RequestDispatcher rd = request
-						.getRequestDispatcher("AdminRequests.jsp");
-				rd.forward(request, response);
-			}
-			if (request.getParameter("utilization") != null) {
-				LoggerWrapper.logger.info("Utilization");
-				response.setContentType("text/html;charset=UTF-8");
-		        response.getWriter().write("Success Data");
+				request.getSession().setAttribute("returnVal1",
+						"Request Denial: ");
+				request.getSession().setAttribute("returnVal2",
+						Boolean.valueOf(denied));
+				response.sendRedirect("AdminRequests.jsp");
 			}
 		} catch (Exception error) {
 			LoggerWrapper.logger

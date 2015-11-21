@@ -101,19 +101,17 @@
 				<!-- /.row -->
 				<div class="row">
 					<c:choose>
-						<c:when test="${returnVal == true}">
+						<c:when test="${returnVal2 == true}">
 							<div class="row">
 								<div class="col-lg-12">
-									<div class="alert alert-success">Request Successfully
-										Approved</div>
+									<div class="alert alert-success">${returnVal1}Successful</div>
 								</div>
 							</div>
 						</c:when>
-						<c:when test="${returnVal == false}">
+						<c:when test="${returnVal2 == false}">
 							<div class="row">
 								<div class="col-lg-12">
-									<div class="alert alert-danger">Request Successfully
-										Denied</div>
+									<div class="alert alert-danger">${returnVal1}Failure</div>
 								</div>
 							</div>
 						</c:when>
