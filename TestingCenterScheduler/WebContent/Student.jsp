@@ -21,7 +21,7 @@
 </head>
 
 <body>
-	
+
 	<c:if test="${empty user}">
 		<jsp:forward page="/index.jsp"></jsp:forward>
 	</c:if>
@@ -29,7 +29,7 @@
 	<c:if test="${(not empty user) and (user.role ne 'student')}">
 		<jsp:forward page="/index.jsp"></jsp:forward>
 	</c:if>
-	
+
 	<div id="wrapper">
 
 		<!-- Navigation -->
@@ -49,26 +49,25 @@
 			<!-- Top Menu Items -->
 			<ul class="nav navbar-right top-nav">
 				<li class="dropdown"><a href="#" class="dropdown-toggle"
-					data-toggle="dropdown">
-						${user.firstName} ${user.lastName}<b class="caret"></b></a>
+					data-toggle="dropdown"> ${user.firstName} ${user.lastName}<b
+						class="caret"></b></a>
 					<ul class="dropdown-menu">
-						<li><a href="#"> Settings</a>
-						</li>
+						<li><a href="#"> Settings</a></li>
 						<li class="divider"></li>
 						<li>
-								<form action="Login" method="GET">
-								<a>
-									<input type="submit" value="Log Out" name="logout" style="background-color: Transparent; border: none;">
+							<form action="Login" method="GET">
+								<a> <input type="submit" value="Log Out" name="logout"
+									style="background-color: Transparent; border: none;">
 								</a>
-								</form>
+							</form>
 						</li>
-					</ul>
-				</li>
+					</ul></li>
 			</ul>
 			<!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
 			<div class="collapse navbar-collapse navbar-ex1-collapse">
 				<ul class="nav navbar-nav side-nav">
-					<li><a href="Student.jsp" style="color: #fff;">View Appointments</a></li>
+					<li><a href="Student.jsp" style="color: #fff;">View
+							Appointments</a></li>
 				</ul>
 			</div>
 			<!-- /.navbar-collapse -->
@@ -91,24 +90,44 @@
 				</div>
 				<!-- /.row -->
 
+				<c:choose>
+					<c:when test="${returnVal == 'Data import succeeds'}">
+						<div class="row">
+							<div class="col-lg-12">
+								<div class="alert alert-success">${returnVal}</div>
+							</div>
+						</div>
+					</c:when>
+					<c:when test="${not empty returnVal}">
+						<div class="row">
+							<div class="col-lg-12">
+								<div class="alert alert-danger">${returnVal}</div>
+							</div>
+						</div>
+					</c:when>
+					<c:otherwise>
+					</c:otherwise>
+				</c:choose>
+				<c:remove var="returnVal" scope="session" />
+
+
 				<div class="row">
 					<c:set var="action" value="getRequests" scope="session" />
 					<form action="StudentHome" method="GET">
-						<button type="submit" class="btn btn-primary" style="margin-bottom:10px;">
-							View Open Requests
-						</button>
+						<button type="submit" class="btn btn-primary"
+							style="margin-bottom: 10px;">View Open Requests</button>
 					</form>
-					<table class ="table">
-							<tr>
-								<th>Exam Name</th>
-								<th>Instructor</th>
-								<th>Test Time</th>
-								<th>Seat Number</th>
-								<th>Status</th>
-								<th>Cancel</th>
-							</tr>
-							<c:forEach items="${appointments}" var="appointments">    
-    						<tr class="success">
+					<table class="table">
+						<tr>
+							<th>Exam Name</th>
+							<th>Instructor</th>
+							<th>Test Time</th>
+							<th>Seat Number</th>
+							<th>Status</th>
+							<th>Cancel</th>
+						</tr>
+						<c:forEach items="${appointments}" var="appointments">
+							<tr class="success">
 								<td>${appointments.request.examName}</td>
 								<td>${appointments.request.instructorNetID}</td>
 								<td>${appointments.timeStart}</td>
@@ -128,7 +147,7 @@
 									</c:otherwise>
 								</c:choose>
 							</tr>
-							</c:forEach>
+						</c:forEach>
 					</table>
 				</div>
 			</div>

@@ -891,20 +891,23 @@ public class DatabaseManager {
 			TypedQuery<ClassExamRequest> classExamq = em
 					.createQuery(
 							"SELECT r FROM ClassExamRequest r WHERE "
-									+ "r.course.classID = :cID AND r.course.term = :cTerm",
+									+ "r.course.classID = :cID AND r.course.term = :cTerm AND r.status = :stat",
 							ClassExamRequest.class);
 			List<ClassExamRequest> cerList = new ArrayList<>();
 			for (Course c : courseRS) {
 				classExamq.setParameter("cID", c.getClassID());
 				classExamq.setParameter("cTerm", c.getTerm());
+				classExamq.setParameter("stat", Request.RequestStatus.APPROVED);
 				cerList = classExamq.getResultList();
 				for (ClassExamRequest r : cerList) {
 					rList.add((Request) r);
 				}
 			}
 			// Find all NonClassRequest
-			TypedQuery<NonClassRequest> nonClassq = em.createQuery(
-					"SELECT r FROM NonClassRequest r", NonClassRequest.class);
+			TypedQuery<NonClassRequest> nonClassq = em
+					.createQuery(
+							"SELECT r FROM NonClassRequest r WHERE r.status = :stat",
+							NonClassRequest.class).setParameter("stat", Request.RequestStatus.APPROVED);
 			List<NonClassRequest> ncrList = nonClassq.getResultList();
 			// Find NonClassRequest with the name shows up in RosterList
 			String roster = "";
@@ -990,6 +993,36 @@ public class DatabaseManager {
 			LoggerWrapper.logger.info("There is an error in S_findUser:\n"
 					+ error.getClass() + ":" + error.getMessage());
 			return null;
+		}
+	}
+
+	/**
+	 * Check if the student making the given appointment already make an
+	 * appointment for the same request
+	 * 
+	 * @param app
+	 *            Given appointment
+	 * @return False if the student make the duplicate appointment
+	 */
+	public boolean S_checkAppointment(Appointment app) {
+		try {
+			// Set PK for appointment
+			AppointmentPK appPK = new AppointmentPK();
+			appPK.setRequest(app.getRequest().getExamIndex());
+			UserPK userPK = new UserPK();
+			userPK.setNetID(app.getUser().getNetID());
+			userPK.setTerm(app.getUser().getTerm().getTermID());
+			appPK.setUserPK(userPK);
+			Appointment dupApp = em.find(Appointment.class, appPK);
+			if (dupApp != null) {
+				return false;
+			}
+			return true;
+		} catch (PersistenceException error) {
+			LoggerWrapper.logger
+					.info("There is an error in S_checkAppointment:\n"
+							+ error.getClass() + ":" + error.getMessage());
+			return false;
 		}
 	}
 

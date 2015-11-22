@@ -136,17 +136,22 @@ public class Student {
 			// Parse start time of appointment
 			SimpleDateFormat formatter = new SimpleDateFormat(
 					"EEE MMM dd HH:mm:ss zzz yyyy");
-			Date appDate = formatter.parse(startTime);
+			Date appTime = formatter.parse(startTime);
 			// Get request from requestID
 			Request appReq = dbManager.S_findRequest(Integer.parseInt(requestID));
 			// Find available seat
-			handler = new TimeSlotHandler(appDate);
+			handler = new TimeSlotHandler(appTime);
 			Appointment a = new Appointment();
 			a.setRequest(appReq);
-			a.setTimeStart(appDate);
+			a.setTimeStart(appTime);
 			a.setUser(dbManager.S_findUser(netID, dbManager.getTermByRequest(appReq)));
 			a.setStatus(AppointmentStatus.PENDING);
-			a.setSeatNum(handler.getSeatNum(appReq, appDate));
+			a.setSeatNum(handler.getSeatNum(appReq, appTime));
+			// Check appointment in timeslot
+			String msg = handler.checkAppointment(a, appTime);
+			if (!msg.equals("")) {
+				return "Fail to make appointment:\n" + msg;
+			}
 			s = dbManager.loadData(a);
 			return s;
 		} catch (Exception error) {

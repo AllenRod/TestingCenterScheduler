@@ -9,6 +9,7 @@ import java.util.List;
 import entity.Appointment;
 import entity.Request;
 import entity.Term;
+import entity.User;
 
 /**
  * Handle timeslot for appointments in one single day
@@ -137,6 +138,16 @@ public class TimeSlotHandler {
 			}
 			openTimeSlotMap.put(i, appRequestIDArray);
 		}
+		/*for (int i = 1; i <= openTimeSlotMap.size(); i++) {
+			System.out.println(i);
+			Integer[] hehe = openTimeSlotMap.get(i);
+			for (int j = 0; j < hehe.length; j++) {
+				if (hehe[j] == -1) {
+					continue;
+				}
+				System.out.print(hehe[j] + " ");
+			}
+		}*/
 		return openTimeSlotMap;
 	}
 
@@ -291,7 +302,57 @@ public class TimeSlotHandler {
 		return s;
 	}
 
-	public String checkAppointment(Request request, Date slotTime) {
+	/**
+	 * Check if the given appointment can be put at the given slot time
+	 * 
+	 * @param app
+	 *            Given appointment
+	 * @param slotTime
+	 *            Give slot time
+	 * @return message of the checking result
+	 */
+	public String checkAppointment(Appointment app, Date slotTime) {
+		// Check for existing appointment
+		if (!dbManager.S_checkAppointment(app)) {
+			return "Student has already made appointment for the request";
+		}
+		// Get current user
+		User current = app.getUser();
+		// Get index of slotTime
+		Calendar c = Calendar.getInstance();
+		c.setTime(slotTime);
+		int index = c.get(Calendar.HOUR_OF_DAY) * 2;
+		if (c.get(Calendar.MINUTE) > 0) {
+			index++;
+		}
+		System.out.println(index);
+		// Get duration of the test in hour
+		int duration = app.getRequest().getTestDuration();
+		duration += dbManager.R_getTestCenterInfo(term.getTermID())
+				.getGapTime();
+		duration = (int) Math.ceil((double) duration / 30);
+		System.out.println(duration);
+		// Iterate through each seat
+		for (int i = 1; i <= seatMap.size(); i++) {
+			Appointment[] appArray = seatMap.get(i).getAppList();
+			// Iterate through possible overlapped time slot
+			int j = index;
+			do {
+				if (appArray[j] == null) {
+					j++;
+					continue;
+				}
+				User user = appArray[j].getUser();
+				if ((current.getNetID()).equals(user.getNetID())
+						&& (current.getTerm().getTermID().equals(user.getTerm()
+								.getTermID()))) {
+					return "Student has made appointment in overlapped time slot";
+				} else {
+					j++;
+					continue;
+				}
+			} while (j < index + duration);
+		}
 		return "";
 	}
 
