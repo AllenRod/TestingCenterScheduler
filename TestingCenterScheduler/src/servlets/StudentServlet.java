@@ -97,7 +97,6 @@ public class StudentServlet extends HttpServlet {
 			response.sendRedirect("NewAppointment.jsp");
 		} else if (request.getParameter("app_cancel") != null) {
 			LoggerWrapper.logger.info("Cancelling appointment for student");
-			System.out.println(request.getParameter("app_cancel"));
 			String[] valList = request.getParameter("app_cancel").split(":");
 			boolean cancelled = stu.cancelAppointment(
 					Integer.parseInt(valList[0]), valList[1], valList[2]);
