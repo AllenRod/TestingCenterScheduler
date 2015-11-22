@@ -109,6 +109,26 @@
 					</c:otherwise>
 				</c:choose>
 				<c:remove var="returnVal" scope="session" />
+				
+				<c:choose>
+					<c:when test="${returnVal2 == true}">
+						<div class="row">
+							<div class="col-lg-12">
+								<div class="alert alert-success">Cancellation succeeded!</div>
+							</div>
+						</div>
+					</c:when>
+					<c:when test="${returnVal2 == false}">
+						<div class="row">
+							<div class="col-lg-12">
+								<div class="alert alert-danger">Cancellation failed!</div>
+							</div>
+						</div>
+					</c:when>
+					<c:otherwise>
+					</c:otherwise>
+				</c:choose>
+				<c:remove var="returnVal" scope="session" />
 
 
 				<div class="row">
@@ -145,6 +165,22 @@
 									<c:otherwise>
 										<td>${appointments.status}</td>
 									</c:otherwise>
+								</c:choose>
+								<c:choose>
+								<c:when test = "${appointments.status eq 'taken' || appointments.status eq 'missed'}">
+									<td>
+										<form action = StudentHome method = POST>
+											<button type=submit class="btn btn-danger disabled" name="app_cancel" value="${appointments.request.examIndex}:${appointments.user.netID}:${appointments.user.term.termID}">Cancel</button>
+										</form> 
+									</td>
+								</c:when>
+								<c:when test = "${appointments.status eq 'pending'}">
+									<td>
+										<form action = StudentHome method = POST>
+											<button type=submit class="btn btn-danger" name="app_cancel" value="${appointments.request.examIndex}:${appointments.user.netID}:${appointments.user.term.termID}">Cancel</button>
+										</form> 
+									</td>
+								</c:when>
 								</c:choose>
 							</tr>
 						</c:forEach>

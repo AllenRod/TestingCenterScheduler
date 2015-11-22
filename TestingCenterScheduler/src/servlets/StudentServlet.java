@@ -9,8 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import application.Student;
 import application.LoggerWrapper;
+import application.Student;
 import entity.UserAccount;
 
 /**
@@ -95,6 +95,16 @@ public class StudentServlet extends HttpServlet {
 			request.getSession().setAttribute("timeSlot",
 					stu.generateTimeSlot(reqID));
 			response.sendRedirect("NewAppointment.jsp");
+		} else if (request.getParameter("app_cancel") != null) {
+			LoggerWrapper.logger.info("Cancelling appointment for student");
+			System.out.println(request.getParameter("app_cancel"));
+			String[] valList = request.getParameter("app_cancel").split(":");
+			boolean cancelled = stu.cancelAppointment(
+					Integer.parseInt(valList[0]), valList[1], valList[2]);
+			request.getSession().setAttribute("returnVal2", cancelled);
+			request.getSession().setAttribute("appointments",
+					stu.getAppointments());
+			response.sendRedirect("Student.jsp");
 		} else {
 			LoggerWrapper.logger.info("Unsupported Case");
 		}

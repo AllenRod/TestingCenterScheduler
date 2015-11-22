@@ -138,13 +138,15 @@ public class Student {
 					"EEE MMM dd HH:mm:ss zzz yyyy");
 			Date appTime = formatter.parse(startTime);
 			// Get request from requestID
-			Request appReq = dbManager.S_findRequest(Integer.parseInt(requestID));
+			Request appReq = dbManager.S_findRequest(Integer
+					.parseInt(requestID));
 			// Find available seat
 			handler = new TimeSlotHandler(appTime);
 			Appointment a = new Appointment();
 			a.setRequest(appReq);
 			a.setTimeStart(appTime);
-			a.setUser(dbManager.S_findUser(netID, dbManager.getTermByRequest(appReq)));
+			a.setUser(dbManager.S_findUser(netID,
+					dbManager.getTermByRequest(appReq)));
 			a.setStatus(AppointmentStatus.PENDING);
 			a.setSeatNum(handler.getSeatNum(appReq, appTime));
 			// Check appointment in timeslot
@@ -157,5 +159,9 @@ public class Student {
 		} catch (Exception error) {
 			return error.getClass() + ":" + error.getMessage();
 		}
+	}
+
+	public boolean cancelAppointment(int examIndex, String netID, String termID) {
+		return dbManager.S_cancelAppointment(examIndex, netID, termID);
 	}
 }

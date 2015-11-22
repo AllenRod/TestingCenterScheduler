@@ -904,10 +904,10 @@ public class DatabaseManager {
 				}
 			}
 			// Find all NonClassRequest
-			TypedQuery<NonClassRequest> nonClassq = em
-					.createQuery(
-							"SELECT r FROM NonClassRequest r WHERE r.status = :stat",
-							NonClassRequest.class).setParameter("stat", Request.RequestStatus.APPROVED);
+			TypedQuery<NonClassRequest> nonClassq = em.createQuery(
+					"SELECT r FROM NonClassRequest r WHERE r.status = :stat",
+					NonClassRequest.class).setParameter("stat",
+					Request.RequestStatus.APPROVED);
 			List<NonClassRequest> ncrList = nonClassq.getResultList();
 			// Find NonClassRequest with the name shows up in RosterList
 			String roster = "";
@@ -1027,6 +1027,35 @@ public class DatabaseManager {
 	}
 
 	/**
+	 * Cancels an appointment with the given fields
+	 * 
+	 * @param examIndex
+	 *            exam index the appointment is for
+	 * @param netID
+	 *            net id of student appointment is for
+	 * @param termID
+	 *            term the exam is in
+	 * @return if appointment was canceled
+	 */
+	public boolean S_cancelAppointment(int examIndex, String netID,
+			String termID) {
+		AppointmentPK appPK = new AppointmentPK();
+		appPK.setRequest(examIndex);
+		UserPK userPK = new UserPK();
+		userPK.setNetID(netID);
+		userPK.setTerm(termID);
+		appPK.setUserPK(userPK);
+		Appointment a = em.find(Appointment.class, appPK);
+		if (a == null) {
+			return false;
+		}
+		startTransaction();
+		em.remove(a);
+		commitTransaction();
+		return true;
+	}
+
+	/**
 	 * Returns a request based on its id
 	 * 
 	 * @param requestID
@@ -1078,8 +1107,7 @@ public class DatabaseManager {
 	private void rollbackTransaction() {
 		if (em.getTransaction().isActive()) {
 			// Commit the transaction
-			em.getTransaction().rollback();
-			;
+			em.getTransaction().rollback();;
 		}
 		LoggerWrapper.logger.info("Transaction rollbacks");
 	}
