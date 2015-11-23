@@ -23,7 +23,10 @@ public class Student {
 	private String netID;
 
 	// TimeSlotHandler object
-	private TimeSlotHandler handler;
+	private TimeSlotHandler slotHandler;
+	
+	// ClosedDateHandler object
+	private ClosedDateHandler dateHandler;
 
 	/**
 	 * Constructor for class Student
@@ -34,7 +37,8 @@ public class Student {
 	public Student(String netID) {
 		this.netID = netID;
 		dbManager = DatabaseManager.getSingleton();
-		handler = null;
+		slotHandler = null;
+		dateHandler = null;
 	}
 
 	/**
@@ -116,9 +120,13 @@ public class Student {
 	 */
 	private LinkedHashMap<Date, Integer> getOpenTimeSlot(Date date,
 			Request request) {
-		handler = new TimeSlotHandler(date);
-		handler.getTimeSlot();
-		return handler.getOpenTimeSlot(request);
+		dateHandler = new ClosedDateHandler(dbManager.getTermByDate(date).getTermID());
+		if (dateHandler.checkClosed(date)) {
+			return null;
+		}
+		slotHandler = new TimeSlotHandler(date);
+		slotHandler.getTimeSlot();
+		return slotHandler.getOpenTimeSlot(request);
 	}
 
 	/**
@@ -141,16 +149,16 @@ public class Student {
 			Request appReq = dbManager.S_findRequest(Integer
 					.parseInt(requestID));
 			// Find available seat
-			handler = new TimeSlotHandler(appTime);
+			slotHandler = new TimeSlotHandler(appTime);
 			Appointment a = new Appointment();
 			a.setRequest(appReq);
 			a.setTimeStart(appTime);
 			a.setUser(dbManager.S_findUser(netID,
 					dbManager.getTermByRequest(appReq)));
 			a.setStatus(AppointmentStatus.PENDING);
-			a.setSeatNum(handler.getSeatNum(appReq, appTime));
+			a.setSeatNum(slotHandler.getSeatNum(appReq, appTime));
 			// Check appointment in timeslot
-			String msg = handler.checkAppointment(a, appTime);
+			String msg = slotHandler.checkAppointment(a, appTime);
 			if (!msg.equals("")) {
 				return "Fail to make appointment:\n" + msg;
 			}

@@ -23,6 +23,9 @@ public class RequestManager {
 
 	// single instance of RequestManager
 	private static RequestManager requestManager;
+	
+	// ClosedDateHandler object
+	private ClosedDateHandler dateHandler;
 
 	/**
 	 * Constructor for RequestManager object
@@ -126,6 +129,10 @@ public class RequestManager {
 	 * @return utilization for that day
 	 */
 	public double calculateUtilizationDay(String termID, Date d) {
+		dateHandler = new ClosedDateHandler(termID);
+		if (dateHandler.checkClosed(d)) {
+			return -1;
+		}
 		double currentDayUTI = 0;
 		int durationSum = 0;
 		TestCenterInfo tci = dbManager.R_getTestCenterInfo(termID);
@@ -192,6 +199,11 @@ public class RequestManager {
 	 * @return utilization for that day
 	 */
 	public double calculateUtilizationDayWithRequest(Date d, Request r) {
+		String termID = dbManager.getTermByDate(d).getTermID();
+		dateHandler = new ClosedDateHandler(termID);
+		if (dateHandler.checkClosed(d)) {
+			return -1;
+		}
 		double currentDayUTI = 0;
 		int durationSum = 0;
 		TestCenterInfo tci = dbManager.R_getTestCenterInfo(dbManager
@@ -249,6 +261,7 @@ public class RequestManager {
 				/ (seatNum * openHourDuration);
 		return totalUTI;
 	}
+	
 	/**
 	 * Get the number of student taking the test from the request
 	 * 
@@ -287,11 +300,11 @@ public class RequestManager {
 }
 
 /********************************************************************
- *** TTTTTTTTTT*EEEEEEEEEE*******AAAA*******MM***********MM*5555555555
- * TT*****EE**************AA**AA******MMM*********MMM*55********
- * TT*****EE*************AA****AA*****MMMM*******MMMM*55*55555**
- * TT*****EEEEEEEEEE****AAAAAAAAAA****MM*MM*****MM*MM*555****55*
- * TT*****EE***********AA********AA***MM**MM***MM**MM*********55
- * TT*****EE**********AA**********AA**MM***MM*MM***MM*55******55
- * TT*****EEEEEEEEEE*AA************AA*MM****MMM****MM**55555555*
+ ****TTTTTTTTTT*EEEEEEEEEE*******AAAA*******MM***********MM*5555555555
+ ********TT*****EE**************AA**AA******MMM*********MMM*55********
+ ********TT*****EE*************AA****AA*****MMMM*******MMMM*55*55555**
+ ********TT*****EEEEEEEEEE****AAAAAAAAAA****MM*MM*****MM*MM*555****55*
+ ********TT*****EE***********AA********AA***MM**MM***MM**MM*********55
+ ********TT*****EE**********AA**********AA**MM***MM*MM***MM*55******55
+ ********TT*****EEEEEEEEEE*AA************AA*MM****MMM****MM**55555555*
  ********************************************************************/

@@ -1,6 +1,5 @@
 AllenRod:
-- RequestManager
-- Take account of closing dates and reserve time
+- Schedulability
 
 McNuggets:
 - Instructor: View Exam information
@@ -8,13 +7,10 @@ McNuggets:
 
 Guy From Breaking Bad:
 - Check for Superman appointments
-- Cancel/edit appointment
+- Cancel appointment(24 hours prior)
 
 DereK:
-- Student(?!?) 
-
-Light and Breezy:
-- Edit and delete appointment for students
+- Be good plz
 
 Requirements, % done , (what needs to be done in parenthesis)
 ADMIN

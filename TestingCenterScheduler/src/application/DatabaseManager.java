@@ -663,6 +663,10 @@ public class DatabaseManager {
 		try {
 			Calendar c = Calendar.getInstance();
 			c.setTime(d);
+			c.set(Calendar.HOUR_OF_DAY, 0);
+			c.set(Calendar.MINUTE, 0);
+			c.set(Calendar.SECOND, 0);
+			d = c.getTime();
 			c.add(Calendar.DATE, 1);
 			Date d2 = c.getTime();
 			TypedQuery<Appointment> q = em.createQuery(
