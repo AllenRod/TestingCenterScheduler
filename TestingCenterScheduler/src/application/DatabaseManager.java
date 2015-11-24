@@ -1053,12 +1053,19 @@ public class DatabaseManager {
 		if (a == null) {
 			return false;
 		}
+		// 24 hours = no cancel
+		Calendar now = Calendar.getInstance();
+		Calendar appTime = Calendar.getInstance();
+		appTime.setTime(a.getTimeStart());
+		now.add(Calendar.DATE, 1);
+		if (now.after(appTime)) {
+			return false;
+		}
 		startTransaction();
 		em.remove(a);
 		commitTransaction();
 		return true;
 	}
-
 	/**
 	 * Returns a request based on its id
 	 * 

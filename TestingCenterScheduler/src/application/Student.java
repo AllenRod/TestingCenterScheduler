@@ -24,7 +24,7 @@ public class Student {
 
 	// TimeSlotHandler object
 	private TimeSlotHandler slotHandler;
-	
+
 	// ClosedDateHandler object
 	private ClosedDateHandler dateHandler;
 
@@ -120,7 +120,8 @@ public class Student {
 	 */
 	private LinkedHashMap<Date, Integer> getOpenTimeSlot(Date date,
 			Request request) {
-		dateHandler = new ClosedDateHandler(dbManager.getTermByDate(date).getTermID());
+		dateHandler = new ClosedDateHandler(dbManager.getTermByDate(date)
+				.getTermID());
 		if (dateHandler.checkClosed(date)) {
 			return null;
 		}
