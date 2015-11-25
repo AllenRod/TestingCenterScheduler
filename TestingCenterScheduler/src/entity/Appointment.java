@@ -33,9 +33,8 @@ public class Appointment implements Serializable {
 	@Id
 	@ManyToOne
 	@JoinColumns({
-		@JoinColumn(name = "NET_ID_FK", referencedColumnName = "USER_ID"),
-		@JoinColumn(name = "TERM_ID_FK", referencedColumnName = "TERM_ID")	
-	})
+			@JoinColumn(name = "NET_ID_FK", referencedColumnName = "USER_ID"),
+			@JoinColumn(name = "TERM_ID_FK", referencedColumnName = "TERM_ID")})
 	private User user;
 
 	@Column(name = "START_TIME", columnDefinition = "DATETIME")
@@ -47,6 +46,9 @@ public class Appointment implements Serializable {
 	@Enumerated(EnumType.STRING)
 	@Column(columnDefinition = "ENUM('PENDING', 'TAKEN', 'MISSED')")
 	private AppointmentStatus status;
+
+	// if the student was emailed about this appointment yet
+	private boolean emailed;
 
 	private static final long serialVersionUID = 1L;
 
@@ -88,18 +90,26 @@ public class Appointment implements Serializable {
 
 	public String getStatus() {
 		switch (status) {
-		case PENDING:
-			return "pending";
-		case TAKEN:
-			return "taken";
-		case MISSED:
-			return "missed";
+			case PENDING :
+				return "pending";
+			case TAKEN :
+				return "taken";
+			case MISSED :
+				return "missed";
 		}
 		return "";
 	}
 
 	public void setStatus(AppointmentStatus status) {
 		this.status = status;
+	}
+
+	public void setIfEmailed(boolean b) {
+		emailed = b;
+	}
+
+	public boolean getIfEmailed() {
+		return emailed;
 	}
 
 	public enum AppointmentStatus {

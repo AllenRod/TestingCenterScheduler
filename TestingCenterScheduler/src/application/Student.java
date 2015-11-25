@@ -158,6 +158,7 @@ public class Student {
 					dbManager.getTermByRequest(appReq)));
 			a.setStatus(AppointmentStatus.PENDING);
 			a.setSeatNum(slotHandler.getSeatNum(appReq, appTime));
+			a.setIfEmailed(false);
 			// Check appointment in timeslot
 			String msg = slotHandler.checkAppointment(a, appTime);
 			if (!msg.equals("")) {

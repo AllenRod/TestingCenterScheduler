@@ -46,7 +46,7 @@ public class Authenticator extends HttpServlet {
 			if (request.getSession(false) != null)
 				request.getSession(false).invalidate();
 			// Close entity manager
-			dbManager.closeEntityManager();
+			// dbManager.closeEntityManager();
 			response.sendRedirect("index.jsp");
 		}
 	}
@@ -59,7 +59,7 @@ public class Authenticator extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 		try {
 			// Initiate entity manager
-			dbManager.createEntityManager();
+			// dbManager.createEntityManager();
 			if (request.getSession(false) != null)
 				request.getSession(false).invalidate();
 			String userName = request.getParameter("user");
@@ -67,9 +67,9 @@ public class Authenticator extends HttpServlet {
 			LoggerWrapper.logger.info("User log in using netID " + userName);
 			UserAccount user = dbManager.getUser(userName, password);
 			// Test to get current term by current date
-			//Calendar curC = Calendar.getInstance();
-			//Date date = curC.getTime();
-			//Term currentTerm = dbManager.getTermByDate(date);
+			// Calendar curC = Calendar.getInstance();
+			// Date date = curC.getTime();
+			// Term currentTerm = dbManager.getTermByDate(date);
 			// System.out.println(currentTerm.getTermSeason() + "_" +
 			// currentTerm.getTermYear());
 			// End test

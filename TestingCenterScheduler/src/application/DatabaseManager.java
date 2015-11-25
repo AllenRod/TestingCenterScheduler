@@ -47,6 +47,7 @@ public class DatabaseManager {
 	 */
 	public DatabaseManager() {
 		emf = Persistence.createEntityManagerFactory("TestingCenterScheduler");
+		em = emf.createEntityManager();
 	}
 
 	/**
@@ -1078,6 +1079,13 @@ public class DatabaseManager {
 		return r;
 	}
 
+	public void setAppEmailed(Appointment a) {
+		startTransaction();
+		a.setIfEmailed(true);
+		commitTransaction();
+
+	}
+
 	/**
 	 * Return a singleton of DatabaseManager
 	 * 
@@ -1128,7 +1136,9 @@ public class DatabaseManager {
 	 */
 	public void createEntityManager() {
 		// Create a new EntityManager
-		em = emf.createEntityManager();
+		if (em == null) {
+			em = emf.createEntityManager();
+		}
 		LoggerWrapper.logger.info("Create entity manager");
 	}
 

@@ -25,13 +25,11 @@ public class BackgroundEmailer implements ServletContextListener {
 	@Override
 	public void contextDestroyed(ServletContextEvent arg0) {
 		scheduler.shutdownNow();
-
 	}
 	@Override
 	public void contextInitialized(ServletContextEvent arg0) {
 		scheduler = Executors.newSingleThreadScheduledExecutor();
-		scheduler.scheduleAtFixedRate(new EmailReminder(), 0, 30,
-				TimeUnit.SECONDS);
+		scheduler.scheduleAtFixedRate(new EmailReminder(), 0, 10,
+				TimeUnit.MINUTES);
 	}
-
 }
