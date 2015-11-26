@@ -47,7 +47,6 @@ public class DatabaseManager {
 	 */
 	public DatabaseManager() {
 		emf = Persistence.createEntityManagerFactory("TestingCenterScheduler");
-		em = emf.createEntityManager();
 	}
 
 	/**
@@ -1136,9 +1135,7 @@ public class DatabaseManager {
 	 */
 	public void createEntityManager() {
 		// Create a new EntityManager
-		if (em == null) {
-			em = emf.createEntityManager();
-		}
+		em = emf.createEntityManager();
 		LoggerWrapper.logger.info("Create entity manager");
 	}
 
@@ -1153,5 +1150,16 @@ public class DatabaseManager {
 			em.close();
 		}
 		LoggerWrapper.logger.info("Close entity manager");
+	}
+	
+	/**
+	 * Check if the EntityManager is closed
+	 * @return	True if the EntityManager is closed
+	 */
+	public boolean checkClosedEntityManager() {
+		if (em == null) {
+			return true;
+		}
+		return em.isOpen();
 	}
 }

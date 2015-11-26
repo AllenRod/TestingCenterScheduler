@@ -1,5 +1,6 @@
 AllenRod:
 - Schedulability
+- Database EntityManager concurrency
 
 McNuggets:
 - Instructor: View Exam information
@@ -36,7 +37,7 @@ STUDENT
 Make appointment - 90 % (testing)
 Cancel appointment - 100 % 
 See appointment - 100 % 
-Email reminder - 100% (testing?)
+Email reminder - 100% (All Good - Elgigi)
 
 OTHER
 Authentication - 100 %

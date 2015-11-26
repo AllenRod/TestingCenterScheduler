@@ -46,7 +46,7 @@ public class Authenticator extends HttpServlet {
 			if (request.getSession(false) != null)
 				request.getSession(false).invalidate();
 			// Close entity manager
-			// dbManager.closeEntityManager();
+			dbManager.closeEntityManager();
 			response.sendRedirect("index.jsp");
 		}
 	}
@@ -59,7 +59,7 @@ public class Authenticator extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 		try {
 			// Initiate entity manager
-			// dbManager.createEntityManager();
+			dbManager.createEntityManager();
 			if (request.getSession(false) != null)
 				request.getSession(false).invalidate();
 			String userName = request.getParameter("user");

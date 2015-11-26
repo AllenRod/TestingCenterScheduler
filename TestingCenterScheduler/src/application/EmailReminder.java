@@ -18,24 +18,28 @@ import javax.mail.internet.MimeMessage;
 import entity.Appointment;
 
 /**
- * 
  * Class that sends email to student
  *
+ * @author CSE308 Team Five
  */
 public class EmailReminder implements Runnable {
 
 	// set of appointments students need to be emailed about
 	Set<Appointment> appSet;
 
+	// single DatabaseManager object
 	DatabaseManager dbManager;
 
+	/**
+	 * Constructor of EmailReminder
+	 */
 	public EmailReminder() {
 		appSet = new HashSet<Appointment>();
 		dbManager = DatabaseManager.getSingleton();
 	}
 
 	/**
-	 * gets the email and appointment details
+	 * Gets the email and appointment details
 	 */
 	public void getList() {
 		appSet.clear();
@@ -60,8 +64,13 @@ public class EmailReminder implements Runnable {
 			}
 		}
 	}
+
 	@Override
 	public void run() {
+		boolean dbClosed = dbManager.checkClosedEntityManager();
+		if (dbClosed) {
+			dbManager.createEntityManager();
+		}
 		getList();
 		final String username = "cse308.team5@gmail.com";
 		final String password = "teamfive5";
@@ -99,7 +108,6 @@ public class EmailReminder implements Runnable {
 					});
 
 			try {
-
 				Message message = new MimeMessage(session);
 				message.setFrom(new InternetAddress(username));
 				message.setRecipients(Message.RecipientType.TO,
@@ -107,10 +115,18 @@ public class EmailReminder implements Runnable {
 				message.setSubject("Appointment Reminder");
 				message.setText(message_txt);
 				Transport.send(message);
+				LoggerWrapper.logger.info("Email sends to student "
+						+ a.getUser().getNetID());
 				dbManager.setAppEmailed(a);
 			} catch (MessagingException e) {
+				LoggerWrapper.logger.warning(e.getClass() + ":"
+						+ e.getMessage());
 				throw new RuntimeException(e);
 			}
+		}
+
+		if (dbClosed) {
+			dbManager.closeEntityManager();
 		}
 	}
 }
