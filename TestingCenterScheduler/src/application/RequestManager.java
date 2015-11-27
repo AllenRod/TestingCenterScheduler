@@ -1,6 +1,7 @@
 package application;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -55,56 +56,82 @@ public class RequestManager {
 		// Get all request overlapped over the given request
 		List<Request> overList = dbManager.R_getRequestWithPos(
 				request.getTimeStart(), request.getTimeEnd(), 2);
+		Calendar overEarly = Calendar.getInstance();
+		Calendar overLate = Calendar.getInstance();
+		if (overList != null) {
+			overEarly.setTime(overList.get(0).getTimeStart());
+			overLate.setTime(overList.get(0).getTimeEnd());
+			Calendar ctemp = Calendar.getInstance();
+			for (Request r : overList) {
+				ctemp.setTime(r.getTimeStart());
+				if (ctemp.before(overEarly)) {
+					overEarly = (Calendar) ctemp.clone();
+				}
+				ctemp.setTime(r.getTimeEnd());
+				if (ctemp.after(overLate)) {
+					overLate = (Calendar) ctemp.clone();
+				}
+			}
+		}
 		// Get the earliest start time, taking account of the request date
 		Calendar cS = Calendar.getInstance();
 		Calendar c = Calendar.getInstance();
 		if ((beforeList != null) && (overList != null)) {
 			cS.setTime(beforeList.get(0).getTimeStart());
-			c.setTime(overList.get(0).getTimeStart());
+			c = (Calendar) overEarly.clone();
 			if (cS.after(c)) {
-				cS = c;
+				cS = (Calendar) c.clone();
 			}
-		} else if (beforeList == null) {
-			cS.setTime(overList.get(0).getTimeStart());
-		} else if (overList == null) {
-			cS.setTime(beforeList.get(0).getTimeStart());
 		} else {
-			cS.setTime(request.getTimeStart());
+			if ((beforeList == null) && (overList == null)) {
+				cS.setTime(request.getTimeStart());
+			} else if (beforeList == null) {
+				cS = (Calendar) overEarly.clone();
+			} else if (overList == null) {
+				cS.setTime(beforeList.get(0).getTimeStart());
+			}
 		}
 		c.setTime(request.getRequestDate());
 		if (cS.before(c)) {
-			cS = c;
+			cS = (Calendar) c.clone();
 		}
 		// Get the latest end time
 		Calendar cE = Calendar.getInstance();
 		if ((afterList != null) && (overList != null)) {
 			cE.setTime(afterList.get(afterList.size() - 1).getTimeEnd());
-			c.setTime(overList.get(overList.size() - 1).getTimeEnd());
-			
+			c = (Calendar) overLate.clone();
+			if (cE.before(c)) {
+				cE = (Calendar) c.clone();
+			}
+		} else {
+			if ((afterList == null) && (overList == null)) {
+				cE.setTime(request.getTimeEnd());
+			} else if (afterList == null) {
+				cE = (Calendar) overLate.clone();
+			} else if (overList == null) {
+				cE.setTime(afterList.get(afterList.size() - 1).getTimeEnd());
+			}
 		}
+		// Generate list of TimeSlotHandler
+		List<TimeSlotHandler> slotList = new ArrayList<>();
+		cS.set(Calendar.HOUR, 0);
+		cS.set(Calendar.MINUTE, 0);
+		cS.set(Calendar.SECOND, 0);
+		do {
+			slotList.add(new TimeSlotHandler(cS.getTime()));
+			cS.add(Calendar.DATE, 1);
+		} while (!cS.after(cE));
+		// Fill appointments for beforeList
 		
-		return false;
-	}
-
-	/**
-	 * Calculate the total required seat min for the given request
-	 * 
-	 * @param request
-	 *            Given request
-	 * @param appNum
-	 *            Numbers of appointments already made for the request
-	 * @return Total required seat min
-	 */
-	private int requestRequiredSeatMin(Request request, int appNum) {
-		int stuNum = getStudentNum(request) - appNum;
-		int gapTime = (dbManager.R_getTestCenterInfo(dbManager
-				.getTermByRequest(request).getTermID())).getGapTime();
-		int required = gapTime + request.getTestDuration();
-		int i = (int) Math.ceil((double) required / 30);
-		required = i * 30 * stuNum;
-		System.out.println("Num = " + stuNum + "; Gap Time = " + gapTime
-				+ "; Sum = " + required);
-		return required;
+		// Fill appointments for current request
+		
+		// Fill appointments for betweenList
+		
+		// Fill appointments for afterList
+		
+		// Fill appointments for overList
+		
+		return true;
 	}
 
 	/**

@@ -632,6 +632,29 @@ public class DatabaseManager {
 	}
 
 	/**
+	 * Get the number of appointments from the given request
+	 * 
+	 * @param request
+	 *            Given request
+	 * @return Number of appointments in the request
+	 */
+	public int R_getAppointmentNum(Request request) {
+		try {
+			Query q = em
+					.createQuery("SELECT COUNT(a) FROM Appointment a WHERE a.request = :request");
+			q.setParameter("request", request);
+			Long r = (Long) q.getSingleResult();
+			LoggerWrapper.logger.info("Getting number of appointments " + r
+					+ " for request " + request.getExamIndex());
+			return r.intValue();
+		} catch (PersistenceException error) {
+			LoggerWrapper.logger.info("There is an error in R_getAppointmentNum:\n"
+					+ error.getClass() + ":" + error.getMessage());
+			return 0;
+		}
+	}
+
+	/**
 	 * Get the TestCenterInfo from the given term
 	 * 
 	 * @param termID
@@ -712,16 +735,13 @@ public class DatabaseManager {
 				// All request start after tStart and end before tEnd
 				q = em.createQuery("SELECT r FROM Request r WHERE "
 						+ ":tS <= r.timeStart AND r.timeEnd <= :tE "
-						+ "ORDER BY r.timeStart",
-						Request.class);
+						+ "ORDER BY r.timeStart", Request.class);
 			} else if (timePos == 1) {
 				// All request start after tStart and before tEnd, end after
 				// tEnd
-				q = em.createQuery(
-						"SELECT r FROM Request r WHERE "
-								+ ":tS <= r.timeStart AND r.timeStart < :tE AND "
-								+ ":tE < r.timeEnd ORDER BY r.timeStart DESC",
-						Request.class);
+				q = em.createQuery("SELECT r FROM Request r WHERE "
+						+ ":tS <= r.timeStart AND r.timeStart < :tE AND "
+						+ ":tE < r.timeEnd ORDER BY r.timeEnd", Request.class);
 			} else if (timePos == 2) {
 				// All request start before tStart and end after tEnd
 				q = em.createQuery("SELECT r FROM Request r WHERE "
