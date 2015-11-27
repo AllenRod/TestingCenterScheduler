@@ -23,7 +23,7 @@ public class RequestManager {
 
 	// single instance of RequestManager
 	private static RequestManager requestManager;
-	
+
 	// ClosedDateHandler object
 	private ClosedDateHandler dateHandler;
 
@@ -42,14 +42,47 @@ public class RequestManager {
 	 * @return if the request is schedulable
 	 */
 	public boolean isSchedulable(Request request) {
-		// Required seat min for this new request
-		int newRequestReq = requestRequiredSeatMin(request, 0);
-		// Total available seat min for this new request
-		int totalAval = requestTotalSeatMin(request);
-		// Find all past requests in the range of this new request
-		List<Request> pastRequests = dbManager.R_getRequestBetween(
-				request.getTimeStart(), request.getTimeEnd());
-
+		// Get all request end before this request ends
+		List<Request> beforeList = dbManager.R_getRequestWithPos(
+				request.getTimeStart(), request.getTimeEnd(), -1);
+		// Get all request start before this request starts
+		// and end after this request ends
+		List<Request> betweenList = dbManager.R_getRequestWithPos(
+				request.getTimeStart(), request.getTimeEnd(), 0);
+		// Get all request end after this request ends
+		List<Request> afterList = dbManager.R_getRequestWithPos(
+				request.getTimeStart(), request.getTimeEnd(), 1);
+		// Get all request overlapped over the given request
+		List<Request> overList = dbManager.R_getRequestWithPos(
+				request.getTimeStart(), request.getTimeEnd(), 2);
+		// Get the earliest start time, taking account of the request date
+		Calendar cS = Calendar.getInstance();
+		Calendar c = Calendar.getInstance();
+		if ((beforeList != null) && (overList != null)) {
+			cS.setTime(beforeList.get(0).getTimeStart());
+			c.setTime(overList.get(0).getTimeStart());
+			if (cS.after(c)) {
+				cS = c;
+			}
+		} else if (beforeList == null) {
+			cS.setTime(overList.get(0).getTimeStart());
+		} else if (overList == null) {
+			cS.setTime(beforeList.get(0).getTimeStart());
+		} else {
+			cS.setTime(request.getTimeStart());
+		}
+		c.setTime(request.getRequestDate());
+		if (cS.before(c)) {
+			cS = c;
+		}
+		// Get the latest end time
+		Calendar cE = Calendar.getInstance();
+		if ((afterList != null) && (overList != null)) {
+			cE.setTime(afterList.get(afterList.size() - 1).getTimeEnd());
+			c.setTime(overList.get(overList.size() - 1).getTimeEnd());
+			
+		}
+		
 		return false;
 	}
 
@@ -261,7 +294,7 @@ public class RequestManager {
 				/ (seatNum * openHourDuration);
 		return totalUTI;
 	}
-	
+
 	/**
 	 * Get the number of student taking the test from the request
 	 * 
@@ -300,11 +333,11 @@ public class RequestManager {
 }
 
 /********************************************************************
- ****TTTTTTTTTT*EEEEEEEEEE*******AAAA*******MM***********MM*5555555555
- ********TT*****EE**************AA**AA******MMM*********MMM*55********
- ********TT*****EE*************AA****AA*****MMMM*******MMMM*55*55555**
- ********TT*****EEEEEEEEEE****AAAAAAAAAA****MM*MM*****MM*MM*555****55*
- ********TT*****EE***********AA********AA***MM**MM***MM**MM*********55
- ********TT*****EE**********AA**********AA**MM***MM*MM***MM*55******55
- ********TT*****EEEEEEEEEE*AA************AA*MM****MMM****MM**55555555*
+ **** TTTTTTTTTT*EEEEEEEEEE*******AAAA*******MM***********MM*5555555555
+ * TT*****EE**************AA**AA******MMM*********MMM*55********
+ * TT*****EE*************AA****AA*****MMMM*******MMMM*55*55555**
+ * TT*****EEEEEEEEEE****AAAAAAAAAA****MM*MM*****MM*MM*555****55*
+ * TT*****EE***********AA********AA***MM**MM***MM**MM*********55
+ * TT*****EE**********AA**********AA**MM***MM*MM***MM*55******55
+ * TT*****EEEEEEEEEE*AA************AA*MM****MMM****MM**55555555*
  ********************************************************************/

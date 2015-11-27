@@ -686,27 +686,55 @@ public class DatabaseManager {
 	}
 
 	/**
-	 * Get list of requests in the given time range
+	 * Get list of requests in the given time range and given time position
 	 * 
 	 * @param tStart
 	 *            the starting time to find the requests
 	 * @param tEnd
 	 *            the ending time to find the requests
+	 * @param timePos
+	 *            -1: Overlapped with start before tStart; 0: between tStart and
+	 *            tEnd; 1: Overlapped with start after tStart; 2: start before
+	 *            tStart and end after tEnd;
 	 * @return the list of requests in given time range
 	 */
-	public List<Request> R_getRequestBetween(Date tStart, Date tEnd) {
+	public List<Request> R_getRequestWithPos(Date tStart, Date tEnd, int timePos) {
 		try {
-			TypedQuery<Request> q = em.createQuery(
-					"SELECT r FROM Request r WHERE "
-							+ ":tS < r.timeEnd AND  r.timeEnd < :tE",
-					Request.class);
+			TypedQuery<Request> q = null;
+			if (timePos < 0) {
+				// All request start before tStart, end after tStart and before
+				// tEnd
+				q = em.createQuery("SELECT r FROM Request r WHERE "
+						+ "r.timeStart < :ts AND :ts < r.timeEnd AND "
+						+ "r.timeEnd <= :tE ORDER BY r.timeStart",
+						Request.class);
+			} else if (timePos == 0) {
+				// All request start after tStart and end before tEnd
+				q = em.createQuery("SELECT r FROM Request r WHERE "
+						+ ":tS <= r.timeStart AND r.timeEnd <= :tE "
+						+ "ORDER BY r.timeStart",
+						Request.class);
+			} else if (timePos == 1) {
+				// All request start after tStart and before tEnd, end after
+				// tEnd
+				q = em.createQuery(
+						"SELECT r FROM Request r WHERE "
+								+ ":tS <= r.timeStart AND r.timeStart < :tE AND "
+								+ ":tE < r.timeEnd ORDER BY r.timeStart DESC",
+						Request.class);
+			} else if (timePos == 2) {
+				// All request start before tStart and end after tEnd
+				q = em.createQuery("SELECT r FROM Request r WHERE "
+						+ "r.timeStart < :tS AND :tE < r.timeEnd",
+						Request.class);
+			}
 			q.setParameter("tS", tStart, TemporalType.TIMESTAMP);
 			q.setParameter("tE", tEnd, TemporalType.TIMESTAMP);
 			List<Request> appList = q.getResultList();
 			return appList;
 		} catch (Exception error) {
 			LoggerWrapper.logger
-					.info("There is an error in R_getRequestBetween:\n"
+					.info("There is an error in R_getRequestWithPos:\n"
 							+ error.getClass() + ":" + error.getMessage());
 			return null;
 		}
@@ -1062,10 +1090,19 @@ public class DatabaseManager {
 			return false;
 		}
 		startTransaction();
-		em.remove(a);
-		commitTransaction();
-		return true;
+		try {
+			em.remove(a);
+			commitTransaction();
+			LoggerWrapper.logger.info("Appointment cancelled");
+			return true;
+		} catch (Exception error) {
+			rollbackTransaction();
+			LoggerWrapper.logger.info("Error in S_cancelAppointment:\n"
+					+ error.getClass() + ":" + error.getMessage());
+			return false;
+		}
 	}
+
 	/**
 	 * Returns a request based on its id
 	 * 
@@ -1078,11 +1115,20 @@ public class DatabaseManager {
 		return r;
 	}
 
+	/**
+	 * Set the appointment emailed to true
+	 * 
+	 * @param a
+	 *            Given appointment
+	 */
 	public void setAppEmailed(Appointment a) {
 		startTransaction();
-		a.setIfEmailed(true);
-		commitTransaction();
-
+		try {
+			a.setIfEmailed(true);
+			commitTransaction();
+		} catch (Exception error) {
+			rollbackTransaction();
+		}
 	}
 
 	/**
@@ -1125,7 +1171,8 @@ public class DatabaseManager {
 	private void rollbackTransaction() {
 		if (em.getTransaction().isActive()) {
 			// Commit the transaction
-			em.getTransaction().rollback();;
+			em.getTransaction().rollback();
+			;
 		}
 		LoggerWrapper.logger.info("Transaction rollbacks");
 	}
@@ -1151,10 +1198,11 @@ public class DatabaseManager {
 		}
 		LoggerWrapper.logger.info("Close entity manager");
 	}
-	
+
 	/**
 	 * Check if the EntityManager is closed
-	 * @return	True if the EntityManager is closed
+	 * 
+	 * @return True if the EntityManager is closed
 	 */
 	public boolean checkClosedEntityManager() {
 		if (em == null) {
