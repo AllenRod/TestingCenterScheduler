@@ -632,7 +632,7 @@ public class DatabaseManager {
 	}
 
 	/**
-	 * Get the number of appointments from the given request
+	 * Get the number of appointments for the given request
 	 * 
 	 * @param request
 	 *            Given request

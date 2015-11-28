@@ -126,7 +126,6 @@ public class Student {
 			return null;
 		}
 		slotHandler = new TimeSlotHandler(date);
-		slotHandler.getTimeSlot();
 		return slotHandler.getOpenTimeSlot(request);
 	}
 

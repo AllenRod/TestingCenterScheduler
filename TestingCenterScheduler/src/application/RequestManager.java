@@ -1,6 +1,5 @@
 package application;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -10,7 +9,6 @@ import entity.Appointment;
 import entity.ClassExamRequest;
 import entity.NonClassRequest;
 import entity.Request;
-import entity.Term;
 import entity.TestCenterInfo;
 
 /**
@@ -24,9 +22,6 @@ public class RequestManager {
 
 	// single instance of RequestManager
 	private static RequestManager requestManager;
-
-	// ClosedDateHandler object
-	private ClosedDateHandler dateHandler;
 
 	/**
 	 * Constructor for RequestManager object
@@ -121,62 +116,80 @@ public class RequestManager {
 			slotList.add(new TimeSlotHandler(cS.getTime()));
 			cS.add(Calendar.DATE, 1);
 		} while (!cS.after(cE));
+		boolean schedulable = true;
 		// Fill appointments for beforeList
-		
+		schedulable = this.fillInAppointment(slotList, beforeList);
 		// Fill appointments for current request
-		
+		List<Request> current = new ArrayList<>();
+		current.add(request);
+		schedulable = this.fillInAppointment(slotList, current);
+		if (!schedulable) {
+			return false;
+		}
 		// Fill appointments for betweenList
-		
+		schedulable = this.fillInAppointment(slotList, betweenList);
+		if (!schedulable) {
+			return false;
+		}
 		// Fill appointments for afterList
-		
+		schedulable = this.fillInAppointment(slotList, afterList);
+		if (!schedulable) {
+			return false;
+		}
 		// Fill appointments for overList
-		
+		schedulable = this.fillInAppointment(slotList, overList);
+		if (!schedulable) {
+			return false;
+		}
 		return true;
 	}
 
 	/**
-	 * Calculate the total available seat hour for the given request
+	 * Insert unmade appointments for the requests in the given request list to
+	 * a given timeslot list
 	 * 
-	 * @param request
-	 *            Given request
-	 * @return Total available seat hour for the request
+	 * @param slotList
+	 *            Given timeslot list
+	 * @param rList
+	 *            Given request list
+	 * @return True if all unmade appointments can be inserted into the given
+	 *         timeslot list
 	 */
-	private int requestTotalSeatMin(Request request) {
-		int total = 0;
-		int t = 0;
-		Term term = dbManager.getTermByRequest(request);
-		String openHours = (dbManager.R_getTestCenterInfo(term.getTermID()))
-				.getOpenHours();
-		Calendar cStart = Calendar.getInstance();
-		Calendar cEnd = Calendar.getInstance();
-		SimpleDateFormat timeFormatter = new SimpleDateFormat("HH:mm");
-		Date startTime = request.getTimeStart();
-		Date endTime = request.getTimeEnd();
-		cStart.setTime(startTime);
-		t = OpenHoursParser.getHoursDifference_Start(openHours,
-				cStart.get(Calendar.DAY_OF_WEEK),
-				timeFormatter.format(startTime));
-		if (t >= 0) {
-			total += t;
-		}
-		cEnd.setTime(endTime);
-		t = OpenHoursParser.getHoursDifference_End(openHours,
-				cEnd.get(Calendar.DAY_OF_WEEK), timeFormatter.format(endTime));
-		if (t >= 0) {
-			total += t;
-		}
-		// Exclude start date and end date
-		cStart.add(Calendar.DATE, 1);
-		while (cStart.before(cEnd)) {
-			t = OpenHoursParser.getHoursDifference(openHours,
-					cStart.get(Calendar.DAY_OF_WEEK));
-			if (t >= 0) {
-				total += t;
+	private boolean fillInAppointment(List<TimeSlotHandler> slotList,
+			List<Request> rList) {
+		// Iterate through every request to fill in potential appointments
+		for (Request r : rList) {
+			// Get number of unmade appointments
+			int reqNum = getStudentNum(r) - dbManager.R_getAppointmentNum(r);
+			// Get start time and end time
+			Calendar cStart = Calendar.getInstance();
+			cStart.setTime(r.getTimeStart());
+			Calendar cEnd = Calendar.getInstance();
+			cEnd.setTime(r.getTimeEnd());
+			// Find the starting date in slotList
+			int index = 0;
+			for (index = 0; index < slotList.size(); index++) {
+				if (slotList.get(index).checkDate(cStart.getTime())) {
+					break;
+				}
 			}
-			cStart.add(Calendar.DATE, 1);
+			// Insert appointments through each day
+			while (!cStart.after(cEnd)) {
+				TimeSlotHandler handler = slotList.get(index);
+				reqNum = handler.checkInsertApp(r, reqNum);
+				cStart.add(Calendar.DATE, 1);
+				index++;
+				if (reqNum == 0) {
+					break;
+				}
+			}
+			// If there are still appointments need to be inserted but there is
+			// no more slot, return false
+			if (reqNum > 0) {
+				return false;
+			}
 		}
-		System.out.println("Total is " + total);
-		return total;
+		return true;
 	}
 
 	/**
@@ -189,7 +202,7 @@ public class RequestManager {
 	 * @return utilization for that day
 	 */
 	public double calculateUtilizationDay(String termID, Date d) {
-		dateHandler = new ClosedDateHandler(termID);
+		ClosedDateHandler dateHandler = new ClosedDateHandler(termID);
 		if (dateHandler.checkClosed(d)) {
 			return -1;
 		}
@@ -260,7 +273,7 @@ public class RequestManager {
 	 */
 	public double calculateUtilizationDayWithRequest(Date d, Request r) {
 		String termID = dbManager.getTermByDate(d).getTermID();
-		dateHandler = new ClosedDateHandler(termID);
+		ClosedDateHandler dateHandler = new ClosedDateHandler(termID);
 		if (dateHandler.checkClosed(d)) {
 			return -1;
 		}
