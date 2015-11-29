@@ -1,5 +1,5 @@
 AllenRod:
-- Concurrency
+- Test stuff
 
 McNuggets:
 - Instructor: View Exam information
@@ -31,13 +31,13 @@ Check in student - 90 % (possibly add checkin box in table header to check all b
 Generate report - 75 % (possibly change display, more test cases, possibly save as .txt file, Fix for AD-HOC)
 
 INSTRUCTOR
-Submit request - 50 % (need to show current utilization + utilization with request, check for schedulability)
+Submit request - 75 % (need to show current utilization + utilization with request, schedulability is done)
 Cancel pending request - 100 %
 View requests for current/future term - 75 % (need to show for only current term + future, not past)
 See appointment/attendance details - 100 % 
 
 STUDENT
-Make appointment - 90 % (testing)
+Make appointment - 100 % (testing)
 Cancel appointment - 100 % 
 See appointment - 100 % 
 Email reminder - 100% (All Good - Elgigi)

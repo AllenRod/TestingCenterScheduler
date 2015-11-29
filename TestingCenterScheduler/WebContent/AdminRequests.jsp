@@ -26,8 +26,16 @@
 		<jsp:forward page="/index.jsp"></jsp:forward>
 	</c:if>
 
-	<c:if test="${(not empty user) and (user.role ne 'admin')}">
-		<jsp:forward page="/index.jsp"></jsp:forward>
+	<c:if test="${not empty user}">
+		<c:set var="cor" value="false" />
+		<c:forEach items="${user.role}" var="role">
+			<c:if test="${role eq 'admin'}">
+				<c:set var="cor" value="true"/>
+			</c:if>
+		</c:forEach>
+		<c:if test="${cor eq 'false'}">
+			<jsp:forward page="/index.jsp"></jsp:forward>
+		</c:if>
 	</c:if>
 	<div id="wrapper">
 
@@ -52,6 +60,14 @@
 						class="caret"></b></a>
 					<ul class="dropdown-menu">
 						<li><a href="#">Settings</a></li>
+						<c:forEach items="${user.role}" var="role">
+							<c:if test="${role eq 'instr'}">
+								<li><a href="InstructorHome">Instructor Page</a></li>
+							</c:if>
+							<c:if test="${role eq 'student'}">
+								<li><a href="StudentHome">Student Page</a></li>
+							</c:if>
+						</c:forEach>
 						<li class="divider"></li>
 						<li>
 								<form action="Login" method="GET">
@@ -155,16 +171,16 @@
 								<td>${requests.examIndex}</td>
 								<c:choose>
 									<c:when test="${requests.status eq 'approved'}">
-										<td><font color="green">${requests.status}</font>
+										<td><font color="green">${requests.status}</font></td>
 									</c:when>
 									<c:when test="${requests.status eq 'denied'}">
-										<td><font color="red">${requests.status}</font>
+										<td><font color="red">${requests.status}</font></td>
 									</c:when>
 									<c:when test="${requests.status eq 'pending'}">
-										<td><font color="grey">${requests.status}</font>
+										<td><font color="grey">${requests.status}</font></td>
 									</c:when>
 									<c:otherwise>
-										<td>${requests.status}</font>
+										<td>${requests.status}</td>
 									</c:otherwise>
 								</c:choose>
 								<c:choose>
@@ -218,16 +234,16 @@
 								<td>${requests.examIndex}</td>
 								<c:choose>
 									<c:when test="${requests.status eq 'approved'}">
-										<td><font color="green">${requests.status}</font>
+										<td><font color="green">${requests.status}</font></td>
 									</c:when>
 									<c:when test="${requests.status eq 'denied'}">
-										<td><font color="red">${requests.status}</font>
+										<td><font color="red">${requests.status}</font></td>
 									</c:when>
 									<c:when test="${requests.status eq 'pending'}">
-										<td><font color="grey">${requests.status}</font>
+										<td><font color="grey">${requests.status}</font></td>
 									</c:when>
 									<c:otherwise>
-										<td>${requests.status}</font>
+										<td>${requests.status}</td>
 									</c:otherwise>
 								</c:choose>
 								<c:choose>

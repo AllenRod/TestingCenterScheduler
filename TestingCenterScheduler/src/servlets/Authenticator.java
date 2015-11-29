@@ -57,7 +57,7 @@ public class Authenticator extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 		try {
 			// Initiate entity manager
-			dbManager.createEntityManager();
+			//dbManager.createEntityManager();
 			if (request.getSession(false) != null)
 				request.getSession(false).invalidate();
 			String userName = request.getParameter("user");
@@ -65,7 +65,7 @@ public class Authenticator extends HttpServlet {
 			LoggerWrapper.logger.info("User log in using netID " + userName);
 			UserAccount user = dbManager.getUser(userName, password);
 			// Close entity manager
-			dbManager.closeEntityManager();
+			//dbManager.closeEntityManager();
 			// Test to get current term by current date
 			// Calendar curC = Calendar.getInstance();
 			// Date date = curC.getTime();
@@ -75,18 +75,19 @@ public class Authenticator extends HttpServlet {
 			// End test
 			if (user != null) {
 				request.getSession().setAttribute("user", user);
-				String role = user.getRole();
-				if (role.equals("admin")) {
+				String[] role = user.getRole();
+				System.out.println(role[0]);
+				if (role[0].equals("admin")) {
 					LoggerWrapper.logger.info("Forward to Administrator");
 					RequestDispatcher rd = request
 							.getRequestDispatcher("/AdministratorHome");
 					rd.forward(request, response);
-				} else if (role.equals("instr")) {
+				} else if (role[0].equals("instr")) {
 					LoggerWrapper.logger.info("Forward to Instructor");
 					RequestDispatcher rd = request
 							.getRequestDispatcher("/InstructorHome");
 					rd.forward(request, response);
-				} else if (role.equals("student")) {
+				} else if (role[0].equals("student")) {
 					LoggerWrapper.logger.info("Forward to Student");
 					RequestDispatcher rd = request
 							.getRequestDispatcher("/StudentHome");

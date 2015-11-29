@@ -47,7 +47,7 @@ public class AdministratorServlet extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 		UserAccount user = (UserAccount) request.getSession().getAttribute(
 				"user");
-		dbManager.createEntityManager();
+		//dbManager.createEntityManager();
 		if (admin == null) {
 			admin = new Administrator(user.getNetID());
 		} else {
@@ -67,7 +67,7 @@ public class AdministratorServlet extends HttpServlet {
 				admin.getAllAppointments());
 
 		// Close entity manager
-		dbManager.closeEntityManager();
+		//dbManager.closeEntityManager();
 		response.sendRedirect("Admin.jsp");
 	}
 
@@ -78,7 +78,7 @@ public class AdministratorServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		dbManager.createEntityManager();
+		//dbManager.createEntityManager();
 		try {
 			if (request.getSession().getAttribute("login") == null) {
 				doGet(request, response);
@@ -115,8 +115,9 @@ public class AdministratorServlet extends HttpServlet {
 						reminderInterval);
 				request.getSession()
 						.setAttribute("infolist", admin.getTCInfo());
+				LoggerWrapper.logger.info("Admin edit Test Cetner Info result:/n" + s);
 				// Close entity manager
-				dbManager.closeEntityManager();
+				//dbManager.closeEntityManager();
 				response.sendRedirect("CenterHours.jsp");
 			}
 			if (request.getParameter("utilization") != null) {
@@ -138,7 +139,7 @@ public class AdministratorServlet extends HttpServlet {
 					request.getSession().setAttribute("returnVal", result);
 				}
 				// Close entity manager
-				dbManager.closeEntityManager();
+				//dbManager.closeEntityManager();
 				response.sendRedirect("AdminUtilization.jsp");
 			}
 			if (request.getParameter("report") != null) {
@@ -150,7 +151,7 @@ public class AdministratorServlet extends HttpServlet {
 						endTerm);
 				request.getSession().setAttribute("returnVal", reports);
 				// Close entity manager
-				dbManager.closeEntityManager();
+				//dbManager.closeEntityManager();
 				response.sendRedirect("Report.jsp");
 			}
 			if (request.getParameterValues("checkin") != null) {
@@ -169,7 +170,7 @@ public class AdministratorServlet extends HttpServlet {
 				request.getSession().setAttribute("returnVal",
 						Boolean.valueOf(noError));
 				// Close entity manager
-				dbManager.closeEntityManager();
+				//dbManager.closeEntityManager();
 				response.sendRedirect("AdminAppointments.jsp");
 			}
 			if (request.getParameter("request_approve") != null) {
@@ -182,7 +183,7 @@ public class AdministratorServlet extends HttpServlet {
 				request.getSession().setAttribute("returnVal2",
 						Boolean.valueOf(approved));
 				// Close entity manager
-				dbManager.closeEntityManager();
+				//dbManager.closeEntityManager();
 				response.sendRedirect("AdminRequests.jsp");
 			}
 			if (request.getParameter("request_deny") != null) {
@@ -195,7 +196,7 @@ public class AdministratorServlet extends HttpServlet {
 				request.getSession().setAttribute("returnVal2",
 						Boolean.valueOf(denied));
 				// Close entity manager
-				dbManager.closeEntityManager();
+				//dbManager.closeEntityManager();
 				response.sendRedirect("AdminRequests.jsp");
 			}
 		} catch (Exception error) {

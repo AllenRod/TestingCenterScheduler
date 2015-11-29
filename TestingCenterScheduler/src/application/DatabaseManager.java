@@ -1234,6 +1234,6 @@ public class DatabaseManager {
 		if (em == null) {
 			return true;
 		}
-		return em.isOpen();
+		return !em.isOpen();
 	}
 }

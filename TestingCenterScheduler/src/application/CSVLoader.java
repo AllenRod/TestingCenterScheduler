@@ -43,7 +43,7 @@ public class CSVLoader {
 		if (!fileLoc.endsWith(".csv")) {
 			return "File must be .csv file";
 		}
-		dbManager.createEntityManager();
+		//dbManager.createEntityManager();
 		File file = new File(fileLoc);
 		Scanner sc;
 		Term term = dbManager.getTermByID(termID);
@@ -138,7 +138,7 @@ public class CSVLoader {
 			return e.getClass() + ":" + e.getMessage();
 		} finally {
 			// Close entity manager
-			dbManager.closeEntityManager();
+			//dbManager.closeEntityManager();
 		}
 	}
 

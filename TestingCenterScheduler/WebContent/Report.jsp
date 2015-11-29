@@ -28,8 +28,16 @@
 		<jsp:forward page="/index.jsp"></jsp:forward>
 	</c:if>
 
-	<c:if test="${(not empty user) and (user.role ne 'admin')}">
-		<jsp:forward page="/index.jsp"></jsp:forward>
+	<c:if test="${not empty user}">
+		<c:set var="cor" value="false" />
+		<c:forEach items="${user.role}" var="role">
+			<c:if test="${role eq 'admin'}">
+				<c:set var="cor" value="true"/>
+			</c:if>
+		</c:forEach>
+		<c:if test="${cor eq 'false'}">
+			<jsp:forward page="/index.jsp"></jsp:forward>
+		</c:if>
 	</c:if>
 	
 	<div id="page-wrapper">

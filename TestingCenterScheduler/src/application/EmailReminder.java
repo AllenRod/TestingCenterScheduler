@@ -67,10 +67,7 @@ public class EmailReminder implements Runnable {
 
 	@Override
 	public void run() {
-		boolean dbClosed = dbManager.checkClosedEntityManager();
-		if (dbClosed) {
-			dbManager.createEntityManager();
-		}
+		//dbManager.createEntityManager();
 		getList();
 		final String username = "cse308.team5@gmail.com";
 		final String password = "teamfive5";
@@ -125,8 +122,6 @@ public class EmailReminder implements Runnable {
 			}
 		}
 
-		if (dbClosed) {
-			dbManager.closeEntityManager();
-		}
+		//dbManager.closeEntityManager();
 	}
 }

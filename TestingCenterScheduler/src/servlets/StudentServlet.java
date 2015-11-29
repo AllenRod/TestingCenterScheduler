@@ -47,7 +47,7 @@ public class StudentServlet extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 		UserAccount user = (UserAccount) request.getSession().getAttribute(
 				"user");
-		dbManager.createEntityManager();
+		//dbManager.createEntityManager();
 		if (stu == null) {
 			stu = new Student(user.getNetID());
 		} else {
@@ -69,7 +69,7 @@ public class StudentServlet extends HttpServlet {
 		request.getSession().setAttribute("login", true);
 		LoggerWrapper.logger.info("Redirect to Student homepage");
 		// Close entity manager
-		dbManager.closeEntityManager();
+		//dbManager.closeEntityManager();
 		response.sendRedirect("Student.jsp");
 	}
 
@@ -85,7 +85,7 @@ public class StudentServlet extends HttpServlet {
 			doGet(request, response);
 			return;
 		}
-		dbManager.createEntityManager();
+		//dbManager.createEntityManager();
 		if (request.getSession().getAttribute("action")
 				.equals("newAppointment")) {
 			LoggerWrapper.logger.info("Processing New Appointment");
@@ -95,7 +95,7 @@ public class StudentServlet extends HttpServlet {
 					stu.getAppointments());
 			request.setAttribute("returnVal", s);
 			// Close entity manager
-			dbManager.closeEntityManager();
+			//dbManager.closeEntityManager();
 			RequestDispatcher rd = request.getRequestDispatcher("Student.jsp");
 			rd.forward(request, response);
 		} else if (request.getSession().getAttribute("action")
@@ -106,7 +106,7 @@ public class StudentServlet extends HttpServlet {
 			request.getSession().setAttribute("timeSlot",
 					stu.generateTimeSlot(reqID));
 			// Close entity manager
-			dbManager.closeEntityManager();
+			//dbManager.closeEntityManager();
 			response.sendRedirect("NewAppointment.jsp");
 		} else if (request.getParameter("app_cancel") != null) {
 			LoggerWrapper.logger.info("Cancelling appointment for student");
@@ -117,7 +117,7 @@ public class StudentServlet extends HttpServlet {
 			request.getSession().setAttribute("appointments",
 					stu.getAppointments());
 			// Close entity manager
-			dbManager.closeEntityManager();
+			//dbManager.closeEntityManager();
 			response.sendRedirect("Student.jsp");
 		} else {
 			LoggerWrapper.logger.info("Unsupported Case");

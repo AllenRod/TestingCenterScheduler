@@ -78,24 +78,24 @@ public class UserAccount implements Serializable {
 	this.hashedPassword = hashedPassword;
     }
 
-    public String getRole() {
+    public String[] getRole() {
 	switch (role) {
 	    case ADMIN:
-		return "admin";
+		return new String[]{"admin"};
 	    case INSTRUCTOR:
-		return "instr";
+		return new String[]{"instr"};
 	    case STUDENT:
-		return "student";
+		return new String[]{"student"};
 	    case ADMIN_INSTRUCTOR:
-		return "admin_instr";
+		return new String[]{"admin","instr"};
 	    case ADMIN_STUDENT:
-		return "admin_student";
+		return new String[]{"admin","student"};
 	    case ALL:
-		return "all";
+		return new String[]{"admin","instr","student"};
 	    case INSTRUCTOR_STUDENT:
-		return "instr_student";
+		return new String[]{"instr","student"};
 	    default:
-		return "";
+		return new String[]{""};
 	}
     }
 
