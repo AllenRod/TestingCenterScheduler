@@ -29,6 +29,9 @@ public class TimeSlotHandler {
 	// Term of the date of the timeslot
 	private Term term = null;
 
+	// Gap time of Test Center 
+	private int gapTime = 0;
+	
 	// A hashmap with <Integer, AppointmentList> pair that maps the seat to its
 	// appointment list of the day
 	// Key is the seat number starting from 1
@@ -62,6 +65,7 @@ public class TimeSlotHandler {
 		dbManager = DatabaseManager.getSingleton();
 		term = dbManager.getTermByDate(date);
 		seatNum = dbManager.R_getTestCenterInfo(term.getTermID()).getSeats();
+		gapTime = dbManager.R_getTestCenterInfo(term.getTermID()).getGapTime();
 		for (int i = 1; i <= seatNum; i++) {
 			AppointmentTimeSlot appList = new AppointmentTimeSlot();
 			seatMap.put(i, appList);
@@ -90,18 +94,19 @@ public class TimeSlotHandler {
 	 * 
 	 * @return The generated openTimeSlotMap
 	 */
-	public HashMap<Integer, Integer[]> getTimeSlot() {
+	public HashMap<Integer, Integer[]> generateTimeSlot() {
 		String openHours = dbManager.R_getTestCenterInfo(term.getTermID())
 				.getOpenHours();
 		for (int i = 1; i <= seatNum; i++) {
 			// There are total of 47 slots on hour and half-hour each day,
 			// excluding 24:00. The array records the appointment request ID
-			// -1 means no appointments can be made in that timeslot
-			// 0 means the 30 minutes range is free
+			// -2 means no appointments can be made in that timeslot
+			// -1 means the 30 minutes range is free
+			// 0 is reserved for schedulability checking
 			Integer[] appRequestIDArray = new Integer[47];
-			// Initiate array by setting all timeslot request ID to -1
+			// Initiate array by setting all timeslot request ID to -2
 			for (int j = 0; j < appRequestIDArray.length; j++) {
-				appRequestIDArray[j] = -1;
+				appRequestIDArray[j] = -2;
 			}
 			// Setting start time and end time
 			Calendar c = Calendar.getInstance();
@@ -130,7 +135,7 @@ public class TimeSlotHandler {
 				if (j < openInt || j >= closeInt)
 					continue;
 				if (appArray[j] == null) {
-					appRequestIDArray[j] = 0;
+					appRequestIDArray[j] = -1;
 				} else {
 					appRequestIDArray[j] = appArray[j].getRequest()
 							.getExamIndex();
@@ -138,12 +143,14 @@ public class TimeSlotHandler {
 			}
 			openTimeSlotMap.put(i, appRequestIDArray);
 		}
+
 		/*
 		 * for (int i = 1; i <= openTimeSlotMap.size(); i++) {
 		 * System.out.println(i); Integer[] hehe = openTimeSlotMap.get(i); for
 		 * (int j = 0; j < hehe.length; j++) { if (hehe[j] == -1) { continue; }
 		 * System.out.print(hehe[j] + " "); } }
 		 */
+
 		return openTimeSlotMap;
 	}
 
@@ -155,7 +162,7 @@ public class TimeSlotHandler {
 	 * @return HashMap with Time and Number of Seat value pair
 	 */
 	public LinkedHashMap<Date, Integer> getOpenTimeSlot(Request request) {
-		openTimeSlotMap = this.getTimeSlot();
+		openTimeSlotMap = this.generateTimeSlot();
 		numOfSeatInTimeSlot.clear();
 		// Get open hours of Testing Center
 		Calendar c = Calendar.getInstance();
@@ -212,8 +219,7 @@ public class TimeSlotHandler {
 		}
 		// Get duration of the test in hour
 		int duration = request.getTestDuration();
-		duration += dbManager.R_getTestCenterInfo(term.getTermID())
-				.getGapTime();
+		duration += gapTime;
 		duration = (int) Math.ceil((double) duration / 30);
 		// Find number of seat open on each possible timeslot
 		c.setTime(tcOpen);
@@ -237,7 +243,7 @@ public class TimeSlotHandler {
 				Integer[] intArray = openTimeSlotMap.get(e);
 				Boolean open = true;
 				for (int i = 0; i < duration; i++) {
-					if (intArray[currentSlot + i] != 0) {
+					if (intArray[currentSlot + i] != -1) {
 						open = false;
 						break;
 					}
@@ -263,7 +269,7 @@ public class TimeSlotHandler {
 	 *         adjacent seats
 	 */
 	public int getSeatNum(Request request, Date slotTime) {
-		openTimeSlotMap = getTimeSlot();
+		openTimeSlotMap = generateTimeSlot();
 		int s = 0;
 		// Get the request ID to avoid placing students in adjacent seat
 		int reqID = request.getExamIndex();
@@ -278,7 +284,7 @@ public class TimeSlotHandler {
 			Integer[] timeSlot = openTimeSlotMap.get(i);
 			s = i;
 			// Check if this seat is opened
-			if (timeSlot[index] != 0) {
+			if (timeSlot[index] != -1) {
 				continue;
 			}
 			// Check previous seat
@@ -326,8 +332,7 @@ public class TimeSlotHandler {
 		}
 		// Get duration of the test in hour
 		int duration = app.getRequest().getTestDuration();
-		duration += dbManager.R_getTestCenterInfo(term.getTermID())
-				.getGapTime();
+		duration += gapTime;
 		duration = (int) Math.ceil((double) duration / 30);
 		// Iterate through each seat
 		for (int i = 1; i <= seatMap.size(); i++) {
@@ -373,7 +378,7 @@ public class TimeSlotHandler {
 	}
 
 	/**
-	 * Insert appointment for the given request for scheduability checking
+	 * Insert appointment for the given request for schedulability checking
 	 * purpose
 	 * 
 	 * @param request
@@ -383,19 +388,25 @@ public class TimeSlotHandler {
 	 * @return The remaining number of unmade appointments after insertion
 	 */
 	public int checkInsertApp(Request request, int reqNum) {
-		if (request.getTimeStart().after(date)
-				|| request.getTimeEnd().before(date)) {
+		if (!isInRange(request.getTimeStart(), request.getTimeEnd())) {
 			return reqNum;
 		}
 		Calendar temp = Calendar.getInstance();
-		openTimeSlotMap = this.getTimeSlot();
-		// Get open seats map
-		numOfSeatInTimeSlot = this.getOpenTimeSlot(request);
 		// Record if there can be anymore appointments inserted
 		boolean more = true;
 		// Construct a while loop to add as many appointments as possible
-		while ((numOfSeatInTimeSlot != null)
-				&& (numOfSeatInTimeSlot.size() != 0)) {
+		do {
+			// Test
+			for (int i = 1; i <= openTimeSlotMap.size(); i++) {
+				System.out.println();
+				Integer[] hehe = openTimeSlotMap.get(i);
+				for (int j = 0; j < hehe.length; j++) {
+					if (hehe[j] == -2) {
+						continue;
+					}
+					System.out.print(hehe[j] + " ");
+				}
+			}
 			// Get new numOfSeatInTimeSlot
 			numOfSeatInTimeSlot = this.getOpenTimeSlot(request);
 			// Iterate through each time slot
@@ -411,7 +422,7 @@ public class TimeSlotHandler {
 						index++;
 					}
 					more = false;
-					for (int i = 0; i < seatMap.size(); i++) {
+					for (int i = 1; i <= seatMap.size(); i++) {
 						if (seatMap.get(i).addFakeAppointment(index, request)) {
 							// If the seat is open and fake appointment is
 							// inserted, minus 1 from reqNum
@@ -419,6 +430,18 @@ public class TimeSlotHandler {
 							reqNum--;
 							// Check if there is any more required appointment
 							if (reqNum == 0) {
+								// Test
+								openTimeSlotMap = generateTimeSlot();
+								for (int k = 1; k <= openTimeSlotMap.size(); k++) {
+									System.out.println();
+									Integer[] hehe = openTimeSlotMap.get(k);
+									for (int j = 0; j < hehe.length; j++) {
+										if (hehe[j] == -2) {
+											continue;
+										}
+										System.out.print(hehe[j] + " ");
+									}
+								}
 								return 0;
 							}
 						}
@@ -429,8 +452,43 @@ public class TimeSlotHandler {
 			if (!more) {
 				break;
 			}
-		}
+		} while ((numOfSeatInTimeSlot != null)
+				&& (numOfSeatInTimeSlot.size() != 0));
 		return reqNum;
+	}
+
+	/**
+	 * Get the date of the TimeSlotHandler object
+	 * 
+	 * @return Date of the TimeSlotHandler object
+	 */
+	public Date getDate() {
+		return this.date;
+	}
+
+	/**
+	 * Check if the TimeSlotHandler is in range of the given start time and end
+	 * time
+	 * 
+	 * @param start
+	 *            Given start time
+	 * @param end
+	 *            Given end time
+	 * @return True if the TimeSlotHandler object is in range
+	 */
+	private boolean isInRange(Date start, Date end) {
+		Calendar cthis = Calendar.getInstance();
+		Calendar ctemp = Calendar.getInstance();
+		cthis.setTime(this.date);
+		ctemp.setTime(start);
+		if ((cthis.get(Calendar.DAY_OF_YEAR) < ctemp.get(Calendar.DAY_OF_YEAR))) {
+			return false;
+		}
+		ctemp.setTime(end);
+		if ((cthis.get(Calendar.DAY_OF_YEAR) > ctemp.get(Calendar.DAY_OF_YEAR))) {
+			return false;
+		}
+		return true;
 	}
 
 	/**
@@ -469,8 +527,7 @@ public class TimeSlotHandler {
 			}
 			// Get the duration of appointment(test)
 			int duration = app.getRequest().getTestDuration();
-			duration += dbManager.R_getTestCenterInfo(term.getTermID())
-					.getGapTime();
+			duration += gapTime;
 			duration = (int) Math.ceil((double) duration / 30);
 			// Update the appointment timeslot for the range of appointment
 			// duration
@@ -498,16 +555,17 @@ public class TimeSlotHandler {
 		 * @return True if the appointment is successfully added to the array
 		 */
 		public boolean addFakeAppointment(int index, Request request) {
-			// Check if the appointment can be added to this seat at the given
-			// index
-			if (appArray[index] != null) {
-				return false;
-			}
 			// Get the duration of the appointment
 			int duration = request.getTestDuration();
-			duration += dbManager.R_getTestCenterInfo(term.getTermID())
-					.getGapTime();
+			duration += gapTime;
 			duration = (int) Math.ceil((double) duration / 30);
+			// Check if the appointment can be added to this seat at the given
+			// index and duration
+			for (int i = 0; i < duration; i++) {
+				if (appArray[index + i] != null) {
+					return false;
+				}
+			}
 			// Set up fakeApp
 			// Fake appointment used for schedulability checking
 			Appointment fakeApp = new Appointment();

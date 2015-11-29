@@ -53,7 +53,7 @@ public class RequestManager {
 				request.getTimeStart(), request.getTimeEnd(), 2);
 		Calendar overEarly = Calendar.getInstance();
 		Calendar overLate = Calendar.getInstance();
-		if (overList != null) {
+		if (!overList.isEmpty()) {
 			overEarly.setTime(overList.get(0).getTimeStart());
 			overLate.setTime(overList.get(0).getTimeEnd());
 			Calendar ctemp = Calendar.getInstance();
@@ -71,39 +71,39 @@ public class RequestManager {
 		// Get the earliest start time, taking account of the request date
 		Calendar cS = Calendar.getInstance();
 		Calendar c = Calendar.getInstance();
-		if ((beforeList != null) && (overList != null)) {
+		if ((!beforeList.isEmpty()) && (!overList.isEmpty())) {
 			cS.setTime(beforeList.get(0).getTimeStart());
 			c = (Calendar) overEarly.clone();
 			if (cS.after(c)) {
 				cS = (Calendar) c.clone();
 			}
 		} else {
-			if ((beforeList == null) && (overList == null)) {
+			if ((beforeList.isEmpty()) && (overList.isEmpty())) {
 				cS.setTime(request.getTimeStart());
-			} else if (beforeList == null) {
+			} else if (beforeList.isEmpty()) {
 				cS = (Calendar) overEarly.clone();
-			} else if (overList == null) {
+			} else if (overList.isEmpty()) {
 				cS.setTime(beforeList.get(0).getTimeStart());
 			}
 		}
 		c.setTime(request.getRequestDate());
-		if (cS.before(c)) {
-			cS = (Calendar) c.clone();
-		}
+		// if (cS.before(c)) {
+		// cS = (Calendar) c.clone();
+		// }
 		// Get the latest end time
 		Calendar cE = Calendar.getInstance();
-		if ((afterList != null) && (overList != null)) {
+		if ((!afterList.isEmpty()) && (!overList.isEmpty())) {
 			cE.setTime(afterList.get(afterList.size() - 1).getTimeEnd());
 			c = (Calendar) overLate.clone();
 			if (cE.before(c)) {
 				cE = (Calendar) c.clone();
 			}
 		} else {
-			if ((afterList == null) && (overList == null)) {
+			if ((afterList.isEmpty()) && (overList.isEmpty())) {
 				cE.setTime(request.getTimeEnd());
-			} else if (afterList == null) {
+			} else if (afterList.isEmpty()) {
 				cE = (Calendar) overLate.clone();
-			} else if (overList == null) {
+			} else if (overList.isEmpty()) {
 				cE.setTime(afterList.get(afterList.size() - 1).getTimeEnd());
 			}
 		}
@@ -186,6 +186,7 @@ public class RequestManager {
 			// If there are still appointments need to be inserted but there is
 			// no more slot, return false
 			if (reqNum > 0) {
+				LoggerWrapper.logger.info("Request " + r.getExamIndex() + " is not schedulable");
 				return false;
 			}
 		}

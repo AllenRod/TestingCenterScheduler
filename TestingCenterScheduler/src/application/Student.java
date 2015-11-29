@@ -170,6 +170,13 @@ public class Student {
 		}
 	}
 
+	/**
+	 * Cancel an appointment with the given exam ID, student netID, and term ID
+	 * @param examIndex			Given exam ID
+	 * @param netID				Given student netID
+	 * @param termID			Given term ID
+	 * @return	If the appointment is successfully cancelled
+	 */
 	public boolean cancelAppointment(int examIndex, String netID, String termID) {
 		return dbManager.S_cancelAppointment(examIndex, netID, termID);
 	}

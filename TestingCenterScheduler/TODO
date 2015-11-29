@@ -1,6 +1,5 @@
 AllenRod:
-- Schedulability
-- Database EntityManager concurrency
+- Concurrency
 
 McNuggets:
 - Instructor: View Exam information
@@ -11,6 +10,10 @@ Guy From Breaking Bad:
 
 DereK:
 - Be good plz
+
+MoreTODO:
+- Show utilization to Insturctor
+
 
 Requirements, % done , (what needs to be done in parenthesis)
 General --> Add thread to automatically mark appointments missing if not checked in and is past appointment time

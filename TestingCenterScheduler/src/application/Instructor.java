@@ -118,6 +118,7 @@ public class Instructor {
 			String roster) {
 		try {
 			String s = "";
+			boolean schedulable = false;
 			Term term = dbManager.getTermByID(termID);
 			Calendar curC = Calendar.getInstance();
 			String year = Integer.toString(term.getTermYear());
@@ -147,10 +148,11 @@ public class Instructor {
 					return "Conflict between classID and termID, please check your input again";
 				}
 				r.setCourse(c);
-				// Test
-				//reqManager.requestRequiredSeatMin(r);
-				//reqManager.requestTotalSeatMin(r);
-				s = dbManager.loadData(r);
+				schedulable = reqManager.isSchedulable(r);
+				if (!schedulable) {
+					s = "Exam not schedulable";
+				}
+				// s = dbManager.loadData(r);
 			} else if (examType.equals("AD_HOC")) {
 				NonClassRequest r = new NonClassRequest();
 				r.setExamName(examName);
@@ -161,13 +163,14 @@ public class Instructor {
 				r.setTimeEnd(timeEnd);
 				r.setTimeStart(timeStart);
 				r.setRosterList(roster);
-				// Test
-				
-				s = dbManager.loadData(r);
+				schedulable = reqManager.isSchedulable(r);
+				if (!schedulable) {
+					s = "Exam not schedulable";
+				}
+				//s = dbManager.loadData(r);
 			}
 			return s;
 		} catch (ParseException error) {
-			System.out.println(error.getClass() + ":" + error.getMessage());
 			return error.getClass() + ":" + error.getMessage();
 		}
 	}

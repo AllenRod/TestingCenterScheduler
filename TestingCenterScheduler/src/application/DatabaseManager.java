@@ -724,33 +724,39 @@ public class DatabaseManager {
 	public List<Request> R_getRequestWithPos(Date tStart, Date tEnd, int timePos) {
 		try {
 			TypedQuery<Request> q = null;
+			String logStr = "";
 			if (timePos < 0) {
 				// All request start before tStart, end after tStart and before
 				// tEnd
 				q = em.createQuery("SELECT r FROM Request r WHERE "
-						+ "r.timeStart < :ts AND :ts < r.timeEnd AND "
+						+ "r.timeStart < :tS AND :tS < r.timeEnd AND "
 						+ "r.timeEnd <= :tE ORDER BY r.timeStart",
 						Request.class);
+				logStr = "Overlapped beofer";
 			} else if (timePos == 0) {
 				// All request start after tStart and end before tEnd
 				q = em.createQuery("SELECT r FROM Request r WHERE "
 						+ ":tS <= r.timeStart AND r.timeEnd <= :tE "
 						+ "ORDER BY r.timeStart", Request.class);
+				logStr = "Overlapped between";
 			} else if (timePos == 1) {
 				// All request start after tStart and before tEnd, end after
 				// tEnd
 				q = em.createQuery("SELECT r FROM Request r WHERE "
 						+ ":tS <= r.timeStart AND r.timeStart < :tE AND "
 						+ ":tE < r.timeEnd ORDER BY r.timeEnd", Request.class);
+				logStr = "Overlapped after";
 			} else if (timePos == 2) {
 				// All request start before tStart and end after tEnd
 				q = em.createQuery("SELECT r FROM Request r WHERE "
 						+ "r.timeStart < :tS AND :tE < r.timeEnd",
 						Request.class);
+				logStr = "Overlapped over";
 			}
 			q.setParameter("tS", tStart, TemporalType.TIMESTAMP);
 			q.setParameter("tE", tEnd, TemporalType.TIMESTAMP);
 			List<Request> appList = q.getResultList();
+			LoggerWrapper.logger.info(logStr + " requests found");
 			return appList;
 		} catch (Exception error) {
 			LoggerWrapper.logger
