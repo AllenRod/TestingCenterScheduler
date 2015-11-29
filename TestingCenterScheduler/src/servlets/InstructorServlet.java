@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import application.DatabaseManager;
 import application.Instructor;
 import application.LoggerWrapper;
 import entity.Appointment;
@@ -26,6 +27,9 @@ public class InstructorServlet extends HttpServlet {
 
 	// single Administrator object
 	private Instructor instr;
+	
+	// single DatabaseManager object
+	private DatabaseManager dbManager;
 
 	private static final long serialVersionUID = 1L;
 
@@ -34,6 +38,7 @@ public class InstructorServlet extends HttpServlet {
 	 */
 	public InstructorServlet() {
 		super();
+		dbManager = DatabaseManager.getSingleton();
 	}
 
 	/**
@@ -44,6 +49,7 @@ public class InstructorServlet extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 		UserAccount user = (UserAccount) request.getSession().getAttribute(
 				"user");
+		dbManager.createEntityManager();
 		if (instr == null) {
 			instr = new Instructor(user.getNetID());
 		} else {
@@ -57,6 +63,8 @@ public class InstructorServlet extends HttpServlet {
 		request.getSession().setAttribute("termlist", instr.getTerms());
 		request.getSession().setAttribute("login", true);
 		LoggerWrapper.logger.info("Redirect to Instructor homepage");
+		// Close entity manager
+		dbManager.closeEntityManager();
 		response.sendRedirect("Instructor.jsp");
 	}
 
@@ -71,6 +79,7 @@ public class InstructorServlet extends HttpServlet {
 			doGet(request, response);
 			return;
 		}
+		dbManager.createEntityManager();
 		if (request.getSession().getAttribute("action").equals("newRequest")) {
 			LoggerWrapper.logger.info("Processing New Request");
 			String s;
@@ -94,6 +103,8 @@ public class InstructorServlet extends HttpServlet {
 					instr.getNonClassRequests());
 			request.getSession().setAttribute("courses", instr.getCourses());
 			request.setAttribute("returnVal", s);
+			// Close entity manager
+			dbManager.closeEntityManager();			
 			RequestDispatcher rd = request.getRequestDispatcher("Requests.jsp");
 			rd.forward(request, response);
 			// response.sendRedirect("Requests.jsp");
@@ -129,6 +140,8 @@ public class InstructorServlet extends HttpServlet {
 					instr.getNonClassRequests());
 			request.getSession().setAttribute("courses", instr.getCourses());
 			request.setAttribute("returnVal", s);
+			// Close entity manager
+			dbManager.closeEntityManager();
 			RequestDispatcher rd = request.getRequestDispatcher("Requests.jsp");
 			rd.forward(request, response);
 		} 
@@ -139,9 +152,13 @@ public class InstructorServlet extends HttpServlet {
 			int s = instr.getStudentsInCourse(request.getParameter("CID"));
 			request.getSession().setAttribute("returnVal", a);
 			request.getSession().setAttribute("returnVal2", s);
+			// Close entity manager
+			dbManager.closeEntityManager();
 			response.sendRedirect(request.getHeader("referer"));
 		}
 		else {
+			// Close entity manager
+			dbManager.closeEntityManager();
 			LoggerWrapper.logger.info("Unsupported Case");
 		}
 	}

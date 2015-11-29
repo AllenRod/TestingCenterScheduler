@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import application.Administrator;
+import application.DatabaseManager;
 import application.LoggerWrapper;
 import application.Report;
 import entity.UserAccount;
@@ -26,12 +27,16 @@ public class AdministratorServlet extends HttpServlet {
 
 	// single Administrator object
 	private Administrator admin;
+	
+	// single DatabaseManager object
+	private DatabaseManager dbManager;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
 	public AdministratorServlet() {
 		super();
+		dbManager = DatabaseManager.getSingleton();
 	}
 
 	/**
@@ -42,6 +47,7 @@ public class AdministratorServlet extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 		UserAccount user = (UserAccount) request.getSession().getAttribute(
 				"user");
+		dbManager.createEntityManager();
 		if (admin == null) {
 			admin = new Administrator(user.getNetID());
 		} else {
@@ -60,6 +66,8 @@ public class AdministratorServlet extends HttpServlet {
 		request.getSession().setAttribute("appointments",
 				admin.getAllAppointments());
 
+		// Close entity manager
+		dbManager.closeEntityManager();
 		response.sendRedirect("Admin.jsp");
 	}
 
@@ -70,6 +78,7 @@ public class AdministratorServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		dbManager.createEntityManager();
 		try {
 			if (request.getSession().getAttribute("login") == null) {
 				doGet(request, response);
@@ -106,6 +115,8 @@ public class AdministratorServlet extends HttpServlet {
 						reminderInterval);
 				request.getSession()
 						.setAttribute("infolist", admin.getTCInfo());
+				// Close entity manager
+				dbManager.closeEntityManager();
 				response.sendRedirect("CenterHours.jsp");
 			}
 			if (request.getParameter("utilization") != null) {
@@ -126,8 +137,9 @@ public class AdministratorServlet extends HttpServlet {
 				} else {
 					request.getSession().setAttribute("returnVal", result);
 				}
+				// Close entity manager
+				dbManager.closeEntityManager();
 				response.sendRedirect("AdminUtilization.jsp");
-
 			}
 			if (request.getParameter("report") != null) {
 				LoggerWrapper.logger.info("Admin " + admin.getNetID()
@@ -137,6 +149,8 @@ public class AdministratorServlet extends HttpServlet {
 				List<Report> reports = admin.generateReport_All(startTerm,
 						endTerm);
 				request.getSession().setAttribute("returnVal", reports);
+				// Close entity manager
+				dbManager.closeEntityManager();
 				response.sendRedirect("Report.jsp");
 			}
 			if (request.getParameterValues("checkin") != null) {
@@ -154,6 +168,8 @@ public class AdministratorServlet extends HttpServlet {
 				}
 				request.getSession().setAttribute("returnVal",
 						Boolean.valueOf(noError));
+				// Close entity manager
+				dbManager.closeEntityManager();
 				response.sendRedirect("AdminAppointments.jsp");
 			}
 			if (request.getParameter("request_approve") != null) {
@@ -165,6 +181,8 @@ public class AdministratorServlet extends HttpServlet {
 						"Request Approval: ");
 				request.getSession().setAttribute("returnVal2",
 						Boolean.valueOf(approved));
+				// Close entity manager
+				dbManager.closeEntityManager();
 				response.sendRedirect("AdminRequests.jsp");
 			}
 			if (request.getParameter("request_deny") != null) {
@@ -176,6 +194,8 @@ public class AdministratorServlet extends HttpServlet {
 						"Request Denial: ");
 				request.getSession().setAttribute("returnVal2",
 						Boolean.valueOf(denied));
+				// Close entity manager
+				dbManager.closeEntityManager();
 				response.sendRedirect("AdminRequests.jsp");
 			}
 		} catch (Exception error) {

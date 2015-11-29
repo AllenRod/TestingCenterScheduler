@@ -45,8 +45,6 @@ public class Authenticator extends HttpServlet {
 		if (request.getParameter("logout") != null) {
 			if (request.getSession(false) != null)
 				request.getSession(false).invalidate();
-			// Close entity manager
-			dbManager.closeEntityManager();
 			response.sendRedirect("index.jsp");
 		}
 	}
@@ -66,6 +64,8 @@ public class Authenticator extends HttpServlet {
 			String password = request.getParameter("password");
 			LoggerWrapper.logger.info("User log in using netID " + userName);
 			UserAccount user = dbManager.getUser(userName, password);
+			// Close entity manager
+			dbManager.closeEntityManager();
 			// Test to get current term by current date
 			// Calendar curC = Calendar.getInstance();
 			// Date date = curC.getTime();

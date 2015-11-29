@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import application.DatabaseManager;
 import application.LoggerWrapper;
 import application.Student;
 import entity.UserAccount;
@@ -24,6 +25,9 @@ public class StudentServlet extends HttpServlet {
 
 	// single Student object
 	private Student stu;
+	
+	// single DatabaseManager object
+	private DatabaseManager dbManager;
 
 	private static final long serialVersionUID = 1L;
 
@@ -32,6 +36,7 @@ public class StudentServlet extends HttpServlet {
 	 */
 	public StudentServlet() {
 		super();
+		dbManager = DatabaseManager.getSingleton();
 	}
 
 	/**
@@ -42,6 +47,7 @@ public class StudentServlet extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 		UserAccount user = (UserAccount) request.getSession().getAttribute(
 				"user");
+		dbManager.createEntityManager();
 		if (stu == null) {
 			stu = new Student(user.getNetID());
 		} else {
@@ -62,6 +68,8 @@ public class StudentServlet extends HttpServlet {
 				.setAttribute("appointments", stu.getAppointments());
 		request.getSession().setAttribute("login", true);
 		LoggerWrapper.logger.info("Redirect to Student homepage");
+		// Close entity manager
+		dbManager.closeEntityManager();
 		response.sendRedirect("Student.jsp");
 	}
 
@@ -77,6 +85,7 @@ public class StudentServlet extends HttpServlet {
 			doGet(request, response);
 			return;
 		}
+		dbManager.createEntityManager();
 		if (request.getSession().getAttribute("action")
 				.equals("newAppointment")) {
 			LoggerWrapper.logger.info("Processing New Appointment");
@@ -85,6 +94,8 @@ public class StudentServlet extends HttpServlet {
 			request.getSession().setAttribute("appointments",
 					stu.getAppointments());
 			request.setAttribute("returnVal", s);
+			// Close entity manager
+			dbManager.closeEntityManager();
 			RequestDispatcher rd = request.getRequestDispatcher("Student.jsp");
 			rd.forward(request, response);
 		} else if (request.getSession().getAttribute("action")
@@ -94,6 +105,8 @@ public class StudentServlet extends HttpServlet {
 			request.getSession().setAttribute("AreqID", reqID);
 			request.getSession().setAttribute("timeSlot",
 					stu.generateTimeSlot(reqID));
+			// Close entity manager
+			dbManager.closeEntityManager();
 			response.sendRedirect("NewAppointment.jsp");
 		} else if (request.getParameter("app_cancel") != null) {
 			LoggerWrapper.logger.info("Cancelling appointment for student");
@@ -103,6 +116,8 @@ public class StudentServlet extends HttpServlet {
 			request.getSession().setAttribute("returnVal2", cancelled);
 			request.getSession().setAttribute("appointments",
 					stu.getAppointments());
+			// Close entity manager
+			dbManager.closeEntityManager();
 			response.sendRedirect("Student.jsp");
 		} else {
 			LoggerWrapper.logger.info("Unsupported Case");
