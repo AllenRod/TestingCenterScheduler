@@ -24,9 +24,9 @@ Edit testing center info - 100 %
 Import data - 60 % (check for superfluous, import without breaking existing table)
 Display utilization - 75 % (calculations may be wrong lol, possibly change display)
 Approve/deny request - 40 % (scheduability test, show utilization for requests)
-Make appointment for student - 0 % (everything)
+Make appointment for student - 50 % (Page is complete, needs whoever made student to fix it + add functionailty)
 View appointment - 50 % (implement search bar)
-Cancel/edit appointment - 0 % (everything)
+Cancel/edit appointment - 20 % (Page half done)
 Check in student - 90 % (possibly add checkin box in table header to check all boxes)
 Generate report - 75 % (possibly change display, more test cases, possibly save as .txt file, Fix for AD-HOC)
 

@@ -121,8 +121,7 @@
 
 				<div class="row">
 					<form class="form-inline">
-						<a href="#" class="btn btn-default" style="margin-bottom: 10px;"
-							onclick="newAppointment()"> New Appointment </a>
+						<a href="AdminNewAppointment.jsp" class="btn btn-default" style="margin-bottom: 10px;"> New Appointment </a>
 						<div style="margin-bottom: 10px; float: right;">
 							<select class="form-control">
 								<option>Student NetID</option>
@@ -216,7 +215,11 @@
 
 	</div>
 	<!-- /#wrapper -->
-
+	<script type ="text/javascript">
+                function editAppointment(ele){
+        			window.location = '/TestingCenterScheduler/EditAppointment.jsp?AppointmentID='+ele.id;
+        		}
+    </script>
 	<!-- jQuery -->
 	<script src="js/jquery.js"></script>
 
