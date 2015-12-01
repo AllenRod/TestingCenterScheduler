@@ -172,7 +172,7 @@
 						</tr>
 						<c:forEach items="${appointments}" var="apps">
 							<tr class="success">
-								<td><font color="blue">${apps.request.examName}</font></td>
+								<td onClick="editAppointment(this);" id="<c:out value="${apps.user.netID}"/>_<c:out value="${apps.request.examIndex}"/>_<c:out value="${apps.user.term.termID}"/>"><font color="blue">${apps.request.examName}</font></td>
 								<td>${apps.request.instructorNetID}</td>
 								<td>${apps.user.firstName}${apps.user.lastName}</td>
 								<td>${apps.user.netID}</td>
@@ -217,7 +217,7 @@
 	<!-- /#wrapper -->
 	<script type ="text/javascript">
                 function editAppointment(ele){
-        			window.location = '/TestingCenterScheduler/EditAppointment.jsp?AppointmentID='+ele.id;
+        			window.location = '/TestingCenterScheduler/EditAppointment.jsp?Appointment='+ele.id;
         		}
     </script>
 	<!-- jQuery -->
