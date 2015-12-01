@@ -41,36 +41,36 @@ public class RequestManager {
 		// Get all request end before this request ends
 		List<Request> beforeList = dbManager.R_getRequestWithPos(
 				request.getTimeStart(), request.getTimeEnd(), -1);
-		// Test 
-		/*System.out.print("before:");
-		for (Request r : beforeList) {
-			System.out.println(r.getExamIndex());
-		}*/
+		// Test
+		/*
+		 * System.out.print("before:"); for (Request r : beforeList) {
+		 * System.out.println(r.getExamIndex()); }
+		 */
 		// Get all request start before this request starts
 		// and end after this request ends
 		List<Request> betweenList = dbManager.R_getRequestWithPos(
 				request.getTimeStart(), request.getTimeEnd(), 0);
 		// Test
-		/*System.out.print("between:");
-		for (Request r : betweenList) {
-			System.out.println(r.getExamIndex());
-		}*/
+		/*
+		 * System.out.print("between:"); for (Request r : betweenList) {
+		 * System.out.println(r.getExamIndex()); }
+		 */
 		// Get all request end after this request ends
 		List<Request> afterList = dbManager.R_getRequestWithPos(
 				request.getTimeStart(), request.getTimeEnd(), 1);
 		// Test
-		/*System.out.print("after:");
-		for (Request r : afterList) {
-			System.out.println(r.getExamIndex());
-		}*/
+		/*
+		 * System.out.print("after:"); for (Request r : afterList) {
+		 * System.out.println(r.getExamIndex()); }
+		 */
 		// Get all request overlapped over the given request
 		List<Request> overList = dbManager.R_getRequestWithPos(
 				request.getTimeStart(), request.getTimeEnd(), 2);
 		// Test
-		/*System.out.print("over:");
-		for (Request r : overList) {
-			System.out.println(r.getExamIndex());
-		}*/
+		/*
+		 * System.out.print("over:"); for (Request r : overList) {
+		 * System.out.println(r.getExamIndex()); }
+		 */
 		Calendar overEarly = Calendar.getInstance();
 		Calendar overLate = Calendar.getInstance();
 		if (!overList.isEmpty()) {
@@ -206,7 +206,8 @@ public class RequestManager {
 			// If there are still appointments need to be inserted but there is
 			// no more slot, return false
 			if (reqNum > 0) {
-				LoggerWrapper.logger.info("Request " + r.getExamIndex() + " is not schedulable");
+				LoggerWrapper.logger.info("Request " + r.getExamIndex()
+						+ " is not schedulable");
 				return false;
 			}
 		}
@@ -277,8 +278,8 @@ public class RequestManager {
 			expectedDuration /= e.getTestRangeLength();
 			expectedDurationSum += expectedDuration;
 		}
-		totalUTI = (double) currentDayUTI + expectedDurationSum
-				/ (seatNum * openHourDuration);
+		totalUTI = currentDayUTI
+				+ ((double) expectedDurationSum / (seatNum * openHourDuration));
 		return totalUTI;
 	}
 
@@ -351,8 +352,8 @@ public class RequestManager {
 			expectedDuration /= e.getTestRangeLength();
 			expectedDurationSum += expectedDuration;
 		}
-		totalUTI = (double) currentDayUTI + expectedDurationSum
-				/ (seatNum * openHourDuration);
+		totalUTI = currentDayUTI
+				+ ((double) expectedDurationSum / (seatNum * openHourDuration));
 		return totalUTI;
 	}
 

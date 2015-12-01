@@ -66,7 +66,11 @@ public class Administrator {
 	 * @return if the request was successfully approved
 	 */
 	public boolean approveRequest(String requestID) {
-		return dbManager.A_approveRequest(requestID);
+		Request r = dbManager.getRequestByID(Integer.parseInt(requestID));
+		if (reqManager.isSchedulable(r)) {
+			return dbManager.A_approveRequest(requestID);
+		}
+		return dbManager.A_denyRequest(requestID);
 	}
 
 	/**
