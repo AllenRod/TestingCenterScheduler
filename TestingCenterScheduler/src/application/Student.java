@@ -157,7 +157,16 @@ public class Student {
 					dbManager.getTermByRequest(appReq)));
 			a.setStatus(AppointmentStatus.PENDING);
 			a.setSeatNum(slotHandler.getSeatNum(appReq, appTime));
-			a.setIfEmailed(false);
+			//check if appointment made after interval
+			Calendar c = Calendar.getInstance();
+			String termID = dbManager.getTermByDate(c.getTime()).getTermID();
+			int reminderInterval = dbManager.R_getTestCenterInfo(termID)
+					.getReminderInterval();
+			c.add(Calendar.MINUTE, reminderInterval);
+			if(c.after(appTime))
+				a.setIfEmailed(true);
+			else
+				a.setIfEmailed(false);
 			// Check appointment in timeslot
 			String msg = slotHandler.checkAppointment(a, appTime);
 			if (!msg.equals("")) {
