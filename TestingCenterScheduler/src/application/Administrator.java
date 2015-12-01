@@ -427,6 +427,48 @@ public class Administrator {
 		return utiList;
 	}
 
+	public List<String> viewUtilization(int requestID) {
+		Request r = dbManager.getRequestByID(requestID);
+		Calendar startDate = Calendar.getInstance();
+		startDate.setTime(r.getTimeStart());
+		startDate.set(Calendar.HOUR_OF_DAY, 0);
+		startDate.set(Calendar.MINUTE, 0);
+		startDate.set(Calendar.SECOND, 0);
+		startDate.set(Calendar.MILLISECOND, 0);
+		Calendar endDate = Calendar.getInstance();
+		endDate.setTime(r.getTimeEnd());
+		endDate.set(Calendar.HOUR_OF_DAY, 0);
+		endDate.set(Calendar.MINUTE, 0);
+		endDate.set(Calendar.SECOND, 0);
+		endDate.set(Calendar.MILLISECOND, 0);
+		Calendar dateHolder = Calendar.getInstance();
+		List<String> utiList = new ArrayList<String>();
+		NumberFormat numFormat = NumberFormat.getPercentInstance();
+		numFormat.setMaximumFractionDigits(3);
+		String requestTermID = dbManager.getTermByRequest(r).getTermID();
+		for (Date d = startDate.getTime(); !startDate.after(endDate); startDate
+				.add(Calendar.DATE, 1), d = startDate.getTime()) {
+			dateHolder.setTime(d);
+			double singleUTI = reqManager.calculateUtilizationDay(
+					requestTermID, d);
+			String s = "";
+			if (singleUTI == -1) {
+				s = Integer.toString(dateHolder.get(Calendar.MONTH) + 1)
+						+ "/"
+						+ Integer.toString(dateHolder
+								.get(Calendar.DAY_OF_MONTH)) + ": Closed<br />";
+			} else {
+				s = Integer.toString(dateHolder.get(Calendar.MONTH) + 1)
+						+ "/"
+						+ Integer.toString(dateHolder
+								.get(Calendar.DAY_OF_MONTH)) + ": "
+						+ numFormat.format(singleUTI) + "<br />";
+			}
+			utiList.add(s);
+		}
+		return utiList;
+	}
+
 	/**
 	 * Returns a list of the utilization for the request date range including
 	 * the specified request if it was approved
