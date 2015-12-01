@@ -16,14 +16,39 @@
 <body>
 
 	<div id="wrapper">
-		<div id="utilDisplay">
-			Working on it
-		</div>
+		<form action="AdministratorHome" method="POST">
+		<input type="hidden" name="RID" value="${param.requestID}">
+		<input type="submit" name = "UtilAction" value="with" class="btn btn-default" style="background: #980100; color: #FFF;">
+		<input type="submit" name = "UtilAction" value="without" class="btn btn-default" style="background: #980100; color: #FFF;">
+		</form>
+		<c:choose>
+					<c:when test ="${returnVal == 'Start date is after end date!'}">
+						<div class="row">
+							<div class="col-lg-12">
+								<div class="alert alert-danger">
+									${returnVal}
+								</div>
+							</div>
+						</div>
+					</c:when>
+					<c:when test="${not empty returnVal}">
+						<div class="row">
+							<div class="col-lg-12">
+								<c:forEach items="${returnVal}" var="uti"> 
+									<li>${uti}</li>
+								</c:forEach>
+							</div>
+						</div>
+					</c:when>
+					 <c:otherwise>
+				     </c:otherwise>
+				</c:choose>
+				<c:remove var="returnVal" scope="session" />
 	</div>
 	<!-- /#wrapper -->
 		
 	<script type="text/javascript">
-
+	
 	</script>
 	<!-- jQuery -->
 	<script src="js/jquery.js"></script>

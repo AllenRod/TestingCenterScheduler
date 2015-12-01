@@ -231,7 +231,10 @@
                 <c:set var="timeParts" value="${fn:split(time, ':')}" />
                 <c:set var="ehour" value="${timeParts[0]}" />
                 <c:set var="emin" value="${timeParts[1]}" />
-                                
+                
+                <c:if test="${requests.instructorNetID != user.netID}">
+					<div onload="forward();"></div>
+				</c:if>
 				<div class="div-spacing">
 					<form class="form-inline" action="InstructorHome" method="POST">
 					
@@ -383,7 +386,12 @@
 		</div>
 	</div>	
 	<!-- /.container-fluid -->
-
+	<script>
+	function forward() {
+		window.location = "oops.jsp"
+	}
+	
+	</script>
 	<!-- jQuery -->
 	<script src="js/jquery.js"></script>
 

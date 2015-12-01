@@ -136,7 +136,6 @@
 					</c:choose>
 					<div class=".col-md-6 .col-md-offset-3">
 						<h2>StonyBrook Exam Requests</h2>
-						<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#utilization" onClick="loadContent()" style="float: right">View Utilization</button>
 					</div>
 					<div class="modal fade" id="utilization" tabindex="-1" role="dialog" aria-labelledby="idkModalLabel" aria-hidden="true">
 						<div class="modal-dialog">
@@ -158,6 +157,7 @@
 							<th>Duration</th>
 							<th>RequestID</th>
 							<th>Status</th>
+							<th>Utilization</th>
 							<th>Approve/Deny</th>
 						</tr>
 						<c:forEach items="${crequests}" var="requests">
@@ -183,6 +183,7 @@
 										<td>${requests.status}</td>
 									</c:otherwise>
 								</c:choose>
+								<td><button type="button" class="btn btn-primary" onClick="loadContent(this)" id="${requests.examIndex}">View Utilization</button></td>
 								<c:choose>
 								<c:when test = "${requests.status eq 'approved' || requests.status eq 'denied'}">
 								<td>
@@ -210,7 +211,6 @@
 					</table>
 					<div class=".col-md-6 .col-md-offset-3">
 						<h2>Non-StonyBrook Exam Requests</h2>
-						<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#utilization" onClick="loadContent()" style="float: right">View Utilization</button>
 					</div>
 					<table class="table">
 						<tr>
@@ -221,6 +221,7 @@
 							<th>Duration</th>
 							<th>RequestID</th>
 							<th>Status</th>
+							<th>Utilization</th>
 							<th>Approve/Deny</th>
 						</tr>
 						<c:forEach items="${nrequests}" var="requests">
@@ -246,6 +247,7 @@
 										<td>${requests.status}</td>
 									</c:otherwise>
 								</c:choose>
+								<td><button type="button" class="btn btn-primary" onClick="loadContent(this)" id="${requests.examIndex}">View Utilization</button></td>
 								<c:choose>
 								<c:when test = "${requests.status eq 'approved' || requests.status eq 'denied'}">
 								<td>
@@ -281,8 +283,8 @@
 	</div>
 	<!-- /#wrapper -->
 	<script>
-	function loadContent() {
-	    $('#modalContent').load('EmptyPage.jsp');
+	function loadContent(ele) {
+		window.open("/TestingCenterScheduler/EmptyPage.jsp?requestID="+ele.id);
 	}
 	</script>
 	<!-- jQuery -->
