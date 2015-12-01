@@ -55,7 +55,7 @@ public class CSVLoader {
 			sc = new Scanner(file);
 			String header = sc.nextLine();
 			String[] headerVal = header.split(",");
-			boolean del = true;
+			//boolean del = true;
 			if (table.toLowerCase().equals("class")) {
 				if (!headerVal[0].toLowerCase().equals("classid")
 						|| !headerVal[1].toLowerCase().equals("subject")
