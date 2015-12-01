@@ -183,9 +183,10 @@
 										<td>${requests.status}</td>
 									</c:otherwise>
 								</c:choose>
-								<td><button type="button" class="btn btn-primary" onClick="loadContent(this)" id="${requests.examIndex}">View Utilization</button></td>
+								
 								<c:choose>
 								<c:when test = "${requests.status eq 'approved' || requests.status eq 'denied'}">
+								<td><button type="button" class="btn btn-primary" disabled>View Utilization</button></td>
 								<td>
 									<form action = AdministratorHome method = POST>
 										<button type=submit class="btn btn-success disabled" name="request_approve" value="${requests.examIndex}">Approve</button>
@@ -196,6 +197,7 @@
 								</td>
 								</c:when>
 								<c:when test = "${requests.status eq 'pending'}">
+								<td><button type="button" class="btn btn-primary" onClick="loadContent(this)" id="${requests.examIndex}">View Utilization</button></td>
 								<td>
 									<form action = AdministratorHome method = POST>
 										<button type=submit class="btn btn-success" name="request_approve" value="${requests.examIndex}">Approve</button>
@@ -247,9 +249,10 @@
 										<td>${requests.status}</td>
 									</c:otherwise>
 								</c:choose>
-								<td><button type="button" class="btn btn-primary" onClick="loadContent(this)" id="${requests.examIndex}">View Utilization</button></td>
+								
 								<c:choose>
 								<c:when test = "${requests.status eq 'approved' || requests.status eq 'denied'}">
+								<td><button type="button" class="btn btn-primary" disabled>View Utilization</button></td>
 								<td>
 								<form action = AdministratorHome method = POST>
 										<button type=submit class="btn btn-success disabled" name="request_approve" value="${requests.examIndex}">Approve</button>
@@ -260,6 +263,7 @@
 									</td>
 								</c:when>
 								<c:when test = "${requests.status eq 'pending'}">
+								<td><button type="button" class="btn btn-primary" onClick="loadContent(this)" id="${requests.examIndex}">View Utilization</button></td>
 								<td>
 									<form action = AdministratorHome method = POST>
 										<button type=submit class="btn btn-success" name="request_approve" value="${requests.examIndex}">Approve</button>

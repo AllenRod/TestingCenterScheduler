@@ -127,35 +127,13 @@
 							</div>
 							<div class="panel-body">
 								<div class="list-group">
-									<a href="#" class="list-group-item"> <span class="badge">2
-											minutes ago</span> <b>ReqID:534141</b> CSE114.01 <i>Midterm 2</i> <font
-										color="grey">Pending</font>
-									</a> <a href="#" class="list-group-item"> <span class="badge">4
-											minutes ago</span> <b>ReqID:534140</b> BUS101.01 <i>Quiz 2</i> <font
-										color="grey">Pending</font>
-									</a> <a href="#" class="list-group-item"> <span class="badge">23
-											minutes ago</span> <b>ReqID:534139</b> AMS210.02 <i>Midterm 2</i> <font
-										color="grey">Pending</font>
-									</a> <a href="#" class="list-group-item"> <span class="badge">46
-											minutes ago</span> <b>ReqID:534138</b> MCAT <i>MCAT</i> <font
-										color="grey">Pending</font>
-									</a> <a href="#" class="list-group-item"> <span class="badge">1
-											hour ago</span> <b>ReqID:534137</b> MUS119.12 <i>Quiz 6</i> <font
-										color="green">Approved</font>
-									</a> <a href="#" class="list-group-item"> <span class="badge">2
-											hours ago</span> <b>ReqID:534136</b> ECO112.01 <i>Midterm 1</i> <font
-										color="red">Denied</font>
-									</a> <a href="#" class="list-group-item"> <span class="badge">1
-											day ago</span> <b>ReqID:534135</b> EGL100.01 <i>Reading quiz</i> <font
-										color="green">Approved</font>
-									</a> <a href="#" class="list-group-item"> <span class="badge">2
-											days ago</span> <b>ReqID:534134</b> BME201.01 <i>Practice Test 1</i>
-										<font color="green">Approved</font>
+									<c:forEach items="${appointments}" var="apps" varStatus="i" begin="0" end="4">
+									<a href="#" class="list-group-item"><b>ReqID: ${requests.examIndex}</b> ${requests.course.classID}1 <i>${requests.examName}</i> ${requests.status}</font>
 									</a>
+									</c:forEach>
 								</div>
 								<div class="text-right">
-									<a href="#">View All Requests <i
-										class="fa fa-arrow-circle-right"></i></a>
+									<a href="AdminRequests.jsp">View All Requests </a>
 								</div>
 							</div>
 						</div>
@@ -167,28 +145,14 @@
 							</div>
 							<div class="panel-body">
 								<div class="list-group">
-									<a href="#" class="list-group-item"> <b>AppointID:885556545</b>
-										ReqID:534138 <i>SFeng</i>
-									</a> <a href="#" class="list-group-item"> <b>AppointID:885556544</b>
-										ReqID:534139 <i>MWong</i>
-									</a> <a href="#" class="list-group-item"> <b>AppointID:885556543</b>
-										ReqID:534140 <i>AAnderson</i>
-									</a> <a href="#" class="list-group-item"> <b>AppointID:885556542</b>
-										ReqID:534130 <i>BClark</i>
-									</a> <a href="#" class="list-group-item"> <b>AppointID:885556541</b>
-										ReqID:534132 <i>HLee</i>
-									</a> <a href="#" class="list-group-item"> <b>AppointID:885556540</b>
-										ReqID:534135 <i>HAdam</i>
-									</a> <a href="#" class="list-group-item"> <b>AppointID:885556539</b>
-										ReqID:534122 <i>EMadison</i><font color="red">
-											Superfluous</font>
-									</a> <a href="#" class="list-group-item"> <b>AppointID:885556538</b>
-										ReqID:534138 <i>PDoe</i>
+									<c:forEach items="${appointments}" var="apps" varStatus="i" begin="0" end="4">
+									<a href="#" class="list-group-item"> <b>AppointTime: ${apps.timeStart}</b>
+										ReqID: ${apps.request.examIndex} <i>${apps.user.netID}</i>
 									</a>
+									</c:forEach>
 								</div>
 								<div class="text-right">
-									<a href="#">View All Appointments <i
-										class="fa fa-arrow-circle-right"></i></a>
+									<a href="AdminAppointments.jsp">View All Appointments </a>
 								</div>
 							</div>
 						</div>
@@ -205,23 +169,8 @@
 									<!-- TODO: IMPLEMENT WAY TO HANDLE STATISTICS-->
 								</div>
 								<div class="text-right">
-									<a href="#"> View Testing Center Usage Report <i
+									<a href="AdminUtilization.jsp"> View Testing Center Usage Report <i
 										class="fa fa-arrow-circle-right"></i></a>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="col-lg-8">
-						<div class="panel panel-default">
-							<div class="panel-heading">
-								<h3 class="panel-title">Some other briefing
-									table/chart/diagram</h3>
-							</div>
-							<div class="panel-body">
-								<div class="list-group"></div>
-								<div class="text-right">
-									<a href="#"> <i class="fa fa-fw fa-check"></i> Click here
-										for toast <i class="fa fa-arrow-circle-right"></i></a>
 								</div>
 							</div>
 						</div>
