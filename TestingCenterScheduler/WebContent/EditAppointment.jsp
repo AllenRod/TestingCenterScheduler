@@ -201,9 +201,7 @@
 
 						<c:set var="action" value="editAppointment" scope="session" />
 						<a href="AdminAppointments.jsp" class="btn btn-default"
-							style="background: #DDD; color: #980100;">Cancel</a> <input
-							type="submit" value="Submit Appointment" class="btn btn-default"
-							style="background: #980100; color: #FFF;">
+							style="background: #DDD; color: #980100;">Cancel</a>
 						<input type="submit" name = "editAction" value="Edit"
 							class="btn btn-default"
 							style="background: #980100; color: #FFF;">
