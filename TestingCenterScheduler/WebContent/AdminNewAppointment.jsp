@@ -37,7 +37,7 @@
 	
 </script>
 
-<title>Student Courses</title>
+<title>New Appointment</title>
 
 <!-- Bootstrap Core CSS -->
 <link href="css/bootstrap.min.css" rel="stylesheet">

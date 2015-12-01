@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -37,7 +38,7 @@
 	
 </script>
 
-<title>Student Courses</title>
+<title>Edit Appointment</title>
 
 <!-- Bootstrap Core CSS -->
 <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -132,22 +133,31 @@
 				<!-- Page Heading -->
 				<div class="row">
 					<div class="col-lg-12">
-						<h1 class="page-header">New Appointment</h1>
+						<h1 class="page-header">Edit Appointment</h1>
 						<ol class="breadcrumb">
-							<li class="active"><a href="Admin.jsp"> Home</a> > <a href="AdminAppointments.jsp"> Appointments</a> > New Appointment</li>
+							<li class="active"><a href="Admin.jsp"> Home</a> > <a href="AdminAppointments.jsp"> Appointments</a> > Edit Appointment</li>
 						</ol>
 					</div>
 				</div>
 				<!-- /.row -->
+				<c:set var="AppParts" value="${fn:split(param.Appointment,'_')}" />
+                <c:set var="netID" value="${AppParts[0]}" />
+                <c:set var="examID" value="${AppParts[1]}" />
+                <c:set var="term" value="${AppParts[2]}" />
+                
 				<div class="div-spacing">
 					<form class="form-inline" action="AdministratorHome" method="POST">
 						<div class="form-group">
 							<label for="Areq">Student NetID: </label> <input type="text"
-								class="form-control input-sm" name="AnetID" readonly/>
+								class="form-control input-sm" name="AnetID" value="${netID}" readonly/>
 						</div>
 						<div class="form-group">
 							<label for="Areq">Request ID: </label> <input type="text"
-								class="form-control input-sm" name="AreqID" readonly/>
+								class="form-control input-sm" name="AreqID" value="${examID}" readonly/>
+						</div>
+						<div class="form-group">
+							<label for="Areq">Term: </label> <input type="text"
+								class="form-control input-sm" name="Aterm" value="${term}" readonly/>
 						</div>
 						<div class="form-group">
 							<label for="Atimestart">Start Time: </label> <input type="text"
