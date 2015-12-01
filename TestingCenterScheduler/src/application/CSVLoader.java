@@ -46,6 +46,7 @@ public class CSVLoader {
 		//dbManager.createEntityManager();
 		File file = new File(fileLoc);
 		Scanner sc;
+		String tableName = "";
 		Term term = dbManager.getTermByID(termID);
 		if (term == null) {
 			return "Term not found";
@@ -64,22 +65,17 @@ public class CSVLoader {
 								.equals("instructornetid")) {
 					sc.close();
 					return "Wrong csv format for Class table";
-				} else {
-					dbManager.delTable("Course", termID);
 				}
 
-				del = dbManager.delTable("Course", termID);
+				tableName = "Course";
 			} else if (table.toLowerCase().equals("roster")) {
 
 				if (!headerVal[0].toLowerCase().equals("netid")
 						|| !headerVal[1].toLowerCase().equals("classid")) {
 					sc.close();
 					return "Wrong csv format for Roster table";
-				} else {
-					dbManager.delTable("Roster", termID);
 				}
-
-				del = dbManager.delTable("Roster", termID);
+				tableName = "Roster";
 			} else if (table.toLowerCase().equals("user")) {
 
 				if (!headerVal[0].toLowerCase().equals("firstname")
@@ -88,19 +84,16 @@ public class CSVLoader {
 						|| !headerVal[3].toLowerCase().equals("email")) {
 					sc.close();
 					return "Wrong csv format for User table";
-				} else {
-					dbManager.delTable("User", termID);
 				}
-
-				del = dbManager.delTable("User", termID);
+				tableName = "User";
 			} else {
 				sc.close();
 				return "Wrong CSV format";
 			}
-			if (!del) {
+			/*if (!del) {
 				sc.close();
 				return "Error in deleting past data";
-			}
+			}*/
 			while (sc.hasNext()) {
 				String line = sc.nextLine();
 				// Guess what? A comma separates in a comma separated values
@@ -131,7 +124,7 @@ public class CSVLoader {
 					dataList.add(r);
 				}
 			}
-			String str = dbManager.loadDataList(dataList);
+			String str = dbManager.delAndLoadDataList(tableName, termID, dataList);
 			sc.close();
 			return str;
 		} catch (Exception e) {

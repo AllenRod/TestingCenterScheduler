@@ -140,36 +140,6 @@ public class DatabaseManager {
 	}
 
 	/**
-	 * Delete table by given table name and term ID
-	 * 
-	 * @param tableName
-	 *            table of data to be deleted
-	 * @return if the transaction is successful
-	 */
-	public boolean delTable(String tableName, String termID) {
-		try {
-			Term term = this.getTermByID(termID);
-			startTransaction();
-			em.createNativeQuery("SET FOREIGN_KEY_CHECKS = 0;").executeUpdate();
-			em.createQuery(
-					"DELETE FROM " + tableName
-							+ " tab WHERE tab.term = :termDel")
-					.setParameter("termDel", term).executeUpdate();
-			em.createNativeQuery("SET FOREIGN_KEY_CHECKS = 1;").executeUpdate();
-			LoggerWrapper.logger.info("Table " + tableName
-					+ " with data in term " + termID + " is deleted");
-			commitTransaction();
-			return true;
-		} catch (Exception error) {
-			LoggerWrapper.logger.warning("Error in deleting in table "
-					+ tableName + "\n" + error.getClass() + ":"
-					+ error.getMessage());
-			rollbackTransaction();
-			return false;
-		}
-	}
-
-	/**
 	 * Import a single entity into database
 	 * 
 	 * @param data
@@ -192,15 +162,32 @@ public class DatabaseManager {
 	}
 
 	/**
-	 * Load a chunk of data(entities) in ArrayLit into database
+	 * Delete a table with the given name in the given term, then load a chunk
+	 * of data(entities) in ArrayLit into database
 	 * 
+	 * @param tableName
+	 *            Name of table to be deleted
+	 * @param termID
+	 *            ID of given term
 	 * @param dataList
 	 *            ArrayList that contains the data
 	 * @return if all data are successfully imported into database
 	 */
-	public String loadDataList(ArrayList<Object> dataList) {
+	public String delAndLoadDataList(String tableName, String termID,
+			ArrayList<Object> dataList) {
 		startTransaction();
 		try {
+			// Delete the data with the given table name in given term
+			Term term = this.getTermByID(termID);
+			startTransaction();
+			em.createNativeQuery("SET FOREIGN_KEY_CHECKS = 0;").executeUpdate();
+			em.createQuery(
+					"DELETE FROM " + tableName
+							+ " tab WHERE tab.term = :termDel")
+					.setParameter("termDel", term).executeUpdate();
+			LoggerWrapper.logger.info("Table " + tableName
+					+ " with data in term " + termID + " is deleted");
+			// Insert list of data
 			Iterator<Object> it = dataList.iterator();
 			int c = 0;
 			int n = 0;
@@ -209,19 +196,20 @@ public class DatabaseManager {
 				em.persist(e);
 				c++;
 				n++;
-				if (c >= 500) {
+				if (c >= 200) {
 					em.flush();
 					LoggerWrapper.logger.info("Flush entity manager");
 					c = 0;
 				}
 			}
+			em.createNativeQuery("SET FOREIGN_KEY_CHECKS = 1;").executeUpdate();
 			commitTransaction();
 			LoggerWrapper.logger.info("All data successfully imported. "
 					+ "Total of " + n + " rows inserted into database");
 			return "All data imports succeed";
 		} catch (PersistenceException error) {
 			rollbackTransaction();
-			LoggerWrapper.logger.warning("Data import error occured:\n"
+			LoggerWrapper.logger.warning("Error occured in delAndLoadDataList:\n"
 					+ error.getClass() + ":" + error.getMessage());
 			return error.getMessage();
 		}
@@ -648,8 +636,9 @@ public class DatabaseManager {
 					+ " for request " + request.getExamIndex());
 			return r.intValue();
 		} catch (PersistenceException error) {
-			LoggerWrapper.logger.info("There is an error in R_getAppointmentNum:\n"
-					+ error.getClass() + ":" + error.getMessage());
+			LoggerWrapper.logger
+					.info("There is an error in R_getAppointmentNum:\n"
+							+ error.getClass() + ":" + error.getMessage());
 			return 0;
 		}
 	}
