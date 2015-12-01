@@ -127,7 +127,7 @@
 							</div>
 							<div class="panel-body">
 								<div class="list-group">
-									<c:forEach items="${appointments}" var="apps" varStatus="i" begin="0" end="4">
+									<c:forEach items="${crequests}" var="requests" varStatus="i" begin="0" end="4">
 									<a href="#" class="list-group-item"><b>ReqID: ${requests.examIndex}</b> ${requests.course.classID}1 <i>${requests.examName}</i> ${requests.status}</font>
 									</a>
 									</c:forEach>
