@@ -29,9 +29,9 @@ public class TimeSlotHandler {
 	// Term of the date of the timeslot
 	private Term term = null;
 
-	// Gap time of Test Center 
+	// Gap time of Test Center
 	private int gapTime = 0;
-	
+
 	// A hashmap with <Integer, AppointmentList> pair that maps the seat to its
 	// appointment list of the day
 	// Key is the seat number starting from 1
@@ -394,9 +394,14 @@ public class TimeSlotHandler {
 		Calendar temp = Calendar.getInstance();
 		// Record if there can be anymore appointments inserted
 		boolean more = true;
+		// Get numOfSeatInTimeSlot
+		numOfSeatInTimeSlot = this.getOpenTimeSlot(request);
 		// Construct a while loop to add as many appointments as possible
-		do {
+		while ((numOfSeatInTimeSlot != null)
+				&& (numOfSeatInTimeSlot.size() != 0)) {
 			// Test
+			System.out.println("Date " + date);
+			System.out.println("Request" + request.getExamIndex());
 			for (int i = 1; i <= openTimeSlotMap.size(); i++) {
 				System.out.println();
 				Integer[] hehe = openTimeSlotMap.get(i);
@@ -452,8 +457,7 @@ public class TimeSlotHandler {
 			if (!more) {
 				break;
 			}
-		} while ((numOfSeatInTimeSlot != null)
-				&& (numOfSeatInTimeSlot.size() != 0));
+		}
 		return reqNum;
 	}
 

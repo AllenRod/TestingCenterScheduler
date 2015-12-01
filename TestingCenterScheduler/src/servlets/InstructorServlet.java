@@ -14,6 +14,7 @@ import application.DatabaseManager;
 import application.Instructor;
 import application.LoggerWrapper;
 import entity.Appointment;
+import entity.Request;
 import entity.UserAccount;
 
 /**
@@ -27,9 +28,9 @@ public class InstructorServlet extends HttpServlet {
 
 	// single Administrator object
 	private Instructor instr;
-	
+
 	// single DatabaseManager object
-	private DatabaseManager dbManager;
+	// private DatabaseManager dbManager;
 
 	private static final long serialVersionUID = 1L;
 
@@ -38,7 +39,7 @@ public class InstructorServlet extends HttpServlet {
 	 */
 	public InstructorServlet() {
 		super();
-		dbManager = DatabaseManager.getSingleton();
+		// dbManager = DatabaseManager.getSingleton();
 	}
 
 	/**
@@ -49,7 +50,7 @@ public class InstructorServlet extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 		UserAccount user = (UserAccount) request.getSession().getAttribute(
 				"user");
-		//dbManager.createEntityManager();
+		// dbManager.createEntityManager();
 		if (instr == null) {
 			instr = new Instructor(user.getNetID());
 		} else {
@@ -64,7 +65,7 @@ public class InstructorServlet extends HttpServlet {
 		request.getSession().setAttribute("login", true);
 		LoggerWrapper.logger.info("Redirect to Instructor homepage");
 		// Close entity manager
-		//dbManager.closeEntityManager();
+		// dbManager.closeEntityManager();
 		response.sendRedirect("Instructor.jsp");
 	}
 
@@ -79,11 +80,11 @@ public class InstructorServlet extends HttpServlet {
 			doGet(request, response);
 			return;
 		}
-		//dbManager.createEntityManager();
+		// dbManager.createEntityManager();
 		if (request.getSession().getAttribute("action").equals("newRequest")) {
 			LoggerWrapper.logger.info("Processing New Request");
 			String s;
-			s = instr.newRequest(request.getParameter("Rtype"),
+			Request newReq = instr.newRequest(request.getParameter("Rtype"),
 					request.getParameter("Rclass"),
 					request.getParameter("Rterm"),
 					request.getParameter("Rname"),
@@ -95,27 +96,56 @@ public class InstructorServlet extends HttpServlet {
 					request.getParameter("Reday"),
 					request.getParameter("Retime"),
 					request.getParameter("Rlist"));
-			if (s.equals("Data import succeeds"))
-				s = "New Request Success";
+			s = instr.checkRequest(newReq);
+			if (s.equals("")) {
+				request.getSession().setAttribute("utilList",
+						instr.viewUtilizationWithRequest(newReq));
+				request.getSession().setAttribute("newReq", newReq);
+				LoggerWrapper.logger
+						.info("Request is schedulable, forward to display utilization");
+				RequestDispatcher rd = request
+						.getRequestDispatcher("InstructorUtilization.jsp");
+				rd.forward(request, response);
+				return;
+			} else {
+				request.getSession().setAttribute("crequests",
+						instr.getClassExamRequests());
+				request.getSession().setAttribute("nrequests",
+						instr.getNonClassRequests());
+				request.getSession().setAttribute("courses", instr.getCourses());
+				LoggerWrapper.logger.info("Error in making new request, return to request page");
+				request.setAttribute("returnVal", s);
+				RequestDispatcher rd = request.getRequestDispatcher("Requests.jsp");
+				rd.forward(request, response);
+				return;
+			}
+		} else if (request.getSession().getAttribute("action")
+				.equals("submitRequest")) {
+			Request r = (Request)request.getSession().getAttribute("newReq");
+			String s;
+			if (r != null) {
+				s = instr.submitRequest(r);
+				if (s.equals("Data import succeeds")) {
+					s = "New Request Success";
+				}
+			} else {
+				s= "Error in submitting request, please retry";
+			}
 			request.getSession().setAttribute("crequests",
 					instr.getClassExamRequests());
 			request.getSession().setAttribute("nrequests",
 					instr.getNonClassRequests());
 			request.getSession().setAttribute("courses", instr.getCourses());
 			request.setAttribute("returnVal", s);
-			// Close entity manager
-			//dbManager.closeEntityManager();			
 			RequestDispatcher rd = request.getRequestDispatcher("Requests.jsp");
 			rd.forward(request, response);
-			// response.sendRedirect("Requests.jsp");
 		} else if (request.getSession().getAttribute("action")
 				.equals("editRequest")) {
 			String s = "";
 			if (request.getParameter("editAction").equals("Delete")) {
 				LoggerWrapper.logger.info("Processing delete Request");
 				s = instr.deleteRequest(request.getParameter("RID"));
-			} 
-			else if (request.getParameter("editAction").equals("Edit")) {
+			} else if (request.getParameter("editAction").equals("Edit")) {
 				LoggerWrapper.logger.info("Processing edit Request");
 				s = instr.editRequest(request.getParameter("RID"),
 						request.getParameter("Ryear"),
@@ -129,8 +159,8 @@ public class InstructorServlet extends HttpServlet {
 						request.getParameter("Reday"),
 						request.getParameter("Retime"),
 						request.getParameter("Rlist"));
-			} 
-			
+			}
+
 			else {
 				LoggerWrapper.logger.info("Unsupported Edit Case");
 			}
@@ -141,26 +171,24 @@ public class InstructorServlet extends HttpServlet {
 			request.getSession().setAttribute("courses", instr.getCourses());
 			request.setAttribute("returnVal", s);
 			// Close entity manager
-			//dbManager.closeEntityManager();
+			// dbManager.closeEntityManager();
 			RequestDispatcher rd = request.getRequestDispatcher("Requests.jsp");
 			rd.forward(request, response);
-		} 
-		else if (request.getSession().getAttribute("action")
+		} else if (request.getSession().getAttribute("action")
 				.equals("getExamAppointments")) {
 			LoggerWrapper.logger.info("Fetching Appointments");
-			List<Appointment> a = instr.getAppointmentsByExamID(request.getParameter("EID"));
+			List<Appointment> a = instr.getAppointmentsByExamID(request
+					.getParameter("EID"));
 			int s = instr.getStudentsInCourse(request.getParameter("CID"));
 			request.getSession().setAttribute("returnVal", a);
 			request.getSession().setAttribute("returnVal2", s);
 			// Close entity manager
-			//dbManager.closeEntityManager();
+			// dbManager.closeEntityManager();
 			response.sendRedirect(request.getHeader("referer"));
-		}
-		else {
+		} else {
 			// Close entity manager
-			//dbManager.closeEntityManager();
+			// dbManager.closeEntityManager();
 			LoggerWrapper.logger.info("Unsupported Case");
 		}
 	}
-
 }
