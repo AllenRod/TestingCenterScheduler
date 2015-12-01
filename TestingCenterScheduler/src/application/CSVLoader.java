@@ -17,6 +17,9 @@ import entity.User;
 public class CSVLoader {
 	// database manager object
 	private DatabaseManager dbManager;
+	
+	// appointment checker object
+	private AppointmentChecker checker;
 
 	// singleton object for CSVLoader
 	private static CSVLoader loader = null;
@@ -26,6 +29,7 @@ public class CSVLoader {
 	 */
 	public CSVLoader() {
 		dbManager = DatabaseManager.getSingleton();
+		checker = AppointmentChecker.getSingleton();
 	}
 
 	/**
@@ -126,6 +130,7 @@ public class CSVLoader {
 			}
 			String str = dbManager.delAndLoadDataList(tableName, termID, dataList);
 			sc.close();
+			checker.checkSuperfluous();
 			return str;
 		} catch (Exception e) {
 			return e.getClass() + ":" + e.getMessage();

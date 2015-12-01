@@ -44,7 +44,7 @@ public class Appointment implements Serializable {
 	private int seatNum;
 
 	@Enumerated(EnumType.STRING)
-	@Column(columnDefinition = "ENUM('PENDING', 'TAKEN', 'MISSED')")
+	@Column(columnDefinition = "ENUM('PENDING', 'TAKEN', 'MISSED', 'SUPERFLUOUS')")
 	private AppointmentStatus status;
 
 	// if the student was emailed about this appointment yet
@@ -96,6 +96,8 @@ public class Appointment implements Serializable {
 				return "taken";
 			case MISSED :
 				return "missed";
+			case SUPERFLUOUS :
+				return "superfluous";
 		}
 		return "";
 	}
@@ -113,6 +115,6 @@ public class Appointment implements Serializable {
 	}
 
 	public enum AppointmentStatus {
-		PENDING, TAKEN, MISSED
+		PENDING, TAKEN, MISSED, SUPERFLUOUS
 	}
 }

@@ -21,6 +21,7 @@ import entity.ClassExamRequest;
 import entity.Course;
 import entity.NonClassRequest;
 import entity.Request;
+import entity.Roster;
 import entity.Term;
 import entity.TestCenterInfo;
 import entity.User;
@@ -209,8 +210,9 @@ public class DatabaseManager {
 			return "All data imports succeed";
 		} catch (PersistenceException error) {
 			rollbackTransaction();
-			LoggerWrapper.logger.warning("Error occured in delAndLoadDataList:\n"
-					+ error.getClass() + ":" + error.getMessage());
+			LoggerWrapper.logger
+					.warning("Error occured in delAndLoadDataList:\n"
+							+ error.getClass() + ":" + error.getMessage());
 			return error.getMessage();
 		}
 	}
@@ -553,9 +555,14 @@ public class DatabaseManager {
 			return false;
 		}
 		startTransaction();
-		a.setStatus(AppointmentStatus.TAKEN);
-		commitTransaction();
-		return true;
+		try {
+			a.setStatus(AppointmentStatus.TAKEN);
+			commitTransaction();
+			return true;
+		} catch (Exception error) {
+			rollbackTransaction();
+			return false;
+		}
 	}
 
 	/**
@@ -571,9 +578,14 @@ public class DatabaseManager {
 			return false;
 		}
 		startTransaction();
-		r.setStatus("approved");
-		commitTransaction();
-		return true;
+		try {
+			r.setStatus("approved");
+			commitTransaction();
+			return true;
+		} catch (Exception error) {
+			rollbackTransaction();
+			return false;
+		}
 	}
 
 	/**
@@ -589,9 +601,14 @@ public class DatabaseManager {
 			return false;
 		}
 		startTransaction();
-		r.setStatus("denied");
-		commitTransaction();
-		return true;
+		try {
+			r.setStatus("denied");
+			commitTransaction();
+			return true;
+		} catch (Exception error) {
+			rollbackTransaction();
+			return false;
+		}
 	}
 
 	/**
@@ -1147,6 +1164,50 @@ public class DatabaseManager {
 	}
 
 	/**
+	 * Set the given appointment to superfluous
+	 * 
+	 * @param a
+	 *            Given appointment
+	 */
+	public void setSuperfluousAppointment(Appointment a) {
+		startTransaction();
+		try {
+			a.setSeatNum(0);
+			a.setStatus(AppointmentStatus.SUPERFLUOUS);
+			commitTransaction();
+		} catch (Exception error) {
+			rollbackTransaction();
+		}
+	}
+	
+	/**
+	 * Find in Roster table with the given net ID, class ID, and term
+	 * 
+	 * @param netID
+	 *            Given net ID
+	 * @param classID
+	 *            Given class ID
+	 * @param term
+	 *            Given term
+	 * @return Single result of query in Roster
+	 */
+	public Roster findInRoster(String netID, String classID, Term term) {
+		try {
+			TypedQuery<Roster> q = em
+					.createQuery(
+							"SELECT r FROM Roster r WHERE r.user = :netID AND r.course = :classID AND r.term = :term",
+							Roster.class);
+			q.setParameter("netID", netID);
+			q.setParameter("classID", classID);
+			q.setParameter("term", term);
+			Roster ro = q.getSingleResult();
+			return ro;
+		} catch (Exception error) {
+			return null;
+		}
+	}
+
+	/**
 	 * Return a singleton of DatabaseManager
 	 * 
 	 * @return a singleton of class DatabaseManager
@@ -1212,17 +1273,5 @@ public class DatabaseManager {
 			em.close();
 		}
 		LoggerWrapper.logger.info("Close entity manager");
-	}
-
-	/**
-	 * Check if the EntityManager is closed
-	 * 
-	 * @return True if the EntityManager is closed
-	 */
-	public boolean checkClosedEntityManager() {
-		if (em == null) {
-			return true;
-		}
-		return !em.isOpen();
 	}
 }
