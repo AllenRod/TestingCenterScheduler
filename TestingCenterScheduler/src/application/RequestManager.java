@@ -38,9 +38,19 @@ public class RequestManager {
 	 * @return if the request is schedulable
 	 */
 	public boolean isSchedulable(Request request) {
+		int id = 0;
+		if (request.getExamIndex() > 0) {
+			id = request.getExamIndex();
+		}
 		// Get all request end before this request ends
-		List<Request> beforeList = dbManager.R_getRequestWithPos(
+		List<Request> beforeList = null;
+		if (id == 0) {
+		beforeList = dbManager.R_getRequestWithPos(
 				request.getTimeStart(), request.getTimeEnd(), -1);
+		} else {
+			beforeList = dbManager.R_getRequestWithPos1(
+					request.getTimeStart(), request.getTimeEnd(), 1, id);
+		}
 		// Test
 		/*
 		 * System.out.print("before:"); for (Request r : beforeList) {
@@ -48,24 +58,42 @@ public class RequestManager {
 		 */
 		// Get all request start before this request starts
 		// and end after this request ends
-		List<Request> betweenList = dbManager.R_getRequestWithPos(
+		List<Request> betweenList = null;
+		if (id == 0) {
+		betweenList = dbManager.R_getRequestWithPos(
 				request.getTimeStart(), request.getTimeEnd(), 0);
+		} else {
+			betweenList = dbManager.R_getRequestWithPos1(
+					request.getTimeStart(), request.getTimeEnd(), 1, id);
+		}
 		// Test
 		/*
 		 * System.out.print("between:"); for (Request r : betweenList) {
 		 * System.out.println(r.getExamIndex()); }
 		 */
 		// Get all request end after this request ends
-		List<Request> afterList = dbManager.R_getRequestWithPos(
+		List<Request> afterList = null;
+		if (id == 0) {
+		afterList = dbManager.R_getRequestWithPos(
 				request.getTimeStart(), request.getTimeEnd(), 1);
+		} else {
+			afterList = dbManager.R_getRequestWithPos1(
+					request.getTimeStart(), request.getTimeEnd(), 1, id);
+		}
 		// Test
 		/*
 		 * System.out.print("after:"); for (Request r : afterList) {
 		 * System.out.println(r.getExamIndex()); }
 		 */
 		// Get all request overlapped over the given request
-		List<Request> overList = dbManager.R_getRequestWithPos(
+		List<Request> overList = null;
+		if (id == 0) {
+		overList = dbManager.R_getRequestWithPos(
 				request.getTimeStart(), request.getTimeEnd(), 2);
+		} else {
+			overList = dbManager.R_getRequestWithPos1(
+					request.getTimeStart(), request.getTimeEnd(), 1, id);
+		}
 		// Test
 		/*
 		 * System.out.print("over:"); for (Request r : overList) {
@@ -194,7 +222,7 @@ public class RequestManager {
 				}
 			}
 			// Insert appointments through each day
-			while (!cStart.after(cEnd)) {
+			while (cStart.before(cEnd)) {
 				TimeSlotHandler handler = slotList.get(index);
 				reqNum = handler.checkInsertApp(r, reqNum);
 				cStart.add(Calendar.DATE, 1);
@@ -229,7 +257,7 @@ public class RequestManager {
 			return -1;
 		}
 		double currentDayUTI = 0;
-		int durationSum = 0;
+		double durationSum = 0;
 		TestCenterInfo tci = dbManager.R_getTestCenterInfo(termID);
 		List<Appointment> appList = dbManager.R_getAppointmentOnDate(d);
 		int gapTime = tci.getGapTime();
@@ -261,10 +289,10 @@ public class RequestManager {
 		}
 		// future day
 		double totalUTI = currentDayUTI;
-		int expectedDurationSum = 0;
+		double expectedDurationSum = 0;
 		List<Request> exams = dbManager.getAllExamsByDate(d);
 		for (Request e : exams) {
-			int expectedDuration = e.getTestDuration() + gapTime;
+			double expectedDuration = e.getTestDuration() + gapTime;
 			int numStudentsForExam = 0;
 			if (e instanceof ClassExamRequest) {
 				numStudentsForExam = dbManager
@@ -300,7 +328,7 @@ public class RequestManager {
 			return -1;
 		}
 		double currentDayUTI = 0;
-		int durationSum = 0;
+		double durationSum = 0;
 		TestCenterInfo tci = dbManager.R_getTestCenterInfo(dbManager
 				.getTermByDate(d).getTermID());
 		List<Appointment> appList = dbManager.R_getAppointmentOnDate(d);
@@ -333,12 +361,17 @@ public class RequestManager {
 		}
 		// future day
 		double totalUTI = currentDayUTI;
-		int expectedDurationSum = 0;
+		double expectedDurationSum = 0;
 		List<Request> exams = dbManager.getAllExamsByDate(d);
+		System.out.print("num of exams" + exams.size());
 		// include the request in these calculations
 		exams.add(r);
+		System.out.print("num of exams" + exams.size());
 		for (Request e : exams) {
-			int expectedDuration = e.getTestDuration() + gapTime;
+			double expectedDuration = e.getTestDuration() + gapTime;
+			System.out.println("exDur " + expectedDuration);
+			System.out.println("test duration " + e.getTestDuration());
+			System.out.println("gaptime " + gapTime);
 			int numStudentsForExam = 0;
 			if (e instanceof ClassExamRequest) {
 				numStudentsForExam = dbManager
@@ -348,10 +381,17 @@ public class RequestManager {
 				numStudentsForExam = ((NonClassRequest) e).getRosterList()
 						.split(";").length;
 			}
+			System.out.println("numStuds " + numStudentsForExam);
 			expectedDuration *= numStudentsForExam - e.getAppointment().size();
+			System.out.println(expectedDuration);
 			expectedDuration /= e.getTestRangeLength();
+			System.out.println(expectedDuration);
+			System.out.println("exam is for num days " + e.getTestRangeLength());
 			expectedDurationSum += expectedDuration;
 		}
+		System.out.println("xSum " + expectedDurationSum);
+		System.out.println("open for " + openHourDuration);
+		System.out.println("denom " + seatNum * openHourDuration);
 		totalUTI = currentDayUTI
 				+ ((double) expectedDurationSum / (seatNum * openHourDuration));
 		return totalUTI;
