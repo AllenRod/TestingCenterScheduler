@@ -237,7 +237,7 @@ public class TimeSlotHandler {
 			if ((currentSlot + duration) > endSlot) {
 				break;
 			}
-			int n = 0;
+			Integer n = 0;
 			// Iterate through each seat and check if the seat is opened
 			for (Integer e : openTimeSlotMap.keySet()) {
 				Integer[] intArray = openTimeSlotMap.get(e);
@@ -392,8 +392,6 @@ public class TimeSlotHandler {
 			return reqNum;
 		}
 		Calendar temp = Calendar.getInstance();
-		// Record if there can be anymore appointments inserted
-		boolean more = true;
 		// Get numOfSeatInTimeSlot
 		numOfSeatInTimeSlot = this.getOpenTimeSlot(request);
 		// Construct a while loop to add as many appointments as possible
@@ -402,18 +400,11 @@ public class TimeSlotHandler {
 			// Test
 			System.out.println("Date " + date);
 			System.out.println("Request" + request.getExamIndex());
-			for (int i = 1; i <= openTimeSlotMap.size(); i++) {
-				System.out.println();
-				Integer[] hehe = openTimeSlotMap.get(i);
-				for (int j = 0; j < hehe.length; j++) {
-					if (hehe[j] == -2) {
-						continue;
-					}
-					System.out.print(hehe[j] + " ");
-				}
-			}
+			System.out.println("Num " + reqNum);
 			// Get new numOfSeatInTimeSlot
 			numOfSeatInTimeSlot = this.getOpenTimeSlot(request);
+			// Record if there can be anymore appointments inserted
+			boolean more = false;
 			// Iterate through each time slot
 			for (Date d : numOfSeatInTimeSlot.keySet()) {
 				int seatNum = numOfSeatInTimeSlot.get(d);
@@ -426,27 +417,27 @@ public class TimeSlotHandler {
 					if (temp.get(Calendar.MINUTE) > 0) {
 						index++;
 					}
-					more = false;
 					for (int i = 1; i <= seatMap.size(); i++) {
 						if (seatMap.get(i).addFakeAppointment(index, request)) {
+							// Test
+							/*openTimeSlotMap = generateTimeSlot();
+							for (int k = 1; k <= openTimeSlotMap.size(); k++) {
+								System.out.println();
+								Integer[] hehe = openTimeSlotMap.get(k);
+								for (int j = 0; j < hehe.length; j++) {
+									if (hehe[j] == -2) {
+										continue;
+									}
+									System.out.print(hehe[j] + " ");
+								}
+							}*/
 							// If the seat is open and fake appointment is
 							// inserted, minus 1 from reqNum
 							more = true;
 							reqNum--;
+							System.out.println(reqNum + " left");
 							// Check if there is any more required appointment
 							if (reqNum == 0) {
-								// Test
-								openTimeSlotMap = generateTimeSlot();
-								for (int k = 1; k <= openTimeSlotMap.size(); k++) {
-									System.out.println();
-									Integer[] hehe = openTimeSlotMap.get(k);
-									for (int j = 0; j < hehe.length; j++) {
-										if (hehe[j] == -2) {
-											continue;
-										}
-										System.out.print(hehe[j] + " ");
-									}
-								}
 								return 0;
 							}
 						}
